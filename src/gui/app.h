@@ -26,7 +26,7 @@ enum {
     ID_BITRATE, ID_COLOR, ID_BLUR, ID_LOOP, ID_AUDIO, ID_AUDIOB, ID_FADEIN, ID_FADEOUT, ID_PAUSE, ID_FOLDER, ID_PREVIEW,
     ID_PREVTRK, ID_PREVBTN, ID_ENCODER, ID_PRE0, ID_PRE1, ID_PRE2, ID_PRE3, ID_PRE4, ID_DEPTH, ID_PLAY, ID_ABOUT, ID_LANG, ID_PARAMS, ID_OUTPUT, ID_FILESCOPE, ID_EDITOR, ID_FINDLOOP, ID_BUY, ID_UNDO, ID_REDO, ID_GUIDES, ID_HELP, ID_GALLERY,
     ID_PROJECT, ID_PROJ_NEW, ID_PROJ_OPEN, ID_PROJ_SAVE, ID_PROJ_SAVEAS, ID_HISTORY, ID_PALETTE, ID_SCOPES, ID_HOLD, ID_FREEZE, ID_ZOOMFIT, ID_ZOOM100,
-    ID_KEYS_EDIT, ID_KEYS_RELOAD, ID_JOBLOG, ID_PRIO_UP, ID_PRIO_DOWN, ID_PRIO_NORMAL, ID_MOVE_UP, ID_MOVE_DOWN, ID_RENDER_SEL, ID_IMPORT_ST, ID_PORT_CHECK
+    ID_KEYS_EDIT, ID_KEYS_RELOAD, ID_JOBLOG, ID_PRIO_UP, ID_PRIO_DOWN, ID_PRIO_NORMAL, ID_MOVE_UP, ID_MOVE_DOWN, ID_RENDER_SEL, ID_IMPORT_ST, ID_PORT_CHECK, ID_PRO_SETTINGS
 };
 constexpr int kRecentProjectBase = 3000;  // identifiants des projets recents du menu Projet (3000 a 3009)
 enum {
@@ -79,6 +79,7 @@ struct App {
     HWND tip = nullptr;
     HWND bFileScope = nullptr;  // « ce shader seul » : les champs de la carte des reglages valent pour le shader selectionne uniquement
     HWND bHelp = nullptr, bGallery = nullptr;  // aide (?) dans l'en-tete, galerie d'exemples dans la barre d'outils
+    HWND bPro = nullptr;      // reglages Pro (edition Pro seulement : absent sans extension)
     HWND bProject = nullptr;  // menu Projet (projets, historique, outils d'apercu, palette de commandes)
     HWND bAbout = nullptr, bLang = nullptr, bParams = nullptr, bOutput = nullptr, bEditor = nullptr, bBuy = nullptr;  // en-tête : À propos, langue, paramètres et post-traitement, sortie
     int chipRight = 0;                       // bord droit de la pastille de version (à gauche des boutons de l'en-tête)
@@ -292,6 +293,7 @@ bool readSavedTour();             // visite guidee : vrai sauf si window.ini dit
 std::string readSavedLanguage();  // langue mémorisée dans window.ini ("" si aucune)
 void toolsChanged();          // un reglage a change hors des champs de la fenetre principale (Sortie, Parametres, orbite...) : memorise pour l'annulation (edition Pro)
 void showHelp(HWND owner, const char* topicId);  // aide integree (help.cpp), non modale : start, main, output, params, editor, shaders, gallery, gloss, errors
+void addHelpTopic(const char* id, const std::function<std::wstring()>& title, const std::function<std::wstring()>& body);  // rubrique d'aide ajoutee par une extension (edition Pro)
 const char* helpTopicForWindow(HWND root);       // rubrique de la fenetre donnee (nullptr : l'aide elle-meme)
 void installHelpKey();                           // F1 dans n'importe quelle fenetre du programme ouvre l'aide de cette fenetre
 void showGallery(HWND owner);                    // galerie d'exemples (gallery_dialog.cpp), non modale

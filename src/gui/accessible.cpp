@@ -24,7 +24,7 @@ namespace {
 // « bouton » avec le motif Invoke (le controle systeme BS_OWNERDRAW se presente sinon comme un simple panneau, non activable)
 class NameProvider : public IRawElementProviderSimple, public IInvokeProvider {
 public:
-    NameProvider(HWND h, const char* key, bool button) : hwnd_(h), key_(key), button_(button) {}
+    NameProvider(HWND h, const char* key, bool button, const std::wstring& text) : hwnd_(h), key_(key), button_(button), text_(text) {}
     // IUnknown
     ULONG STDMETHODCALLTYPE AddRef() override { return (ULONG)InterlockedIncrement(&refs_); }
     ULONG STDMETHODCALLTYPE Release() override {
@@ -70,7 +70,9 @@ public:
         VariantInit(v);
         if (id == UIA_NamePropertyId) {
             std::wstring name;
-            if (key_) {
+            if (!text_.empty()) {
+                name = text_;
+            } else if (key_) {
                 name = TX(key_);
             } else {
                 wchar_t buf[256] = L"";
@@ -118,18 +120,20 @@ private:
     HWND hwnd_;
     const char* key_;
     bool button_;
+    std::wstring text_;
 };
 
 struct Info {
     const char* key = nullptr;  // nom donne par une cle de langue ; nullptr : texte de la fenetre
     bool button = false;
+    std::wstring text;  // nom donne tel quel (champs dont le nom est un reglage de l'edition Pro, pas une cle de langue)
 };
 std::map<HWND, Info> g_info;
 
 LRESULT CALLBACK accProc(HWND h, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR) {
     if (msg == WM_GETOBJECT && (LONG)lp == (LONG)UiaRootObjectId) {
         const auto it = g_info.find(h);
-        NameProvider* p = new NameProvider(h, it == g_info.end() ? nullptr : it->second.key, it != g_info.end() && it->second.button);
+        NameProvider* p = new NameProvider(h, it == g_info.end() ? nullptr : it->second.key, it != g_info.end() && it->second.button, it == g_info.end() ? std::wstring() : it->second.text);
         const LRESULT r = UiaReturnRawElementProvider(h, wp, lp, p);
         p->Release();
         return r;
@@ -168,6 +172,13 @@ void setAccessibleName(HWND control, const char* langKey) {
     g_info[control].key = langKey;
     g_named.push_back({control, langKey});
     applyMsaaName(control, langKey);
+}
+
+void setAccessibleNameText(HWND control, const std::wstring& name) {
+    if (!control) return;
+    ensureSubclass(control);
+    g_info[control].text = name;
+    if (IAccPropServices* s = propServices()) s->SetHwndPropStr(control, OBJID_CLIENT, CHILDID_SELF, PROPID_ACC_NAME, name.c_str());
 }
 
 void refreshAccessibleNames() {

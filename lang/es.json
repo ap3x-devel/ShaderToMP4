@@ -1459,5 +1459,7 @@
   "status.orbit": "Cámara 3D: %ls (guardada en los ajustes)",
   "status.orbit_locked": "El shader fija su propia cámara (líneas // camera): quítelas para elegir la cámara con el ratón",
   "status.preview_ready_scene": "Vista previa lista. Escena 3D: arrastre en la vista previa para orbitar la cámara, rueda para acercar",
-  "ui.output.timemap_edit": "…"
+  "ui.output.timemap_edit": "…",
+  "ui.tip.pro_btn": "Ajustes Pro: escena, señales, color, acabado y rendimiento en campos en lugar de texto (Ctrl+Mayús+P)",
+  "shortcut.action.prosettings": "Ajustes Pro (edición Pro)"
 }

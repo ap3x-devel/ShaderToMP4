@@ -61,6 +61,7 @@ const std::vector<ActionDef>& baseTable() {
         {"undo", "shortcut.action.undo", ID_UNDO, "Ctrl+Z", true},
         {"redo", "shortcut.action.redo", ID_REDO, "Ctrl+Y", true},
         {"guides", "shortcut.action.guides", ID_GUIDES, "Ctrl+G", true},
+        {"prosettings", "shortcut.action.prosettings", ID_PRO_SETTINGS, "Ctrl+Shift+P", true},
     };
     return t;
 }
@@ -73,7 +74,8 @@ const std::vector<ActionDef>& actionTable() {
         const ProExt* px = proExt();
         for (const ActionDef& a : baseTable()) {
             if (a.proOnly) {  // les outils d'edition n'existent que dans l'edition Pro
-                const bool present = px && ((strcmp(a.id, "guides") == 0 && px->tools.guidesMenu) || (strcmp(a.id, "guides") != 0 && px->tools.undoRedo));
+                const bool guides = strcmp(a.id, "guides") == 0, pro = strcmp(a.id, "prosettings") == 0;
+                const bool present = px && ((guides && px->tools.guidesMenu) || (pro && px->tools.settingsWindow) || (!guides && !pro && px->tools.undoRedo));
                 if (!present) continue;
             }
             t.push_back(a);

@@ -11,7 +11,7 @@
   Le contraste des couleurs est controle par scripts\check-repo.ps1 (WCAG AA) ; ce script ne mesure ni contraste ni tailles.
   Hors de portee : ce que seul un lecteur d'ecran reel peut dire (ordre de lecture, annonces), non essaye ici.
 #>
-param([string]$Exe = "bin\ShaderToMP4.exe", [string]$Lang = "en")
+param([string]$Exe = "bin\ShaderToMP4.exe", [string]$Lang = "en", [switch]$Pro)
 $ErrorActionPreference = "Stop"
 Set-Location (Split-Path $PSScriptRoot -Parent)
 Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes, System.Windows.Forms
@@ -23,7 +23,17 @@ public class AuditW {
   [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
 }
 "@
-$ini = "$(Get-Location)\bin\window.ini"
+$exeDir = Split-Path (Resolve-Path $Exe) -Parent
+$ini = Join-Path $exeDir "window.ini"
+$testLicense = $null
+if ($Pro) {  # edition Pro (..\ShaderToMP4-Pro) : une licence d'essai a cote de l'exe, retiree a la fin, pour que la fenetre des reglages Pro s'ouvre
+  $lic = Join-Path $exeDir "ShaderToMP4.license"
+  if (-not (Test-Path $lic)) {
+    $proRoot = Split-Path $exeDir -Parent
+    & (Join-Path $proRoot "out\licgen.exe") issue (Join-Path (Split-Path $proRoot -Parent) "ShaderToMP4-Secret\license-private.key") --holder "Audit" --id AUDIT --major 3 --out $lic | Out-Null
+    $testLicense = $lic
+  }
+}
 $keepIni = if (Test-Path $ini) { Get-Content $ini -Raw } else { $null }
 Set-Content $ini "x=200 y=40 w=1100 h=900 max=0`nlang=$Lang`ntour=0`n" -NoNewline   # une fenetre visible sur l'ecran principal, sans visite guidee
 $p = Start-Process $Exe -PassThru
@@ -44,6 +54,7 @@ try {
   }
   $targets = @(@("main", "ShaderToMP4Main", 0), @("about", "ShaderToMP4About", 157), @("help", "ShaderToMP4Help", 168), @("gallery", "ShaderToMP4Gallery", 169),
                @("history", "ShaderToMP4History", $ID.ID_HISTORY), @("scopes", "ShaderToMP4Scopes", $ID.ID_SCOPES), @("palette", "ShaderToMP4Palette", $ID.ID_PALETTE), @("import", "ShaderToMP4Import", $ID.ID_IMPORT_ST))
+  if ($Pro) { $targets += , @("prosettings", "ShaderToMP4ProSettings", $ID.ID_PRO_SETTINGS) }
   # controles interactifs reconnus par leur classe Windows (le type UI Automation « panneau » des controles systeme depend du client : la classe est sure)
   $interactive = @("Button", "Edit", "ComboBox", "ListBox", "SysListView32", "STSlider", "RICHEDIT50W")
   foreach ($t in $targets) {
@@ -86,6 +97,7 @@ try {
 } finally {
   if (-not $p.HasExited) { Stop-Process -Id $p.Id -Force }
   Start-Sleep -Milliseconds 400
+  if ($testLicense) { Remove-Item $testLicense -ErrorAction SilentlyContinue }
   if ($null -ne $keepIni) { Set-Content $ini $keepIni -NoNewline } else { Remove-Item $ini -ErrorAction SilentlyContinue }
 }
 if ($failures.Count -gt 0) { Write-Output ""; Write-Output "PROBLEMES :"; $failures | ForEach-Object { Write-Output "  $_" }; exit 1 }

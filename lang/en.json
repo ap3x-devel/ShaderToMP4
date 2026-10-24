@@ -1460,5 +1460,7 @@
   "status.orbit_locked": "The shader sets its own camera (// camera lines): remove them to choose the camera with the mouse",
   "status.preview_ready_scene": "Preview ready. 3D scene: drag in the preview to orbit the camera, wheel to zoom",
   "selftest.fmt_param_hermite": "Hermite parameter curves: imposed slopes, smoothed slopes, exact on a line and on the smooth mode, invalid slopes refused",
-  "ui.output.timemap_edit": "…"
+  "ui.output.timemap_edit": "…",
+  "ui.tip.pro_btn": "Pro settings: scene, signals, colour, dressing and performance in fields instead of text (Ctrl+Shift+P)",
+  "shortcut.action.prosettings": "Pro settings (Pro edition)"
 }

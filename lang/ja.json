@@ -1459,5 +1459,7 @@
   "status.orbit": "3D カメラ: %ls（設定に保持されます）",
   "status.orbit_locked": "シェーダーが独自のカメラを指定しています（// camera の行）。マウスでカメラを選ぶにはそれらを削除してください",
   "status.preview_ready_scene": "プレビュー完了。3D シーン: プレビュー上でドラッグするとカメラが周回し、ホイールでズームします",
-  "ui.output.timemap_edit": "…"
+  "ui.output.timemap_edit": "…",
+  "ui.tip.pro_btn": "Pro 設定：シーン、信号、色、装飾、性能をテキストではなく入力欄で設定 (Ctrl+Shift+P)",
+  "shortcut.action.prosettings": "Pro 設定（Pro 版）"
 }

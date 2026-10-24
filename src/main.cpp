@@ -283,7 +283,7 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
             HWND root = GetAncestor(m.hwnd, GA_ROOT);
             wchar_t cls[48] = L"";
             if (root) GetClassNameW(root, cls, 48);
-            if ((!wcscmp(cls, L"ShaderToMP4Help") || !wcscmp(cls, L"ShaderToMP4Gallery") || !wcscmp(cls, L"ShaderToMP4Tour") || !wcscmp(cls, L"ShaderToMP4History") || !wcscmp(cls, L"ShaderToMP4Import")) && IsDialogMessageW(root, &m)) continue;
+            if ((!wcscmp(cls, L"ShaderToMP4Help") || !wcscmp(cls, L"ShaderToMP4Gallery") || !wcscmp(cls, L"ShaderToMP4Tour") || !wcscmp(cls, L"ShaderToMP4History") || !wcscmp(cls, L"ShaderToMP4Import") || !wcscmp(cls, L"ShaderToMP4ProSettings")) && IsDialogMessageW(root, &m)) continue;
         }
         TranslateMessage(&m);
         DispatchMessageW(&m);

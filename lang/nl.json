@@ -1459,5 +1459,7 @@
   "status.orbit": "3D-camera: %ls (bewaard in de instellingen)",
   "status.orbit_locked": "De shader bepaalt zijn eigen camera (regels // camera): verwijder ze om de camera met de muis te kiezen",
   "status.preview_ready_scene": "Voorbeeld klaar. 3D-scène: sleep in het voorbeeld om de camera te laten draaien, scrollwiel om te zoomen",
-  "ui.output.timemap_edit": "…"
+  "ui.output.timemap_edit": "…",
+  "ui.tip.pro_btn": "Pro-instellingen: scène, signalen, kleur, opmaak en prestaties in velden in plaats van tekst (Ctrl+Shift+P)",
+  "shortcut.action.prosettings": "Pro-instellingen (Pro-editie)"
 }

@@ -16,6 +16,7 @@ Format: one section per version, newest first. The section of a tagged version i
 - **Render history** (`history.jsonl`, 2000 lines at most, also written by `--render`): date, shader, result, duration, output, hash of the shader and settings; window with *Redo this render* (same settings, same bytes for a lossless video) and *Show in folder*.
 - **Preview tools**: zoom (mouse wheel) and pan, fit (`Ctrl+0`) and real pixels (`Ctrl+1`); *Freeze* for an A/B comparison with the next preview; **scopes** window (histogram, waveform, vectorscope, text summary).
 - **Configurable shortcuts** (`keys.ini`, conflicts and invalid lines refused and reported) and **command palette** (`Ctrl+K`, search without case or accents); every command has a name in the nine languages.
+- **Pro settings window** (Pro edition, star button of the header, `Ctrl+Shift+P`): a field for every Pro setting on five pages, values checked by the engine before they are written, file pickers with paths relative to the shader, tooltips with an example and a help topic per page (nine languages), Pro presets saved in `presets/`, undo and redo. In the public program only a generic hook (`ProTools::settingsWindow`), the header button (hidden in the free edition), extra help topics and named accessible controls were added.
 - Help topic “Projects, queue and shortcuts”; `scripts/test-queue.ps1` drives the window (priority, hold, failure, cancellation, live reordering, mouse drag, `Alt+Up`, project, shortcuts, palette, history redo); the accessibility audit covers the new windows.
 
 ### Fixed

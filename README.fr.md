@@ -613,6 +613,19 @@ L'édition Pro dessine un **maillage 3D** devant le même fragment shader que le
 
 Exemples (`examples/scenes/` du paquet Pro) : `cube`, `sphere_orbit`, `shadows`, `reflection`, `particles` (8192 particules simulées sur le GPU).
 
+## Fenêtre des réglages Pro (édition Pro)
+
+Chaque réglage Pro (scène 3D, signaux et données, couleur et qualité, habillage et diffusion, performance) a un **champ** dans la fenêtre *Réglages Pro*, ouverte par le bouton en étoile de l'en-tête (ou `Ctrl+Maj+P`, ou la palette de commandes) : cinq pages, chaque champ porte le nom de sa clé. Un champ lit et écrit exactement la valeur de la forme texte (`// clé=valeur` dans un shader, `config.ini`, `--clé=valeur`) : rien ne se perd si l'on revient au texte. Une valeur est contrôlée comme le moteur le fait avant un rendu, une valeur refusée s'affiche en rouge avec le message du moteur et n'est pas écrite, un champ vide retire la clé.
+
+- **Fichiers.** *Parcourir* propose un fichier dans une boîte de dialogue (modèle 3D, MIDI, données, LUT, profil ICC, sous-titres, cartons, logos, polices) ; un fichier situé dans le dossier du shader est écrit relativement à lui, le projet reste déplaçable. Pour une ligne de calque, le fichier choisi s'écrit dans la ligne (`file=` ou `fontfile=`).
+- **Info-bulles et aide.** Chaque champ a une info-bulle (ce qu'il fait, un exemple de valeur, un rappel) ; `F1` ouvre la rubrique d'aide de la page affichée, qui liste tous les réglages de la page.
+- **Préréglages Pro.** *Rendu propre 4K HDR*, *Diffusion verticale* et *Boucle réseaux sociaux* posent plusieurs réglages d'un coup (taille, codec, courbe de tons, calques...) ; modifiez ensuite n'importe quel champ et *Enregistrer comme préselection...* écrit un profil dans `presets/`, que le menu *Plus* de la fenêtre principale charge aussi.
+- **Annuler et rétablir** (boutons de la fenêtre, `Ctrl+Z` / `Ctrl+Y` dans la fenêtre principale) couvrent ces champs ; *Réinitialiser cette page* efface les clés de la page.
+
+<p><a href="docs/screenshots/fr/pro-settings.png"><img src="docs/screenshots/fr/pro-settings.png" alt="Fenêtre des réglages Pro" width="640"></a></p>
+
+Sans licence valide le bouton ouvre la fenêtre d'achat, comme les autres outils Pro. Rien n'est ajouté à l'édition libre.
+
 ## Questions fréquentes
 
 **Quels shaders Shadertoy sont supportés ?**

@@ -122,6 +122,8 @@ struct ProTools {
     std::function<void(HDC hdc, const RECT& image, const Settings& s)> drawGuides;
     // Clic gauche sur l'apercu (client : coordonnees dans l'apercu, image : rectangle de l'image) : vrai si l'extension le prend (choix du point d'interet)
     std::function<bool(HWND preview, int x, int y, const RECT& image)> guidesClick;
+    // Bouton « Reglages Pro » de l'en-tete : fenetre non modale des reglages de l'extension (champs a la place du texte). Sans licence valide, l'extension ouvre la fenetre d'achat.
+    std::function<void(HWND parent)> settingsWindow;
 };
 
 struct ProExt {

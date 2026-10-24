@@ -38,3 +38,4 @@
 #define IC_PROJECT   230
 #define IC_HISTORY   231
 #define IC_SCOPE     232
+#define IC_PRO       233

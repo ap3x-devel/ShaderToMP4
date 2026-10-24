@@ -36,7 +36,20 @@ const Topic kTopics[] = {
     {"gallery", "help.gallery.title", "help.gallery.body"}, {"gloss", "help.gloss.title", nullptr},
     {"errors", "help.errors.title", "help.errors.body"},
 };
-constexpr int kTopicCount = (int)(sizeof(kTopics) / sizeof(kTopics[0]));
+constexpr int kBuiltinTopics = (int)(sizeof(kTopics) / sizeof(kTopics[0]));
+
+// Rubriques ajoutees par une extension (edition Pro) : titre et texte fournis a la demande
+struct ExtraTopic {
+    std::string id;
+    std::function<std::wstring()> title, body;
+};
+std::vector<ExtraTopic>& extraTopics() {
+    static std::vector<ExtraTopic> v;
+    return v;
+}
+int topicCount() { return kBuiltinTopics + (int)extraTopics().size(); }
+std::string topicId(int i) { return i < kBuiltinTopics ? kTopics[i].id : extraTopics()[(size_t)(i - kBuiltinTopics)].id; }
+std::wstring topicTitle(int i) { return i < kBuiltinTopics ? TX(kTopics[i].title) : extraTopics()[(size_t)(i - kBuiltinTopics)].title(); }
 
 // Glossaire : « Terme|definition »
 const char* kGlossary[] = {"help.gloss.shader", "help.gloss.channel", "help.gloss.pass",   "help.gloss.part",   "help.gloss.loop",
@@ -84,10 +97,18 @@ void append(const std::wstring& s, int points, bool bold, unsigned color) {
 
 void fillText() {
     SetWindowTextW(D.text, L"");
-    const Topic& t = kTopics[D.topic];
-    append(TX(t.title) + L"\n\n", 18, true, TEXT);
-    if (t.body) {
-        for (const std::wstring& p : paragraphs(t.body)) append(p + L"\n\n", 11, false, TEXT);
+    append(topicTitle(D.topic) + L"\n\n", 18, true, TEXT);
+    if (D.topic >= kBuiltinTopics) {
+        const std::wstring all = extraTopics()[(size_t)(D.topic - kBuiltinTopics)].body();
+        size_t pos = 0;
+        while (pos <= all.size()) {
+            size_t e = all.find(L'\n', pos);
+            if (e == std::wstring::npos) e = all.size();
+            if (e > pos) append(all.substr(pos, e - pos) + L"\n\n", 11, false, TEXT);
+            pos = e + 1;
+        }
+    } else if (kTopics[D.topic].body) {
+        for (const std::wstring& p : paragraphs(kTopics[D.topic].body)) append(p + L"\n\n", 11, false, TEXT);
     } else {
         for (const char* key : kGlossary) {
             const std::wstring e = TX(key);
@@ -102,7 +123,7 @@ void fillText() {
 }
 
 void selectTopic(int i) {
-    if (i < 0 || i >= kTopicCount) return;
+    if (i < 0 || i >= topicCount()) return;
     D.topic = i;
     if ((int)SendMessageW(D.list, LB_GETCURSEL, 0, 0) != i) SendMessageW(D.list, LB_SETCURSEL, (WPARAM)i, 0);
     fillText();
@@ -194,6 +215,16 @@ LRESULT CALLBACK f1Hook(int code, WPARAM wp, LPARAM lp) {
 
 }  // namespace
 
+void addHelpTopic(const char* id, const std::function<std::wstring()>& title, const std::function<std::wstring()>& body) {
+    for (ExtraTopic& t : extraTopics())
+        if (t.id == id) {
+            t.title = title;
+            t.body = body;
+            return;
+        }
+    extraTopics().push_back({id, title, body});
+}
+
 const char* helpTopicForWindow(HWND root) {
     wchar_t cls[64] = L"";
     if (root) GetClassNameW(root, cls, 64);
@@ -205,16 +236,20 @@ const char* helpTopicForWindow(HWND root) {
     if (c == L"ShaderToMP4Gallery") return "gallery";
     if (c == L"ShaderToMP4Import") return "compat";
     if (c == L"ShaderToMP4History" || c == L"ShaderToMP4Scopes" || c == L"ShaderToMP4Palette") return "projects";
+    if (c == L"ShaderToMP4ProSettings") {  // fenetre de l'edition Pro : la rubrique de sa page affichee, posee comme propriete (chaine statique)
+        const char* t = (const char*)GetPropW(root, L"ShaderToMP4HelpTopic");
+        return t ? t : "main";
+    }
     if (c == L"ShaderToMP4About" || c == L"ShaderToMP4Buy" || c == L"ShaderToMP4Tour") return "start";
     return "main";
 }
 
 void installHelpKey() { SetWindowsHookExW(WH_GETMESSAGE, f1Hook, nullptr, GetCurrentThreadId()); }
 
-void showHelp(HWND owner, const char* topicId) {
+void showHelp(HWND owner, const char* topicId_) {
     int want = 0;
-    for (int i = 0; i < kTopicCount; i++)
-        if (topicId && strcmp(topicId, kTopics[i].id) == 0) want = i;
+    for (int i = 0; i < topicCount(); i++)
+        if (topicId_ && topicId(i) == topicId_) want = i;
     if (D.wnd) {  // deja ouverte : on change de rubrique et on la ramene devant
         selectTopic(want);
         ShowWindow(D.wnd, SW_RESTORE);
@@ -254,7 +289,7 @@ void showHelp(HWND owner, const char* topicId) {
                              (HMENU)(INT_PTR)ID_HELP_LIST, hi, nullptr);
     SendMessageW(D.list, WM_SETFONT, (WPARAM)g.font, TRUE);
     SendMessageW(D.list, LB_SETITEMHEIGHT, 0, S(30));
-    for (int i = 0; i < kTopicCount; i++) SendMessageW(D.list, LB_ADDSTRING, 0, (LPARAM)TX(kTopics[i].title).c_str());
+    for (int i = 0; i < topicCount(); i++) SendMessageW(D.list, LB_ADDSTRING, 0, (LPARAM)topicTitle(i).c_str());
     ui::darkTheme(D.list, L"DarkMode_Explorer");
     D.text = CreateWindowExW(0, L"RICHEDIT50W", L"", WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_VSCROLL | ES_MULTILINE | ES_READONLY | ES_NOHIDESEL, 0, 0, 10, 10, D.wnd,
                              (HMENU)(INT_PTR)ID_HELP_TEXT, hi, nullptr);

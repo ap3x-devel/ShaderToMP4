@@ -613,6 +613,19 @@ The Pro edition draws a **3D mesh** in front of the same fragment shader as the 
 
 Examples (`examples/scenes/` of the Pro package): `cube`, `sphere_orbit`, `shadows`, `reflection`, `particles` (8192 particles simulated on the GPU).
 
+## Pro settings window (Pro edition)
+
+Every Pro setting (3D scene, signals and data, colour and quality, dressing and delivery, performance) has a **field** in the *Pro settings* window, opened by the star button of the header (or `Ctrl+Shift+P`, or the command palette): five pages, each field named after its key. A field reads and writes exactly the value of the text form (`// key=value` in a shader, `config.ini`, `--key=value`), so nothing is lost when you go back to text. A value is checked as the engine checks it before a render, a refused value is shown in red with the engine's message and is not written, an empty field removes the key.
+
+- **Files.** *Browse* proposes a file in a dialog (3D model, MIDI, data, LUT, ICC profile, subtitles, cards, logos, fonts); a file inside the shader's folder is written relative to it, so the project can be moved. For a layer line the chosen file is written into the line (`file=` or `fontfile=`).
+- **Tooltips and help.** Each field has a tooltip with what it does, an example value and a hint; `F1` opens the help topic of the page shown, which lists every setting of the page.
+- **Pro presets.** *Clean 4K HDR render*, *Vertical broadcast* and *Social network loop* set several settings at once (size, codec, tone mapping, layers...); change any field afterwards and *Save as a preset...* writes a profile in `presets/`, which the *More* menu of the main window also loads.
+- **Undo and redo** (buttons of the window, `Ctrl+Z` / `Ctrl+Y` in the main window) cover these fields; *Reset this page* clears the page's keys.
+
+<p><a href="docs/screenshots/en/pro-settings.png"><img src="docs/screenshots/en/pro-settings.png" alt="Pro settings window" width="640"></a></p>
+
+Without a valid license the button opens the *Buy* window, like the other Pro tools. Nothing is added to the free edition.
+
 ## FAQ
 
 **Which Shadertoy shaders are supported?**
