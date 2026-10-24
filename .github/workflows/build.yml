@@ -174,6 +174,10 @@ jobs:
             grep -q "^## $version" "$f" || { echo "$f has no section for $version"; exit 1; }
           done
           cat .github/release-notes.md .github/release-notes.fr.md > notes.md
+          # illustrations rendered by the program itself (scripts/make-release-media.ps1), when this version has some
+          for f in illustrations.md illustrations.fr.md; do
+            if [ -f "docs/releases/$version/$f" ]; then tail -n +2 "docs/releases/$version/$f" >> notes.md; fi
+          done
           # the changelog section of this version (## <version> ...) is added to the notes
           version="${GITHUB_REF_NAME#v}"
           for f in CHANGELOG.md CHANGELOG.fr.md; do

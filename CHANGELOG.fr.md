@@ -6,6 +6,15 @@
 
 Format : une section par version, la plus récente en premier. La section d'une version étiquetée est reprise dans les notes de version.
 
+## Non publié
+
+### Ajouté
+
+- **Référence écrite par le programme** (`--dump-reference=settings|project|cli`, `--lang=`) : chaque clé de `config.ini` avec sa valeur par défaut et une explication, le format de projet `.s2mproj` avec un exemple que le programme écrit, et les options de la ligne de commande (les lignes de `--help`), en anglais et en français, dans `docs/reference/`. `scripts/make-reference.ps1` écrit les fichiers ; `scripts/check-repo.ps1` refuse un fichier différent de ce que le programme écrit et un réglage absent des deux README ; un cas de l'auto-test vérifie que chaque réglage a une explication dans les deux langues.
+- **Nouveau site** (`docs/`) : un guide avec une page par sujet d'aide et un glossaire (les textes d'aide du programme, anglais et français), la galerie des 69 exemples avec image, description et code de chacun (filtre par catégorie), les pages de référence, une recherche locale (aucune requête ne quitte le navigateur) et sur chaque page un lien d'évitement, des contours de focus et des noms pour les lecteurs d'écran. `scripts/make-site.ps1` produit les pages à partir des sources ; `scripts/make-site-media.ps1` fabrique les images avec le programme ; `scripts/check-site.ps1` vérifie que les pages sont à jour, chaque lien et chaque ancre, la structure des pages, le contraste du texte (4,5 au minimum) et ouvre des pages dans Edge sans fenêtre (filtre et recherche) ; il tourne dans `check-repo` et dans l'intégration continue.
+- **Notes de version illustrées** : `scripts/make-release-media.ps1` fabrique avec le programme lui-même une mosaïque et deux courtes animations tirées de shaders d'exemple, et écrit les textes anglais et français que le job de publication ajoute aux notes.
+- Le README explique pourquoi Windows affiche un avertissement (pas de signature Authenticode) et comment vérifier le téléchargement.
+
 ## 3.1.0 — 2026-10-24
 
 ### Ajouté
