@@ -23,7 +23,9 @@ $docs = (Resolve-Path "docs").Path
 
 # ---------- 1. Pages a jour ----------
 Write-Host "== Pages produites"
-$tmp = Join-Path $env:TEMP ("check-site-" + [guid]::NewGuid().ToString("N"))
+# dans le depot et non dans %TEMP% : sur les machines d'integration %TEMP% est un nom court (RUNNER~1) et les chemins relatifs ne se calculent plus
+$tmp = Join-Path (Get-Location).Path "site-check-tmp"
+Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force $tmp | Out-Null
 Copy-Item "docs\assets" (Join-Path $tmp "assets") -Recurse
 New-Item -ItemType Directory -Force (Join-Path $tmp "x") | Out-Null
