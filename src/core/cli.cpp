@@ -7,6 +7,8 @@
 #include "exrtools.h"
 #include "endaction.h"
 #include "history.h"
+#include "shadertoy_api.h"
+#include "shadertoy_import.h"
 #include <chrono>
 #include "ffmpeg_download.h"
 #include "formats.h"
@@ -93,6 +95,38 @@ int runUpdateCli(const std::wstring& exeDir, const std::wstring& apiUrl, bool do
     }
     write(U8(TXF("update.saved", saved.c_str())) + "\n", false);
     return kExitUpdateAvailable;
+}
+
+int runImportShadertoyCli(const std::wstring& exeDir, const std::vector<std::wstring>& args, const std::function<void(const std::string&, bool)>& write) {
+    std::wstring target, apiUrl;
+    std::string key;
+    bool useKeyFile = false;
+    ImportMedia media;
+    for (const std::wstring& a : args) {
+        auto value = [&](const wchar_t* prefix) { return a.substr(wcslen(prefix)); };
+        if (a.compare(0, 19, L"--import-shadertoy=") == 0) target = value(L"--import-shadertoy=");
+        else if (a.compare(0, 10, L"--api-key=") == 0) key = U8(value(L"--api-key="));
+        else if (a.compare(0, 10, L"--api-url=") == 0) apiUrl = value(L"--api-url=");
+        else if (a == L"--use-key-file") useKeyFile = true;
+        else if (a.compare(0, 15, L"--import-video=") == 0) media.video = value(L"--import-video=");
+        else if (a.compare(0, 16, L"--import-webcam=") == 0) media.webcam = value(L"--import-webcam=");
+        else if (a.compare(0, 13, L"--import-mic=") == 0) media.mic = value(L"--import-mic=");
+        else if (a.compare(0, 15, L"--import-music=") == 0) media.music = value(L"--import-music=");
+    }
+    if (key.empty() && useKeyFile) key = loadShadertoyKey(exeDir);
+    std::string json;
+    std::wstring err;
+    if (!fetchShadertoy(target, key, apiUrl, json, err)) {
+        write(U8(TXF("log.error", err.c_str())) + "\n", true);
+        return kExitRenderFailed;
+    }
+    const std::wstring main = importShadertoyForRender(exeDir, json, media, [&](const std::wstring& m) { write(U8(m) + "\n", false); }, err);
+    if (main.empty()) {
+        write(U8(TXF("log.error", err.c_str())) + "\n", true);
+        return kExitRenderFailed;
+    }
+    write(U8(main) + "\n", false);
+    return kExitOk;
 }
 
 int runLicenseInfoCli(const std::wstring& exeDir, const std::function<void(const std::string&, bool)>& write) {

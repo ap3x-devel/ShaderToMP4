@@ -48,6 +48,9 @@
 #include "history.h"
 #include "scopes.h"
 #include "keys.h"
+#include "convert.h"
+#include "shadertoy_api.h"
+#include "platform/windows/localserver.h"
 #include "endaction.h"
 #include "shadertoy_import.h"
 #include "i18n.h"
@@ -4374,6 +4377,283 @@ void runFormatTests(const std::wstring& exeDir, const std::wstring& dir, const s
             }
             check("selftest.unit_redo", problem);
         }
+        // Shadertoy : import par l'API (serveur local), entrees remplacees par des fichiers, passes et son d'un export complet
+        {
+            auto jq = [](const std::string& s) {
+                std::string o = "\"";
+                for (unsigned char c : s) {
+                    if (c == '"' || c == '\\') { o += '\\'; o += (char)c; }
+                    else if (c == '\n') o += "\\n";
+                    else o += (char)c;
+                }
+                return o + "\"";
+            };
+            struct Pass {
+                std::string type, name, code;
+                std::vector<std::string> inputs;  // « id|ctype|src|canal »
+                int out = -1;
+            };
+            auto exportJson = [&](const std::string& id, const std::string& title, const std::vector<Pass>& passes) {
+                std::string j = "{\"Shader\":{\"ver\":\"0.1\",\"info\":{\"id\":" + jq(id) + ",\"name\":" + jq(title) + ",\"username\":\"selftest\"},\"renderpass\":[";
+                for (size_t i = 0; i < passes.size(); i++) {
+                    const Pass& p = passes[i];
+                    j += std::string(i ? "," : "") + "{\"inputs\":[";
+                    for (size_t k = 0; k < p.inputs.size(); k++) {
+                        std::vector<std::string> f;
+                        size_t a = 0;
+                        for (size_t b; (b = p.inputs[k].find('|', a)) != std::string::npos; a = b + 1) f.push_back(p.inputs[k].substr(a, b - a));
+                        f.push_back(p.inputs[k].substr(a));
+                        j += std::string(k ? "," : "") + "{\"id\":" + f[0] + ",\"ctype\":" + jq(f[1]) + ",\"src\":" + jq(f[2]) + ",\"channel\":" + f[3] +
+                             ",\"sampler\":{\"filter\":\"linear\",\"wrap\":\"clamp\",\"vflip\":\"false\"}}";
+                    }
+                    j += "],\"outputs\":[" + (p.out >= 0 ? "{\"id\":" + std::to_string(p.out) + ",\"channel\":0}" : std::string()) + "],\"code\":" + jq(p.code) + ",\"name\":" + jq(p.name) + ",\"type\":" + jq(p.type) + "}";
+                }
+                return j + "]}}";
+            };
+            const std::string nearGreen = "void mainImage(out vec4 o, in vec2 p) { o = vec4(0.2, 0.6, 0.4, 1.0); }\n";
+            // 1. l'API : serveur local, cle encodee, jamais citee dans un message
+            std::wstring problem, e;
+            const std::string full = exportJson("GoodId01", "Export complet", {{"image", "Image", nearGreen, {}, -1}});
+            std::vector<std::string> targets;
+            platform::LocalServer server;
+            const int port = server.start([&](const std::string& target) {
+                targets.push_back(target);
+                platform::LocalReply r;
+                if (target.rfind("/api/v1/shaders/GoodId01?", 0) == 0) r.body = full;
+                else if (target.rfind("/api/v1/shaders/BadKey01?", 0) == 0) r.body = "{\"Error\":\"Invalid API Key\"}";
+                else if (target.rfind("/api/v1/shaders/NoSuch01?", 0) == 0) r.body = "{\"Error\":\"Shader not found\"}";
+                else if (target.rfind("/api/v1/shaders/Trunc001?", 0) == 0) { r.body = full; r.truncate = true; }
+                else if (target.rfind("/api/v1/shaders/Boom0001?", 0) == 0) { r.status = 500; r.body = "{}"; }
+                else r.status = 404;
+                return r;
+            });
+            const std::wstring base_ = L"http://127.0.0.1:" + std::to_wstring(port) + L"/api/v1/shaders/";
+            std::string json;
+            if (port == 0) problem = bad("local server");
+            else if (!fetchShadertoy(L"https://www.shadertoy.com/view/GoodId01?x=1#top", "K/1 +", base_, json, e) || json != full) problem = bad("fetch: " + U8(e));
+            else if (targets.empty() || targets.back() != "/api/v1/shaders/GoodId01?key=K%2F1%20%2B") problem = bad("request: " + (targets.empty() ? std::string() : targets.back()));
+            if (problem.empty()) {
+                const struct { const char* id; const char* want; } refusals[] = {{"BadKey01", "Invalid API Key"}, {"NoSuch01", "Shader not found"}, {"Trunc001", ""}, {"Boom0001", ""}};
+                for (const auto& f : refusals) {
+                    std::wstring fe;
+                    if (fetchShadertoy(W(f.id), "SECRETKEY9", base_, json, fe) || fe.empty()) problem = bad(std::string(f.id) + " accepted");
+                    else if (*f.want && fe.find(W(f.want)) == std::wstring::npos) problem = bad(std::string(f.id) + " message: " + U8(fe));
+                    else if (fe.find(L"SECRETKEY9") != std::wstring::npos) problem = bad(std::string(f.id) + " message quotes the key");
+                    if (!problem.empty()) break;
+                }
+            }
+            if (problem.empty()) {  // refus avant tout reseau : pas de cle, identifiant invalide, adresse non securisee
+                const size_t before = targets.size();
+                std::wstring e1, e2, e3;
+                if (fetchShadertoy(L"GoodId01", "  ", base_, json, e1) || fetchShadertoy(L"bad id!", "k", base_, json, e2) || fetchShadertoy(L"GoodId01", "k", L"http://example.com/api/", json, e3) ||
+                    e1.empty() || e2.empty() || e3.empty() || targets.size() != before)
+                    problem = bad("refusals before the network");
+            }
+            if (problem.empty()) {
+                if (shadertoyId(L"XsXXDn") != "XsXXDn" || shadertoyId(L" https://www.shadertoy.com/view/XsXXDn/ ") != "XsXXDn" || shadertoyId(L"https://www.shadertoy.com/view/XsXXDn?a=b#c") != "XsXXDn" ||
+                    !shadertoyId(L"abc").empty() || !shadertoyId(L"https://example.com/other/XsXXDn").empty() || !shadertoyId(L"a b c d e").empty())
+                    problem = bad("identifier forms");
+            }
+            if (problem.empty()) {  // la cle memorisee seulement sur demande
+                forgetShadertoyKey(work);
+                if (!loadShadertoyKey(work).empty()) problem = bad("key present before saving");
+                saveShadertoyKey(work, " ABC123 ");
+                if (loadShadertoyKey(work) != "ABC123") problem = bad("key saved");
+                forgetShadertoyKey(work);
+                if (!loadShadertoyKey(work).empty() || fileExists(work + L"shadertoy.key")) problem = bad("key forgotten");
+            }
+            check("selftest.unit_shadertoy_api", problem);
+
+            // 2. un export par type d'entree : importe, rendu en une image, sans erreur
+            {
+                std::wstring pe, ee;
+                const std::string kinds = exportJson("Inputs001", "Entrees", {{"image", "Image",
+                    "void mainImage(out vec4 o, in vec2 p) { vec4 a = texture(iChannel0, p / iResolution.xy); vec4 b = texture(iChannel1, vec3(0.0, 1.0, 0.0)); vec4 c = texture(iChannel2, vec3(0.5));"
+                    " float k = texelFetch(iChannel3, ivec2(65, 0), 0).x; o = vec4(0.2 + 0.0 * (a.x + b.x + c.x + k), 0.6, 0.4, 1.0); }\n",
+                    {"1|texture|/media/a/xyz.jpg|0", "2|cubemap|/media/a/cube.png|1", "3|volume|/media/a/vol.bin|2", "4|keyboard|/presets/tex_kb.png|3"}, -1}});
+                std::vector<std::wstring> logs;
+                const std::wstring main = importShadertoyForRender(work, kinds, ImportMedia(), [&](const std::wstring& m) { logs.push_back(m); }, ee);
+                std::vector<uint8_t> px;
+                if (main.empty()) pe = ee;
+                else {
+                    Settings st = base("h264", "mp4", 8);
+                    st.width = st.height = 16;
+                    Hooks H;
+                    H.log = [](const std::wstring&) {};
+                    H.previewTime = 0.0;
+                    H.previewFrame = [&](int, int, std::vector<uint8_t>&& got) { px = std::move(got); };
+                    std::wstring re;
+                    if (convertFile(main, exeDir, st, H, re) != Result::Ok || px.size() != 16 * 16 * 4) pe = bad("render: " + U8(re));
+                    else if (std::abs((int)px[2] - 51) > 4 || std::abs((int)px[1] - 153) > 4 || std::abs((int)px[0] - 102) > 4) pe = bad("inputs pixel");
+                    std::string text;
+                    readFile(main, text);
+                    if (pe.empty() && (text.find("// iChannel1=cube:sky") == std::string::npos || text.find("// iChannel2=volume:noise") == std::string::npos || text.find("// iChannel3=keyboard") == std::string::npos))
+                        pe = bad("channel comments");
+                }
+                check("selftest.unit_shadertoy_inputs", pe);
+            }
+            // 3. video, webcam, micro et musique de Shadertoy remplaces par des fichiers de l'utilisateur, puis rendu d'une video avec son
+            {
+                std::wstring pe, ee;
+                const std::wstring ffm = findFfmpeg(exeDir);
+                const std::wstring clip = work + L"clip.mp4", tone = work + L"tone.wav";
+                auto gen = [&](const std::wstring& a) { return runProcess(L"\"" + ffm + L"\" -hide_banner -loglevel error -nostdin -y " + a, nullptr) == 0; };
+                if (!gen(L"-f lavfi -i testsrc=s=64x48:d=1:r=10 -pix_fmt yuv420p \"" + clip + L"\"") || !gen(L"-f lavfi -i sine=frequency=440:duration=1 \"" + tone + L"\"")) pe = bad("media made");
+                const std::string media = exportJson("Media001", "Medias", {{"image", "Image",
+                    "void mainImage(out vec4 o, in vec2 p) { vec4 v = texture(iChannel0, p / iResolution.xy); vec4 w = texture(iChannel1, p / iResolution.xy);"
+                    " float m = texelFetch(iChannel2, ivec2(3, 0), 0).x + texelFetch(iChannel3, ivec2(3, 0), 0).x; o = vec4(v.rgb * 0.5 + w.rgb * 0.5 + 0.0 * m, 1.0); }\n",
+                    {"1|video|/media/a/vid.webm|0", "2|webcam||1", "3|mic||2", "4|music|/media/a/song.mp3|3"}, -1}});
+                ImportMedia mm;
+                mm.video = clip;
+                mm.webcam = clip;
+                mm.mic = tone;
+                mm.music = tone;
+                std::vector<std::wstring> logs;
+                const std::wstring main = pe.empty() ? importShadertoyForRender(work, media, mm, [&](const std::wstring& m) { logs.push_back(m); }, ee) : std::wstring();
+                std::string text;
+                if (pe.empty()) {
+                    if (main.empty()) pe = ee;
+                    else {
+                        readFile(main, text);
+                        if (text.find("// iChannel0=video:" + U8(clip)) == std::string::npos || text.find("// iChannel1=video:" + U8(clip)) == std::string::npos ||
+                            text.find("// iChannel2=audio:" + U8(tone)) == std::string::npos || text.find("// iChannel3=audio:" + U8(tone)) == std::string::npos)
+                            pe = bad("replaced channels");
+                        else if (logs.size() < 5) pe = bad("replacement notes");
+                    }
+                }
+                if (pe.empty()) {
+                    Settings st = base("h264", "mp4", 8);
+                    st.duration = 0.5;
+                    st.fps = 10;
+                    st.name = L"shadertoy_media";
+                    std::string logText;
+                    std::wstring re;
+                    Hooks H;
+                    H.log = [&](const std::wstring& l) { logText += U8(l) + "\n"; };
+                    if (convertFile(main, exeDir, st, H, re) != Result::Ok) pe = re.empty() ? TX("selftest.render_failed") : re;
+                    else if (probeInfo(ffm, outputFile(main, st, false)).find(" 64x64") == std::string::npos) pe = bad("media video");
+                }
+                // sans fichiers, les memes entrees sont remplacees par des canaux de substitution et le rendu reste possible
+                if (pe.empty()) {
+                    std::vector<std::wstring> logs2;
+                    const std::wstring main2 = importShadertoyForRender(work, media, ImportMedia(), [&](const std::wstring& m) { logs2.push_back(m); }, ee);
+                    std::string t2;
+                    readFile(main2, t2);
+                    if (main2.empty() || t2.find("video:") != std::string::npos || t2.find("// iChannel2=audio\n") == std::string::npos) pe = bad("no-media import");
+                }
+                check("selftest.unit_shadertoy_media", pe);
+            }
+            // 4. un export complet : Image, Buffer A a D, Common, Cubemap A et Sound ; rendu avec le son
+            {
+                std::wstring pe, ee;
+                const std::wstring ffm = findFfmpeg(exeDir);
+                std::vector<Pass> ps;
+                ps.push_back({"common", "Common", "float add(float x) { return x + 0.1; }\n", {}, -1});
+                ps.push_back({"buffer", "Buffer A", "void mainImage(out vec4 o, in vec2 p) { o = vec4(add(0.0), 0.0, 0.0, 1.0); }\n", {}, 11});
+                ps.push_back({"buffer", "Buffer B", "void mainImage(out vec4 o, in vec2 p) { o = vec4(add(texelFetch(iChannel0, ivec2(p), 0).x), 0.0, 0.0, 1.0); }\n", {"11|buffer|/media/previz/buffer00.png|0"}, 12});
+                ps.push_back({"buffer", "Buffer C", "void mainImage(out vec4 o, in vec2 p) { o = vec4(add(texelFetch(iChannel0, ivec2(p), 0).x), 0.0, 0.0, 1.0); }\n", {"12|buffer|/media/previz/buffer01.png|0"}, 13});
+                ps.push_back({"buffer", "Buffer D", "void mainImage(out vec4 o, in vec2 p) { o = vec4(add(texelFetch(iChannel0, ivec2(p), 0).x), 0.0, 0.0, 1.0); }\n", {"13|buffer|/media/previz/buffer02.png|0"}, 14});
+                ps.push_back({"cubemap", "Cubemap A", "void mainCubemap(out vec4 o, in vec2 p, in vec3 ro, in vec3 rd) { o = vec4(rd * 0.5 + 0.5, 1.0); }\n", {}, 15});
+                ps.push_back({"sound", "Sound", "vec2 mainSound(int samp, float t) { return vec2(0.3 * sin(6.2831853 * 440.0 * t)); }\n", {}, -1});
+                ps.push_back({"image", "Image",
+                    "void mainImage(out vec4 o, in vec2 p) { float r = texelFetch(iChannel0, ivec2(p), 0).x; vec4 c = texture(iChannel1, vec3(1.0, 0.0, 0.0)); o = vec4(r, c.x * 0.0 + 0.5, 0.25, 1.0); }\n",
+                    {"14|buffer|/media/previz/buffer03.png|0", "15|cubemap|/media/previz/cubemap00.png|1"}, -1});
+                const std::string all = exportJson("AllTabs01", "Tous les onglets", ps);
+                std::vector<std::wstring> logs;
+                const std::wstring main = importShadertoyForRender(work, all, ImportMedia(), [&](const std::wstring& m) { logs.push_back(m); }, ee);
+                if (main.empty()) pe = ee;
+                else {
+                    const std::wstring stem = main.substr(0, main.size() - 5);
+                    for (const wchar_t* suffix : {L".common.glsl", L".bufferA.glsl", L".bufferB.glsl", L".bufferC.glsl", L".bufferD.glsl", L".cubemapA.glsl", L".sound.glsl"})
+                        if (!fileExists(stem + suffix)) pe = bad("pass file " + U8(suffix));
+                }
+                std::vector<uint8_t> px;
+                if (pe.empty()) {
+                    Settings st = base("h264", "mp4", 8);
+                    st.width = st.height = 16;
+                    Hooks H;
+                    H.log = [](const std::wstring&) {};
+                    H.previewTime = 0.0;
+                    H.previewFrame = [&](int, int, std::vector<uint8_t>&& got) { px = std::move(got); };
+                    std::wstring re;
+                    if (convertFile(main, exeDir, st, H, re) != Result::Ok || px.size() != 16 * 16 * 4) pe = bad("render: " + U8(re));
+                    else if (std::abs((int)px[2] - 102) > 6 || std::abs((int)px[1] - 128) > 6 || std::abs((int)px[0] - 64) > 6) pe = bad("pass chain pixel " + std::to_string(px[2]));  // 4 x 0,1 = 0,4 -> 102
+                }
+                if (pe.empty()) {  // le son calcule par le shader entre dans la video
+                    Settings st = base("h264", "mp4", 8);
+                    st.duration = 0.5;
+                    st.fps = 10;
+                    st.name = L"shadertoy_all";
+                    std::wstring re;
+                    Hooks H;
+                    H.log = [](const std::wstring&) {};
+                    if (convertFile(main, exeDir, st, H, re) != Result::Ok) pe = re.empty() ? TX("selftest.render_failed") : re;
+                    else {
+                        const std::string info = probeInfo(ffm, outputFile(main, st, false));
+                        if (info.find("Audio:") == std::string::npos) pe = bad("no sound in the video");
+                    }
+                }
+                check("selftest.unit_shadertoy_passes", pe);
+            }
+            server.stop();
+        }
+        {  // conversion assistee : rapport par probleme, copie ecrite a cote, original intact, copie qui se rend, shader deja propre laisse tel quel
+            std::wstring problem;
+            const std::wstring pd = work + L"port" + sep;
+            platform::makeDir(pd);
+            const std::string img = "// iChannel0=bufferA\n#version 300 es\nprecision highp float;\nuniform vec2 u_resolution;\nuniform float u_time;\nuniform sampler2D iChannel0;\nvarying vec2 vUv;\nvoid main() {\n"
+                                    "    vec4 t = texture2D(iChannel0, vUv);\n    gl_FragColor = vec4(t.x * 0.0, t.y, t.z * 0.0 + 0.0 * u_time * u_resolution.x, 1.0);\n}\n";
+            const std::string pass = "void mainImage(out vec4 o, in vec2 p) { o = vec4(0.0, 1.0, 0.0, 1.0) * step(0.0, iGlobalTime); }\n";
+            writeFileAtomic(pd + L"old.glsl", img);
+            writeFileAtomic(pd + L"old.bufferA.glsl", pass);
+            FixedCopy fc;
+            std::wstring e;
+            if (!portabilityCopy(pd + L"old.glsl", pd + L"fixed", fc, e)) problem = bad("conversion: " + U8(e));
+            else {
+                std::string a, b, c, d2;
+                readFile(pd + L"old.glsl", a);
+                readFile(pd + L"old.bufferA.glsl", b);
+                readFile(fc.files.empty() ? pd + L"none" : fc.files[0], c);
+                if (fc.files.size() != 2 || norm(fc.files[0]) != norm(pd + L"fixed.glsl") || norm(fc.files[1]) != norm(pd + L"fixed.bufferA.glsl")) problem = bad("copy files");
+                else if (a != img || b != pass) problem = bad("original touched");
+                else if (c.find("gl_FragColor") != std::string::npos || c.find("#version") != std::string::npos || c.find("texture2D") != std::string::npos || c.find("void mainImage") == std::string::npos)
+                    problem = bad("copy content");
+                else {
+                    readFile(fc.files[1], d2);
+                    if (d2.find("iGlobalTime") != std::string::npos || d2.find("iTime") == std::string::npos) problem = bad("pass content");
+                }
+                bool named = fc.lines.size() >= 5;
+                for (const auto& l : fc.lines) named = named && (l.find(L"old.glsl") == 0 || l.find(L"old.bufferA.glsl") == 0);
+                if (problem.empty() && (!named || fc.fixable < 5)) problem = bad("report lines " + std::to_string(fc.lines.size()));
+            }
+            if (problem.empty()) {  // la copie se rend : vert dans le canal du milieu (le tampon A est vert)
+                std::vector<uint8_t> px;
+                Settings st = base("h264", "mp4", 8);
+                st.width = st.height = 16;
+                Hooks H;
+                H.log = [](const std::wstring&) {};
+                H.previewTime = 0.0;
+                H.previewFrame = [&](int, int, std::vector<uint8_t>&& got) { px = std::move(got); };
+                std::wstring re;
+                if (convertFile(fc.files[0], exeDir, st, H, re) != Result::Ok || px.size() != 16 * 16 * 4) problem = bad("converted render: " + U8(re));
+                else if (px[1] < 240 || px[2] > 8 || px[0] > 8) problem = bad("converted pixel");
+            }
+            if (problem.empty()) {  // un shader deja a la maniere de Shadertoy : rien a corriger, aucune copie
+                const std::string clean = "void mainImage(out vec4 o, in vec2 p) { o = vec4(p / iResolution.xy, 0.0, 1.0); }\n";
+                writeFileAtomic(pd + L"clean.glsl", clean);
+                FixedCopy none;
+                if (!analyzePortability(clean).issues.empty() || !portabilityCopy(pd + L"clean.glsl", pd + L"clean_fixed", none, e) || !none.files.empty() || !none.lines.empty() || fileExists(pd + L"clean_fixed.glsl"))
+                    problem = bad("clean shader");
+            }
+            if (problem.empty()) {  // un probleme sans correction automatique est signale, sans copie
+                const std::string odd = "varying float height;\nvoid main() { gl_FragColor = vec4(height); }\n";
+                const PortReport r = analyzePortability(odd);
+                bool unfixable = false;
+                for (const auto& is : r.issues) unfixable = unfixable || (!is.fixable && is.kind == "unprovided");
+                if (!unfixable) problem = bad("unfixable not reported");
+            }
+            check("selftest.unit_port", problem);
+        }
         removeTree(work);
     }
     // Licence Pro : signature, fichiers de licence, filigrane, interface
@@ -4656,6 +4936,126 @@ void runFormatTests(const std::wstring& exeDir, const std::wstring& dir, const s
 
 }  // namespace
 
+// Corpus de compatibilite (tests/compat) : des shaders originaux qui se verifient eux-memes (verts si tout est juste, rouges sinon). Chacun porte `// expect=pass`
+// (ou `refused` : le programme doit le refuser avec un message ; `refused fix` : refuse, mais sa copie corrigee par la conversion assistee doit etre verte).
+// Les shaders de style WebGL (w_*) sont aussi rendus apres conversion en copie. Resultat : reussis / refuses comme prevu / differents (pas verts).
+// Tolerance : chaque canal a au plus 8/255 de la couleur attendue (0, 255, 0).
+static void runCompatCorpus(const std::wstring& exeDir, const std::wstring& dir, std::wstring& report, int& total, int& fails) {
+    const std::wstring corpus = dir + L"compat/";
+    std::vector<platform::DirEntry> entries;
+    if (!platform::listDir(corpus, entries)) return;  // un dossier absent (archive sans tests) : rien a faire
+    std::vector<std::wstring> names;
+    for (const auto& e : entries) {
+        if (e.isDir || e.name.size() < 6 || e.name.compare(e.name.size() - 5, 5, L".glsl") != 0) continue;
+        if (e.name.find(L'.') != e.name.size() - 5) continue;  // un deuxieme point : une passe (nom.bufferA.glsl), pas un cas
+        names.push_back(e.name);
+    }
+    std::sort(names.begin(), names.end());
+    if (names.empty()) return;
+    const std::wstring work = corpus + L"converted/";
+    platform::makeDir(work);
+    int passed = 0, refused = 0, different = 0, converted = 0;
+    std::wstring detail;
+    auto renderFrame = [&](const std::wstring& path, std::vector<uint8_t>& px, std::wstring& err) {
+        Settings st;
+        st.width = 64;
+        st.height = 48;
+        st.fps = 30;
+        st.duration = 2;
+        st.ss = 1;
+        px.clear();
+        Hooks H;
+        H.log = [](const std::wstring&) {};
+        H.previewTime = 1.0;
+        H.previewFrame = [&](int, int, std::vector<uint8_t>&& p) { px = std::move(p); };
+        return convertFile(path, exeDir, st, H, err) == Result::Ok && !px.empty();
+    };
+    auto green = [](const std::vector<uint8_t>& px) {  // BGRA
+        for (size_t i = 0; i + 3 < px.size(); i += 4)
+            if (px[i] > 8 || px[i + 1] < 247 || px[i + 2] > 8) return false;
+        return true;
+    };
+    for (const std::wstring& n : names) {
+        std::string head;
+        readFile(corpus + n, head);
+        std::string expect = "pass";
+        const size_t k = head.find("// expect=");
+        if (k != std::string::npos) expect = trim(head.substr(k + 10, head.find('\n', k) - k - 10));
+        std::vector<uint8_t> px;
+        std::wstring err;
+        const bool rendered = renderFrame(corpus + n, px, err);
+        std::string verdict;
+        if (expect == "pass") {
+            if (!rendered) verdict = "not rendered: " + U8(err.substr(0, err.find(L'\n')));
+            else if (!green(px)) verdict = "different";
+            else passed++;
+        } else {  // refused, refused fix
+            if (rendered) verdict = "not refused";
+            else if (err.empty()) verdict = "refused without a message";
+            else refused++;
+        }
+        if (verdict.empty() && (expect == "refused fix" || (n.compare(0, 2, L"w_") == 0 && expect == "pass"))) {  // conversion assistee : la copie corrigee doit etre verte
+            FixedCopy fc;
+            std::wstring cerr;
+            const std::wstring stem = work + n.substr(0, n.size() - 5);
+            bool made = false;
+            try {
+                made = portabilityCopy(corpus + n, stem, fc, cerr);
+            } catch (const std::exception& ex) {
+                cerr = W(std::string("exception: ") + ex.what());
+            }
+            if (!made) verdict = "conversion failed: " + U8(cerr);
+            else if (fc.files.empty()) {
+                if (expect == "refused fix") verdict = "nothing to fix";
+            } else {
+                std::vector<uint8_t> cpx;
+                std::wstring rerr;
+                if (!renderFrame(fc.files[0], cpx, rerr)) verdict = "the converted copy does not render: " + U8(rerr.substr(0, rerr.find(L'\n')));
+                else if (!green(cpx)) verdict = "the converted copy is different";
+                else converted++;
+            }
+        }
+        if (!verdict.empty()) {
+            if (verdict.find("different") != std::string::npos) different++;
+            detail += L"FAIL    " + n + L": " + W(verdict) + L"\r\n";
+            fails++;
+        }
+    }
+    for (const auto& e : entries) platform::removeFile(work + e.name);
+    {  // les copies ecrites ont le nom des cas : on les efface toutes avant de retirer le dossier
+        std::vector<platform::DirEntry> made;
+        if (platform::listDir(work, made))
+            for (const auto& m : made) platform::removeFile(work + m.name);
+        platform::removeDir(work.substr(0, work.size() - 1));
+    }
+    total++;
+    const int count = (int)names.size();
+    report += (passed + refused == count ? L"PASS    " : L"FAIL    ") + TXF("selftest.compat", count, passed, refused, different, converted) + L"\r\n" + detail;
+    if (passed + refused != count && detail.empty()) fails++;
+}
+
+int runCompatSelfTest(const std::wstring& exeDir) {
+    std::wstring dir = exeDir + L"tests/";
+    if (!platform::dirExists(dir)) dir = exeDir + L"../tests/";
+    std::wstring report;
+    int total = 0, fails = 0;
+    GLContext gl;
+    std::wstring err;
+    if (!createGLContext(gl, err)) {
+        report = TXF("selftest.error", err.c_str()) + L"\r\n";
+        fails = 1;
+    } else {
+        runCompatCorpus(exeDir, dir, report, total, fails);
+        destroyGLContext(gl);
+    }
+    if (FILE* f = platform::openFile(dir + L"report.txt", "wb")) {
+        const std::string u = U8(report);
+        fwrite(u.data(), 1, u.size(), f);
+        fclose(f);
+    }
+    return fails ? 1 : 0;
+}
+
 int runSelfTest(const std::wstring& exeDir, bool update, bool quiet) {
     std::wstring dir = exeDir + L"tests/";
     if (!platform::dirExists(dir)) dir = exeDir + L"../tests/";
@@ -4771,6 +5171,7 @@ int runSelfTest(const std::wstring& exeDir, bool update, bool quiet) {
                 report += line + L"\r\n";
             }
         }
+        runCompatCorpus(exeDir, dir, report, total, fails);
         if (!shaders.empty()) {  // les formats sont verifies avec circle.glsl (a defaut le premier shader)
             std::wstring pick = shaders[0].name;
             for (const auto& en : shaders)

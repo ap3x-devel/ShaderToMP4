@@ -20,3 +20,4 @@ bin-asan-llvm/
 bin-shots/
 bin-queue/
 bin-shots2/
+bin-tmp/

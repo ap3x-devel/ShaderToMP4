@@ -26,6 +26,9 @@ int runDiagnosticCli(const std::wstring& exeDir, const std::function<void(const 
 // --check-update[=adresse] [--download] : lit la derniere version publiee (uniquement sur demande), la compare, et avec --download telecharge l'installeur controle par SHA-256 dans updates/
 int runUpdateCli(const std::wstring& exeDir, const std::wstring& apiUrl, bool download, const std::function<void(const std::string&, bool isError)>& write);
 int runLicenseInfoCli(const std::wstring& exeDir, const std::function<void(const std::string&, bool isError)>& write);
+// --import-shadertoy=<identifiant ou adresse> [--api-key=CLE | --use-key-file] [--api-url=adresse] [--import-video=f] [--import-webcam=f] [--import-mic=f] [--import-music=f] :
+// importe un shader par l'API de Shadertoy (une requete, sur demande) dans shadertoy/<nom>/ et affiche le fichier principal ; code 0, ou 1 en cas d'echec.
+int runImportShadertoyCli(const std::wstring& exeDir, const std::vector<std::wstring>& args, const std::function<void(const std::string&, bool isError)>& write);
 // --benchmark [--seconds=N] [--json] [--compare=precedent.json --max-drop=N] : images par seconde par resolution et par encodeur (rendu reel
 // puis encodage) ; avec --compare, code de sortie 5 si une cadence a baisse de plus de N % (15 par defaut) par rapport au resultat precedent.
 int runBenchmarkCli(const std::wstring& exeDir, const std::vector<std::wstring>& args,

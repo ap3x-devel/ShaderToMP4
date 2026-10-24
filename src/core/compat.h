@@ -17,5 +17,14 @@ void checkCompatibility(const std::string& allCode, const Settings& s, std::vect
 // Code sans commentaires (// et /* */), lignes conservees (ils sont remplaces par des espaces).
 std::string stripCodeComments(const std::string& code);
 
+// Aides partagees avec la conversion assistee (convert.cpp) : un fragment shader a la maniere de WebGL 1 (void main + gl_FragColor, sans mainImage), les uniforms
+// que le programme fournit deja, les noms usuels d'uniforms WebGL et leur expression, et la lecture d'une ligne « uniform type nom; » ou « varying / in / out »
+bool isWebglMainCode(const std::string& strippedCode);
+bool providedUniformName(const std::string& type, const std::string& name);
+bool aliasUniformName(const std::string& type, const std::string& name, std::string& expr);
+bool parseUniformDecl(const std::string& line, std::string& type, std::string& name);
+bool parseVaryingDecl(const std::string& line, std::string& type, std::string& name);  // varying, in
+bool parseOutDecl(const std::string& line, std::string& name);                         // [layout(location = 0)] out [precision] vec4 nom;
+
 // Vrai si le code (hors commentaires) contient le mot entier `word` (iChannel0, iMouse...).
 bool codeUsesWord(const std::string& code, const std::string& word);

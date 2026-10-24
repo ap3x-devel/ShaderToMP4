@@ -41,12 +41,16 @@ bool writeText(const std::wstring& path, const std::string& text) {
 
 }  // namespace
 
-bool importShadertoyJson(const std::wstring& jsonPath, const std::wstring& outDir, ShadertoyImport& res, std::wstring& err) {
+bool importShadertoyJson(const std::wstring& jsonPath, const std::wstring& outDir, ShadertoyImport& res, std::wstring& err, const ImportMedia& media) {
     std::string text;
     if (!readFile(jsonPath, text)) {
         err = TX("error.read_file");
         return false;
     }
+    return importShadertoyText(text, outDir, res, err, media);
+}
+
+bool importShadertoyText(const std::string& text, const std::wstring& outDir, ShadertoyImport& res, std::wstring& err, const ImportMedia& media) {
     JsonValue doc;
     std::string jerr;
     if (!parseJson(text, doc, jerr)) {
@@ -134,8 +138,18 @@ bool importShadertoyJson(const std::wstring& jsonPath, const std::wstring& outDi
                     spec = "volume:noise";
                     res.notes.push_back(TXF("log.import_note_media", ch, W(name).c_str(), W(src).c_str(), ch));
                 } else if (ctype == "music" || ctype == "musicstream" || ctype == "mic") {
-                    spec = "audio";
-                    res.notes.push_back(TXF("log.import_note_audio", ch, W(name).c_str()));
+                    const std::wstring& file = ctype == "mic" ? media.mic : media.music;
+                    if (!file.empty()) {  // le son choisi par l'utilisateur
+                        spec = "audio:" + U8(file);
+                        res.notes.push_back(TXF("log.import_note_replaced", ch, W(name).c_str(), file.c_str()));
+                    } else {
+                        spec = "audio";
+                        res.notes.push_back(TXF("log.import_note_audio", ch, W(name).c_str()));
+                    }
+                } else if ((ctype == "webcam" && !(media.webcam.empty() && media.video.empty())) || (ctype == "video" && !media.video.empty())) {
+                    const std::wstring& file = ctype == "webcam" && !media.webcam.empty() ? media.webcam : media.video;
+                    spec = "video:" + U8(file);  // la video choisie par l'utilisateur tient lieu de la webcam ou de la video de Shadertoy
+                    res.notes.push_back(TXF("log.import_note_replaced", ch, W(name).c_str(), file.c_str()));
                 } else if (ctype == "keyboard") {
                     spec = "keyboard";
                     res.notes.push_back(TXF("log.import_note_keyboard", ch, W(name).c_str()));
@@ -163,6 +177,28 @@ bool importShadertoyJson(const std::wstring& jsonPath, const std::wstring& outDi
         return false;
     }
     return true;
+}
+
+std::wstring importShadertoyForRender(const std::wstring& exeDir, const std::string& jsonText, const ImportMedia& media, const std::function<void(const std::wstring&)>& log,
+                                      std::wstring& err) {
+    JsonValue doc;
+    std::string jerr;
+    std::string name = "shader";
+    if (parseJson(jsonText, doc, jerr)) {
+        const JsonValue* root = doc.get("Shader") ? doc.get("Shader") : &doc;
+        const JsonValue* info = root->get("info");
+        if (info && !info->str("name").empty()) name = info->str("name");
+        else if (info && !info->str("id").empty()) name = info->str("id");
+    }
+    const std::wstring root = exeDir + L"shadertoy";
+    platform::makeDir(root);
+    ShadertoyImport r;
+    if (!importShadertoyText(jsonText, root + platform::pathSeparator() + W(safeName(name)), r, err, media)) return L"";
+    if (log) {
+        log(TXF("log.import_done", r.title.empty() ? W(name).c_str() : r.title.c_str(), r.mainFile.c_str()));
+        for (const auto& n : r.notes) log(L"  " + n);
+    }
+    return r.mainFile;
 }
 
 std::wstring resolveShaderInput(const std::wstring& exeDir, const std::wstring& path, const std::function<void(const std::wstring&)>& log,

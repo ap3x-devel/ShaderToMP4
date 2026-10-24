@@ -13,6 +13,7 @@
 #include "core/prolicense.h"
 #include "core/proext.h"
 #include "core/selftest.h"
+#include "core/convert.h"
 #include "core/util.h"
 #include "gui/ui_controls.h"
 #include "gui/ui_render.h"
@@ -94,6 +95,8 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
     int argc = 0;
     wchar_t** argv = CommandLineToArgvW(GetCommandLineW(), &argc);
     std::vector<std::wstring> files;
+    bool selftestCompat = false, portability = false, portFix = false, importShadertoy = false;
+    std::vector<std::wstring> importArgs;
     bool selftest = false, update = false, quiet = false, getFfmpeg = false, version = false, help = false, render = false,
          diagnostic = false, benchmark = false, licenseInfo = false, crashTest = false, checkUpdate = false, downloadUpdate_ = false;
     std::string fuzzTarget;
@@ -103,6 +106,13 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
     for (int i = 1; argv && i < argc; i++) {
         std::wstring a = argv[i];
         if (a == L"--selftest") selftest = true;
+        else if (a == L"--selftest-compat") selftestCompat = true;
+        else if (a == L"--portability") portability = true;
+        else if (a.compare(0, 19, L"--import-shadertoy=") == 0 || a.compare(0, 10, L"--api-key=") == 0 || a.compare(0, 10, L"--api-url=") == 0 || a == L"--use-key-file" || a.compare(0, 9, L"--import-") == 0) {
+            importArgs.push_back(a);  // import par l'API de Shadertoy : voir cli.h
+            if (a.compare(0, 19, L"--import-shadertoy=") == 0) importShadertoy = true;
+        }
+        else if (a == L"--fix") portFix = true;
         else if (a == L"--render") render = true;
         else if (a.compare(0, 6, L"--dpi=") == 0) theme::dpiOverride = (UINT)std::max(96, std::min(384, _wtoi(a.c_str() + 6)));  // verification de l'echelle
         else if (a == L"--diagnostic") diagnostic = true;
@@ -138,6 +148,26 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
     }
     if (!fuzzTarget.empty()) return runFuzzCli(g.exeDir, fuzzTarget, fuzzCount, fuzzSeed, [](const std::string& s, bool) { writeConsole(s); });
     if (checkUpdate) return runUpdateCli(g.exeDir, updateUrl, downloadUpdate_, [](const std::string& s, bool) { writeConsole(s); });
+    if (importShadertoy) return runImportShadertoyCli(g.exeDir, importArgs, [](const std::string& s, bool) { writeConsole(s); });
+    if (portability) {  // rapport de portabilite : ShaderToMP4.exe --portability [--fix] shader.glsl (--fix ecrit la copie shader.fixed.glsl, jamais l'original)
+        int worst = 0;
+        for (const auto& f : files) {
+            const std::wstring stem = f.substr(0, f.find_last_of(L'.')) + L".fixed";
+            FixedCopy fc;
+            std::wstring e;
+            writeConsole(U8(f) + "\n");
+            if (!portabilityCopy(f, portFix ? stem : std::wstring(), fc, e)) {
+                writeConsole(U8(TXF("log.error", e.c_str())) + "\n");
+                worst = 1;
+                continue;
+            }
+            for (const auto& l : fc.lines) writeConsole("  " + U8(l) + "\n");
+            if (fc.lines.empty()) writeConsole("  " + U8(TX("port.none")) + "\n");
+            for (const auto& w : fc.files) writeConsole("  " + U8(TXF("port.written", w.c_str())) + "\n");
+            if (fc.fixable > 0 && !portFix) worst = std::max(worst, 9);  // des corrections existent (code 9)
+        }
+        return worst;
+    }
     if (licenseInfo) return runLicenseInfoCli(g.exeDir, [](const std::string& s, bool) { writeConsole(s); });
     if (diagnostic) return runDiagnosticCli(g.exeDir, [](const std::string& s, bool) { writeConsole(s); });
     if (benchmark) return runBenchmarkCli(g.exeDir, files, [](const std::string& s, bool) { writeConsole(s); });
@@ -145,6 +175,7 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
         return runRenderCli(g.exeDir, files, [](const std::string& s, bool) { writeConsole(s); });
     std::string iniText;
     const std::wstring ini = g.exeDir + L"config.ini";
+    if (selftestCompat) return runCompatSelfTest(g.exeDir);
     if (selftest) {
         try {
             return runSelfTest(g.exeDir, update, quiet);

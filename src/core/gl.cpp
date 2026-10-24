@@ -112,6 +112,7 @@ GLuint buildProgram(const std::string& userCode, std::wstring& err, bool bufferO
                  : "st_outColor = vec4(" + rgb + " * st_weight, 1.0);";
     const std::string fs =
         "#version " + (scene ? scene->version : std::string("330")) + " core\n"
+        "#extension GL_ARB_shading_language_packing : enable\n"  // packUnorm2x16, packSnorm2x16... : GLSL ES 3.00 (WebGL 2) les a, le GLSL 3.30 seulement par cette extension
         "uniform vec3  iResolution;\n"
         "uniform float iTime;\n"
         "uniform float iTimeDelta;\n"
@@ -136,6 +137,9 @@ GLuint buildProgram(const std::string& userCode, std::wstring& err, bool bufferO
         "#define texture2D texture\n"  // noms GLSL ES 1.00, encore tres repandus sur Shadertoy
         "#define texture2DLod textureLod\n"
         "#define texture3D texture\n"
+        "#define textureCube texture\n"
+        "#define textureCubeLod textureLod\n"
+        "#define texture2DProj textureProj\n"
         "out vec4 st_outColor;\n"
         "#line 1\n" +
         userCode +
