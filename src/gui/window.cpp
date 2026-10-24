@@ -1146,19 +1146,23 @@ LRESULT CALLBACK wndProc(HWND hw, UINT msg, WPARAM wp, LPARAM lp) {
             std::wstring* e = (std::wstring*)lp;
             if (g.worker.joinable()) g.worker.join();
             g.running = false;
+            const bool dxc = g.downloadKind == 1;
             if (wp) {
-                forgetFfmpegCapabilities();
-                fillCombos();
-                setStatus(TX("status.ffmpeg_installed"));
-                appendLog(TX("log.ffmpeg_installed"));
+                if (!dxc) {
+                    forgetFfmpegCapabilities();
+                    fillCombos();
+                }
+                setStatus(TX(dxc ? "status.dxc_installed" : "status.ffmpeg_installed"));
+                appendLog(TX(dxc ? "log.dxc_installed" : "log.ffmpeg_installed"));
                 taskbar::clear();
             } else {
-                setStatus(TX("status.ffmpeg_failed"));
+                setStatus(TX(dxc ? "status.dxc_failed" : "status.ffmpeg_failed"));
                 appendLog(TXF("log.error", e->c_str()));
                 taskbar::error();
-                MessageBoxW(hw, TXF("dialog.ffmpeg_failed", e->c_str()).c_str(), L"ffmpeg", MB_ICONWARNING);
+                MessageBoxW(hw, TXF(dxc ? "dialog.dxc_failed" : "dialog.ffmpeg_failed", e->c_str()).c_str(), dxc ? L"dxc" : L"ffmpeg", MB_ICONWARNING);
                 taskbar::clear();
             }
+            g.downloadKind = 0;
             delete e;
             updateButtons();
             return 0;

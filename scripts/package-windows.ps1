@@ -21,6 +21,11 @@ Copy-Item transitions\*.glsl "$root\transitions"
 Copy-Item examples\effects\*.glsl "$root\examples\effects"
 New-Item -ItemType Directory -Path "$root\examples\gallery" -Force | Out-Null
 Copy-Item examples\gallery\* "$root\examples\gallery" -Recurse   # galerie : shaders, passes et vignettes
+# traducteurs HLSL / WGSL / GLSL 4.x (scripts\build-xlang-tools.ps1) : programmes separes et leurs licences ; dxc est telecharge a la demande, jamais livre
+foreach ($t in "spirv-cross.exe", "naga.exe", "glslang.exe") { if (-not (Test-Path "bin\tools\$t")) { throw "bin\tools\$t manque : lancer scripts\build-xlang-tools.ps1" } }
+New-Item -ItemType Directory -Path "$root\tools\licenses" -Force | Out-Null
+Copy-Item bin\tools\spirv-cross.exe, bin\tools\naga.exe, bin\tools\glslang.exe "$root\tools"
+Copy-Item tools-licenses\* "$root\tools\licenses"
 $zip = "dist\$name.zip"
 if (Test-Path $zip) { Remove-Item $zip -Force }
 Compress-Archive -Path $root -DestinationPath $zip

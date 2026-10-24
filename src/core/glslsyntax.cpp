@@ -12,7 +12,10 @@ const std::set<std::wstring>& keywords() {
     static const std::set<std::wstring> s = {L"if", L"else", L"for", L"while", L"do", L"break", L"continue", L"return", L"discard", L"switch", L"case",
                                              L"default", L"struct", L"const", L"in", L"out", L"inout", L"uniform", L"layout", L"flat", L"smooth",
                                              L"precision", L"highp", L"mediump", L"lowp", L"true", L"false", L"attribute", L"varying", L"centroid",
-                                             L"invariant", L"noperspective", L"define", L"include"};
+                                             L"invariant", L"noperspective", L"define", L"include",
+                                             // HLSL et WGSL
+                                             L"cbuffer", L"register", L"static", L"groupshared", L"typedef", L"fn", L"let", L"var", L"override", L"alias", L"loop",
+                                             L"continuing", L"fallthrough"};
     return s;
 }
 
@@ -21,7 +24,14 @@ const std::set<std::wstring>& types() {
                                              L"ivec4", L"uvec2", L"uvec3", L"uvec4", L"bvec2", L"bvec3", L"bvec4", L"dvec2", L"dvec3", L"dvec4",
                                              L"mat2", L"mat3", L"mat4", L"mat2x2", L"mat2x3", L"mat2x4", L"mat3x2", L"mat3x3", L"mat3x4", L"mat4x2",
                                              L"mat4x3", L"mat4x4", L"sampler2D", L"sampler3D", L"samplerCube", L"sampler2DArray", L"isampler2D",
-                                             L"usampler2D", L"sampler2DShadow"};
+                                             L"usampler2D", L"sampler2DShadow",
+                                             // HLSL
+                                             L"float2", L"float3", L"float4", L"int2", L"int3", L"int4", L"uint2", L"uint3", L"uint4", L"bool2", L"bool3", L"bool4",
+                                             L"float2x2", L"float3x3", L"float4x4", L"half", L"half2", L"half3", L"half4", L"Texture2D", L"Texture3D", L"TextureCube",
+                                             L"SamplerState", L"SamplerComparisonState",
+                                             // WGSL
+                                             L"f32", L"i32", L"u32", L"f16", L"array", L"ptr", L"sampler", L"texture_2d", L"texture_3d", L"texture_cube",
+                                             L"mat2x2f", L"vec2f", L"vec3f", L"vec4f", L"vec2i", L"vec3i", L"vec4i", L"vec2u", L"vec3u", L"vec4u"};
     return s;
 }
 
@@ -34,7 +44,12 @@ const std::set<std::wstring>& functions() {
         L"inverse", L"lessThan", L"lessThanEqual", L"greaterThan", L"greaterThanEqual", L"equal", L"notEqual", L"any", L"all", L"not",
         L"texture", L"textureLod", L"textureGrad", L"textureSize", L"texelFetch", L"textureProj", L"textureOffset", L"texture2D", L"textureCube",
         L"dFdx", L"dFdy", L"fwidth", L"floatBitsToInt", L"intBitsToFloat", L"packUnorm4x8", L"unpackUnorm4x8", L"mainImage", L"mainSound",
-        L"mainVR", L"mainCubemap"};
+        L"mainVR", L"mainCubemap",
+        // HLSL
+        L"frac", L"lerp", L"saturate", L"mul", L"atan2", L"rsqrt", L"rcp", L"ddx", L"ddy", L"clip", L"lit", L"sincos", L"asfloat", L"asint", L"asuint", L"Sample",
+        L"SampleLevel", L"Load", L"GetDimensions",
+        // WGSL
+        L"textureSample", L"textureSampleLevel", L"textureLoad", L"textureDimensions", L"select", L"inverseSqrt", L"fma", L"saturate", L"dpdx", L"dpdy"};
     return s;
 }
 

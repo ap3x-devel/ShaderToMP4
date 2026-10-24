@@ -31,7 +31,8 @@ std::vector<PassTab> passTabs(const std::wstring& shaderPath) {
         PassTab t;
         t.id = d.id;
         t.label = d.label;
-        t.path = stem + L"." + W(d.suffix) + L".glsl";
+        const bool foreign = own == L".hlsl" || own == L".wgsl";  // shader HLSL ou WGSL : ses passes neuves ont la meme extension
+        t.path = stem + L"." + W(d.suffix) + (foreign ? own : std::wstring(L".glsl"));
         for (const std::wstring& e : {own, std::wstring(L".glsl"), std::wstring(L".txt")}) {  // meme recherche que le moteur
             const std::wstring p = stem + L"." + W(d.suffix) + e;
             if (platform::fileExists(p)) {
@@ -43,6 +44,18 @@ std::vector<PassTab> passTabs(const std::wstring& shaderPath) {
         tabs.push_back(t);
     }
     return tabs;
+}
+
+// Squelettes des passes HLSL et WGSL (texte du pixel shader ; chaque passe declare ses propres uniforms, le fichier Common ne porte que des fonctions)
+static std::string foreignTemplate(const std::string& id, bool hlsl) {
+    if (id == "common")
+        return hlsl ? "// Fonctions communes (ajoutees devant chaque passe HLSL avant la traduction) : pas de cbuffer ni de main ici.\nfloat3 palette(float t) { return 0.5 + 0.5 * cos(6.28318 * (t + float3(0.0, 0.33, 0.67))); }\n"
+                    : "// Fonctions communes (ajoutees devant chaque passe WGSL avant la traduction) : pas de struct d'uniforms ni de point d'entree ici.\nfn palette(t: f32) -> vec3<f32> { return 0.5 + 0.5 * cos(6.28318 * (t + vec3<f32>(0.0, 0.33, 0.67))); }\n";
+    const bool buffer = id.compare(0, 6, "buffer") == 0;
+    const std::string chan = buffer ? "// iChannel0=" + id + "\n" : "";
+    if (hlsl)
+        return "// lang=hlsl\n" + chan + "cbuffer Uniforms : register(b0)\n{\n    float3 iResolution;\n    float iTime;\n    float4 iMouse;\n    int iFrame;\n};\n\nfloat4 main(float4 fragPos : SV_Position) : SV_Target\n{\n    float2 uv = fragPos.xy / iResolution.xy;\n    return float4(uv, 0.5 + 0.5 * sin(iTime), 1.0);\n}\n";
+    return "// lang=wgsl\n" + chan + "struct Uniforms {\n    iResolution: vec3<f32>,\n    iTime: f32,\n    iMouse: vec4<f32>,\n    iFrame: i32,\n};\n@group(0) @binding(0) var<uniform> u: Uniforms;\n\n@fragment\nfn main(@builtin(position) fragPos: vec4<f32>) -> @location(0) vec4<f32> {\n    let uv = fragPos.xy / u.iResolution.xy;\n    return vec4<f32>(uv, 0.5 + 0.5 * sin(u.iTime), 1.0);\n}\n";
 }
 
 std::string passTemplate(const std::string& id) {
@@ -71,7 +84,10 @@ bool createPassFile(const PassTab& tab, std::wstring& err) {
         err = TXF("error.write_failed", tab.path.c_str());
         return false;
     }
-    const std::string text = passTemplate(tab.id);
+    std::wstring ext = tab.path.size() > 5 ? tab.path.substr(tab.path.size() - 5) : L"";
+    for (wchar_t& c : ext) c = (wchar_t)towlower(c);
+    const bool foreignPass = (ext == L".hlsl" || ext == L".wgsl") && tab.id != "sound" && tab.id != "cubemapA";
+    const std::string text = foreignPass ? foreignTemplate(tab.id, ext == L".hlsl") : passTemplate(tab.id);
     const bool ok = fwrite(text.data(), 1, text.size(), f) == text.size();
     fclose(f);
     if (!ok) err = TXF("error.write_failed", tab.path.c_str());

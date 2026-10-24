@@ -571,6 +571,26 @@ Tous les textes de l'interface viennent de `lang/en.json` et `lang/fr.json`, emb
 - **Nomenclature logicielle.** `ShaderToMP4-<version>-sbom.spdx.json` (SPDX 2.3) liste le programme et ce qui l'accompagne : ffmpeg (installeur), l'exécutable d'exécution de NSIS, le code TweetNaCl adapté et le runtime Visual C++ lié statiquement. `scripts/check-vulnerabilities.ps1` interroge la base NVD (par nom CPE et version) sur les vulnérabilités connues de ces composants et le résultat est publié sous `ShaderToMP4-<version>-vulnerabilities.txt` ; un résultat vide n'est pas une garantie, et le code propre du programme n'est pas couvert. Au moment de l'écriture, le contrôle signale sept entrées moyennes ou faibles pour le ffmpeg 9.0.2 figé.
 - **winget et Scoop.** `scripts/package-manifests.ps1` fabrique un manifeste winget (`ap3demak-rgb.ShaderToMP4`, installeur NSIS silencieux, par utilisateur) et un manifeste Scoop (archive portable, réglages conservés par `persist`) à partir des fichiers de la version ; ils sont joints à la version sous `ShaderToMP4-<version>-manifests.zip`. Le manifeste winget passe `winget validate` ; aucun des deux n'a encore été installé par winget ou Scoop, et rien n'a été proposé à `winget-pkgs` ni à un « bucket » Scoop. Il n'y a pas de paquet pour Linux ni macOS (gelés).
 
+## Autres langages de shader (HLSL, WGSL, GLSL natif)
+
+En plus du `mainImage` de Shadertoy, le programme rend des **pixel shaders HLSL**, des **fragment shaders WGSL** et des **fragment shaders GLSL complets** (`#version 330` à `460`, ES 3.x). Le moteur reste OpenGL 3.3 : avant la compilation, le texte est **traduit en GLSL 3.30** par des programmes séparés du dossier `tools/` à côté du programme (lancés comme processus séparés, limités à 30 secondes et à 1 Mo de source) :
+
+| Langage | Reconnaissance | Traduction |
+|---|---|---|
+| HLSL | `.hlsl`, ou `// lang=hlsl`, ou `SV_Target` / `cbuffer` dans un `.txt` | `dxc` (DirectX Shader Compiler, **téléchargé à la demande** : `ShaderToMP4 --get-dxc`, 24 Mo, somme SHA-256 vérifiée) vers SPIR-V, puis `spirv-cross` |
+| WGSL | `.wgsl`, ou `// lang=wgsl`, ou `@fragment` | `naga` |
+| GLSL 4.x | `#version 400` à `460` | `glslang` vers SPIR-V, puis `spirv-cross` (le GLSL 3.30 et ES 3.x n'ont pas besoin de traduction) |
+
+<p><a href="docs/screenshots/fr/other-languages.png"><img src="docs/screenshots/fr/other-languages.png" alt="Autres langages de shader : shaders HLSL dans la liste, une erreur de traduction avec son explication" width="640"></a></p>
+
+**Conventions.** Les uniforms sont ceux du programme, sous les noms de Shadertoy : déclarez-les dans un `cbuffer` (HLSL) ou une `struct` liée à `@group(0) @binding(0)` (WGSL) avec les mêmes noms et les mêmes types : `iResolution` (`float3` / `vec3<f32>`), `iTime`, `iTimeDelta`, `iFrameRate` (`float`), `iFrame` (`int`), `iMouse`, `iDate` (`float4`), et les paramètres déclarés par `// uniform float k = 1 [0..2]`. Un shader GLSL natif peut aussi employer `time`, `resolution`, `u_time`, `u_resolution`, `mouse`... La position (`SV_Position`, `@builtin(position)`, `gl_FragCoord`) a son origine **en bas à gauche**, comme dans Shadertoy. Une entrée comme `float2 uv : TEXCOORD0` reçoit la position dans l'image de 0 à 1. Textures : en HLSL, une `Texture2D iChannel0` et son `SamplerState` (`iChannel0.Sample(s, uv)`) ; en WGSL, les textures dans l'ordre de leur déclaration sont `iChannel0` à `iChannel3` (`textureSample`). Les canaux se choisissent par les commentaires habituels (`// iChannel0=bufferA`, `// iChannel1=noise`), lus dans votre fichier. Le point d'entrée est `main` (HLSL : la fonction qui rend `SV_Target` ; WGSL : `@fragment fn`), ou un `mainImage` à la Shadertoy (HLSL `float4 mainImage(float2 p)`, WGSL `fn mainImage(p: vec2<f32>) -> vec4<f32>`).
+
+**Passes.** `<nom>.bufferA.hlsl` ... `<nom>.bufferD.hlsl` et `<nom>.post.hlsl` sont trouvés à côté du shader, comme pour le GLSL ; `<nom>.common.hlsl` (ou `.wgsl`) est ajouté devant chaque passe **avant** la traduction : il contient des fonctions, pas de `cbuffer` ni de point d'entrée. Même chose avec `.wgsl` et `.frag`.
+
+**Les erreurs** sont rapportées sous la forme `fichier:ligne: message` (dans le fichier qui les contient, Common compris) avec la même explication en clair que les erreurs GLSL ; un double-clic dans le journal ouvre le fichier à la ligne. La liste montre `[HLSL]`, `[WGSL]` ou `[GLSL 430]` après le nom. Le rapport de portabilité indique qu'un tel shader est traduit au rendu et qu'il n'y a rien à corriger. Hors périmètre : shaders de calcul, de géométrie et de tessellation, plusieurs cibles de rendu, `mainSound` en HLSL / WGSL.
+
+Exemples : catégorie **Autres langages** de la galerie (neuf shaders, trois par langage, dont un avec Buffer A). `tests/xlang` contient 60 programmes que l'auto-test rend et compare à leur référence Shadertoy (écart moyen de 3/255 au plus), des cas Buffer A / Common et des programmes fautifs.
+
 ## Éditions libre et Pro
 
 Le programme que vous avez est l'**édition libre** : il est distribué sous GPL-3.0-or-later, toutes ses fonctions marchent, et rien n'est jamais verrouillé ni chronométré. Ce qui est publié sous GPL reste libre pour ceux qui l'ont reçu.

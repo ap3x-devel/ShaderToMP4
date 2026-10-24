@@ -25,7 +25,7 @@ constexpr int kThumbW = 128, kThumbH = 72;
 
 struct Dialog {
     HWND wnd = nullptr, list = nullptr, bAdd = nullptr, bFolder = nullptr, bClose = nullptr, title = nullptr, text = nullptr;
-    HWND chips[11] = {};  // 0 = toutes, 1.. = categories
+    HWND chips[12] = {};  // 0 = toutes, 1.. = categories
     HIMAGELIST images = nullptr;
     UINT dpi = 96;
     std::vector<GalleryItem> items;
@@ -37,7 +37,7 @@ struct Dialog {
 const wchar_t* kClass = L"ShaderToMP4Gallery";
 
 const char* kCategoryKeys[] = {"gallery.cat.maths", "gallery.cat.bruit", "gallery.cat.fractales", "gallery.cat.raymarching", "gallery.cat.2d",
-                               "gallery.cat.post",  "gallery.cat.boucles", "gallery.cat.son",       "gallery.cat.vr",          "gallery.cat.passes"};
+                               "gallery.cat.post",  "gallery.cat.boucles", "gallery.cat.son",       "gallery.cat.vr",          "gallery.cat.passes", "gallery.cat.autres"};
 
 int S(int v) { return MulDiv(v, (int)D.dpi, 96); }
 float F(int v) { return (float)v * D.dpi / 96.0f; }
@@ -47,7 +47,7 @@ int infoHeight() { return S(150); }
 // Pastilles sur une ou plusieurs lignes selon la largeur ; rend la hauteur occupee
 int layoutChips(int width, bool move) {
     int x = S(16), y = S(14), bottom = y;
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 12; i++) {
         wchar_t buf[96] = L"";
         GetWindowTextW(D.chips[i], buf, 96);
         const int w = (int)ui::measureText(buf, F(13), true) + S(30);
@@ -126,7 +126,7 @@ void fillList() {
         st.state = LVIS_SELECTED | LVIS_FOCUSED;
         SendMessageW(D.list, LVM_SETITEMSTATE, 0, (LPARAM)&st);
     }
-    for (int i = 0; i < 11; i++) ui::setButtonStyle(D.chips[i], i - 1 == D.category ? ui::BtnStyle::Primary : ui::BtnStyle::Chip);
+    for (int i = 0; i < 12; i++) ui::setButtonStyle(D.chips[i], i - 1 == D.category ? ui::BtnStyle::Primary : ui::BtnStyle::Chip);
     showSelection();
 }
 
@@ -204,7 +204,7 @@ LRESULT CALLBACK proc(HWND h, UINT msg, WPARAM wp, LPARAM lp) {
         }
         case WM_COMMAND: {
             const int id = LOWORD(wp);
-            if (id >= ID_GAL_CHIP0 && id < ID_GAL_CHIP0 + 11) {
+            if (id >= ID_GAL_CHIP0 && id < ID_GAL_CHIP0 + 12) {
                 D.category = id - ID_GAL_CHIP0 - 1;
                 fillList();
                 SetFocus(D.list);
@@ -281,7 +281,7 @@ void showGallery(HWND owner) {
         return b;
     };
     D.chips[0] = button(TX("gallery.all").c_str(), ID_GAL_CHIP0, 0, ui::BtnStyle::Chip, BG);
-    for (int i = 0; i < 10; i++) D.chips[i + 1] = button(TX(kCategoryKeys[i]).c_str(), ID_GAL_CHIP0 + 1 + i, 0, ui::BtnStyle::Chip, BG);
+    for (int i = 0; i < 11; i++) D.chips[i + 1] = button(TX(kCategoryKeys[i]).c_str(), ID_GAL_CHIP0 + 1 + i, 0, ui::BtnStyle::Chip, BG);
     D.list = CreateWindowExW(0, L"SysListView32", L"", WS_CHILD | WS_VISIBLE | WS_TABSTOP | LVS_ICON | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_AUTOARRANGE, 0, 0, 10, 10, D.wnd,
                              (HMENU)(INT_PTR)ID_GAL_LIST, hi, nullptr);
     SendMessageW(D.list, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP);

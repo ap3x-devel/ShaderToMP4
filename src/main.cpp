@@ -9,6 +9,7 @@
 #include "core/fuzz.h"
 #include "platform/platform.h"
 #include "core/ffmpeg_download.h"
+#include "core/xlang.h"
 #include "core/i18n.h"
 #include "core/prolicense.h"
 #include "core/proext.h"
@@ -97,7 +98,7 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
     std::vector<std::wstring> files;
     bool selftestCompat = false, portability = false, portFix = false, importShadertoy = false;
     std::vector<std::wstring> importArgs;
-    bool selftest = false, update = false, quiet = false, getFfmpeg = false, version = false, help = false, render = false,
+    bool selftest = false, update = false, quiet = false, getFfmpeg = false, getDxc = false, version = false, help = false, render = false,
          diagnostic = false, benchmark = false, licenseInfo = false, crashTest = false, checkUpdate = false, downloadUpdate_ = false;
     std::string fuzzTarget;
     int fuzzCount = 2000;
@@ -130,6 +131,7 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
         else if (a == L"--update") update = true;
         else if (a == L"--quiet") quiet = true;
         else if (a == L"--get-ffmpeg") getFfmpeg = true;
+        else if (a == L"--get-dxc") getDxc = true;  // compilateur HLSL (traduction des shaders .hlsl) : voir core/xlang.h
         else if (a == L"--version") version = true;
         else if (a == L"--help" || a == L"-h" || a == L"/?") help = true;
         else files.push_back(a);
@@ -187,6 +189,13 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
     if (getFfmpeg) {  // téléchargement sans fenêtre : ShaderToMP4.exe --get-ffmpeg [--quiet]
         std::wstring e;
         bool ok = downloadFfmpeg(g.exeDir, [](int, const std::wstring&) {}, nullptr, e);
+        if (!quiet) MessageBoxW(nullptr, ok ? TX("dl.installed").c_str() : e.c_str(), APP_NAME_WSTR, ok ? MB_ICONINFORMATION : MB_ICONWARNING);
+        return ok ? 0 : 1;
+    }
+
+    if (getDxc) {  // ShaderToMP4.exe --get-dxc [--quiet]
+        std::wstring e;
+        bool ok = downloadDxc(g.exeDir, [](int, const std::wstring&) {}, nullptr, e);
         if (!quiet) MessageBoxW(nullptr, ok ? TX("dl.installed").c_str() : e.c_str(), APP_NAME_WSTR, ok ? MB_ICONINFORMATION : MB_ICONWARNING);
         return ok ? 0 : 1;
     }

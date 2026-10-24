@@ -42,6 +42,7 @@ $binaryExt = ".png", ".gif", ".ico", ".ref", ".jpg", ".jpeg", ".ttf", ".bmp"
 Section "Anonymat"
 foreach ($f in $tracked) {
   if ($binaryExt -contains ([System.IO.Path]::GetExtension($f).ToLower())) { continue }
+  if ($f -like "tools-licenses/*") { continue }   # textes de licence des traducteurs, recopies tels quels (le texte de l'Apache-2.0 contient une expression du terme interdit)
   if (-not (Test-Path $f)) { continue }
   $text = [System.IO.File]::ReadAllText((Resolve-Path $f), $enc)
   $m = [regex]::Match($text, $pattern, "IgnoreCase")
@@ -57,7 +58,7 @@ foreach ($bad in @("ROADMAP.md", ("CL" + "AUDE" + ".md"))) {
 
 # --- 2. Licence ----------------------------------------------------------------------------------
 Section "Licence"
-$sourceExt = ".cpp", ".h", ".rc", ".bat", ".manifest", ".svg", ".glsl", ".ps1", ".sh"
+$sourceExt = ".cpp", ".h", ".rc", ".bat", ".manifest", ".svg", ".glsl", ".hlsl", ".wgsl", ".frag", ".ps1", ".sh"
 foreach ($f in $tracked) {
   if ($sourceExt -notcontains ([System.IO.Path]::GetExtension($f).ToLower())) { continue }
   $head = (Get-Content $f -TotalCount 6 -Encoding UTF8) -join "`n"
@@ -172,7 +173,7 @@ $srcFiles = Get-ChildItem src -Recurse -Include *.cpp, *.h
 $used = @{}
 foreach ($f in $srcFiles) {
   $text = Get-Content $f.FullName -Raw -Encoding UTF8
-  foreach ($m in [regex]::Matches($text, '"((?:ui|log|error|dialog|status|dl|selftest|ini|about|cli|diag|expr|rhythm|farm|lic|buy|meta|explain|help|tour|gallery|update|crash|project|job|hist|view|shortcut|palette|port)\.[a-z0-9_.]+)"')) { $used[$m.Groups[1].Value] = $f.Name }
+  foreach ($m in [regex]::Matches($text, '"((?:ui|log|error|dialog|status|dl|selftest|ini|about|cli|diag|expr|rhythm|farm|lic|buy|meta|explain|help|tour|gallery|update|crash|project|job|hist|view|shortcut|palette|port|xlang)\.[a-z0-9_.]+)"')) { $used[$m.Groups[1].Value] = $f.Name }
 }
 # Textes de l'installeur Windows : les cles installer.* sont lues par scripts/package-installer.ps1 (pas par le code du programme)
 foreach ($f in "scripts/package-installer.ps1") {

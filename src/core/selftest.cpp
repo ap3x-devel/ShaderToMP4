@@ -2,6 +2,7 @@
 // Copyright (C) 2026 Patrick JAILLET
 
 #include "selftest.h"
+#include "xlang.h"
 #include "formats.h"
 #include "gallery.h"
 #include "updatecheck.h"
@@ -3652,6 +3653,9 @@ void runFormatTests(const std::wstring& exeDir, const std::wstring& dir, const s
                 pos = nl + 1;
             }
             if (!found) problem = TXF("selftest.fmt_bad", W("file:line").c_str());
+            std::wstring path2;
+            int line2 = 0;  // un texte devant le chemin (« Preview ERROR: ... ») : la ligne de l'erreur de traduction reste cliquable
+            if (problem.empty() && !(parseLocation(L"Preview ERROR: " + broken + L":7: boom", path2, line2) && line2 == 7 && path2 == broken)) problem = TXF("selftest.fmt_bad", W("prefixed file:line").c_str());  // nom-technique
         }
         report += (problem.empty() ? L"PASS    " : L"FAIL    ") + TX("selftest.fmt_locate") + (problem.empty() ? L"" : L": " + problem) + L"\r\n";
         if (!problem.empty()) fails++;
@@ -5034,6 +5038,117 @@ static void runCompatCorpus(const std::wstring& exeDir, const std::wstring& dir,
     if (passed + refused != count && detail.empty()) fails++;
 }
 
+// Autres langages de shader (tests/xlang) : chaque programme HLSL, WGSL et GLSL natif (3.30, 4.x, ES) est rendu et comparé à sa référence Shadertoy
+// (tests/xlang/ref/<nom>.glsl) : écart moyen de 3/255 au plus. Les cas de tests/xlang/errors doivent échouer avec « fichier:ligne: » (ligne dans `// ligne=N`).
+static void runXlangCorpus(const std::wstring& exeDir, const std::wstring& dir, std::wstring& report, int& total, int& fails) {
+    const std::wstring root = dir + L"xlang/";
+    if (!platform::dirExists(root)) return;  // archive sans tests
+    auto renderFrame = [&](const std::wstring& path, std::vector<uint8_t>& px, std::wstring& err) {
+        Settings st;
+        st.width = 64;
+        st.height = 48;
+        st.fps = 30;
+        st.duration = 2;
+        st.ss = 1;
+        px.clear();
+        Hooks H;
+        H.log = [](const std::wstring&) {};
+        H.previewTime = 1.0;
+        H.previewFrame = [&](int, int, std::vector<uint8_t>&& p) { px = std::move(p); };
+        return convertFile(path, exeDir, st, H, err) == Result::Ok && !px.empty();
+    };
+    struct Group {
+        const wchar_t* folder;
+        const wchar_t* ext;
+        ShaderLang lang;
+        bool glslang;
+        const wchar_t* refDir;  // dossier des references Shadertoy
+    };
+    const Group groups[] = {{L"hlsl", L".hlsl", ShaderLang::Hlsl, false, L"ref/"},
+                            {L"wgsl", L".wgsl", ShaderLang::Wgsl, false, L"ref/"},
+                            {L"glsl", L".frag", ShaderLang::Glsl, true, L"ref/"},
+                            {L"passes/hlsl", L".hlsl", ShaderLang::Hlsl, false, L"passes/ref/"},  // Image + Buffer A + Common dans chaque langage
+                            {L"passes/wgsl", L".wgsl", ShaderLang::Wgsl, false, L"passes/ref/"},
+                            {L"passes/glsl", L".frag", ShaderLang::Glsl, true, L"passes/ref/"}};
+    for (const Group& g : groups) {
+        std::vector<platform::DirEntry> entries;
+        if (!platform::listDir(root + g.folder, entries)) continue;
+        std::vector<std::wstring> names;
+        for (const auto& e : entries) {
+            const size_t n = wcslen(g.ext);
+            if (!e.isDir && e.name.size() > n && e.name.compare(e.name.size() - n, n, g.ext) == 0 && e.name.find(L'.') == e.name.size() - n) names.push_back(e.name);
+        }
+        std::sort(names.begin(), names.end());
+        if (names.empty()) continue;
+        std::wstring missing;
+        if (!xlangToolsPresent(exeDir, g.lang, g.glslang, missing)) {  // les traducteurs viennent avec le programme (tools/) ; dxc se telecharge : --get-dxc
+            total++;
+            report += L"SKIP    " + TXF("selftest.xlang_skip", g.folder, missing.c_str()) + L"\r\n";
+            continue;
+        }
+        int equal = 0, different = 0;
+        double worst = 0;
+        std::wstring detail;
+        for (const std::wstring& n : names) {
+            const std::wstring stem = n.substr(0, n.size() - wcslen(g.ext));
+            std::vector<uint8_t> a, b;
+            std::wstring ea, eb;
+            const bool okA = renderFrame(root + g.folder + L"/" + n, a, ea), okB = renderFrame(root + g.refDir + stem + L".glsl", b, eb);
+            std::string verdict;
+            if (!okB) verdict = "reference not rendered: " + U8(eb.substr(0, eb.find(L'\n')));
+            else if (!okA) verdict = "not rendered: " + U8(ea.substr(0, ea.find(L'\n')));
+            else if (a.size() != b.size()) verdict = "size differs";
+            else {
+                double sum = 0;
+                size_t cnt = 0;
+                for (size_t i = 0; i + 3 < a.size(); i += 4)
+                    for (int c = 0; c < 3; c++, cnt++) sum += std::abs((int)a[i + c] - (int)b[i + c]);
+                const double mad = cnt ? sum / (double)cnt : 0;
+                worst = std::max(worst, mad);
+                if (mad > 3.0) verdict = "different from its reference (mean " + std::to_string(mad) + "/255)";
+            }
+            if (verdict.empty()) equal++;
+            else {
+                different++;
+                detail += L"FAIL    " + std::wstring(g.folder) + L"/" + n + L": " + W(verdict) + L"\r\n";
+            }
+        }
+        total++;
+        if (different) fails++;
+        report += (different ? L"FAIL    " : L"PASS    ") + TXF("selftest.xlang", g.folder, (int)names.size(), equal, worst, different) + L"\r\n" + detail;
+    }
+    // erreurs de traduction : « fichier:ligne: » dans le message
+    {
+        std::vector<platform::DirEntry> entries;
+        if (platform::listDir(root + L"errors", entries)) {
+            int checked = 0;
+            std::wstring detail;
+            for (const auto& e : entries) {
+                if (e.isDir) continue;
+                std::string head;
+                readFile(root + L"errors/" + e.name, head);
+                const ShaderLang lang = detectShaderLang(e.name, head);
+                std::wstring missing;
+                if (!xlangToolsPresent(exeDir, lang, lang == ShaderLang::Glsl, missing)) continue;
+                std::vector<uint8_t> px;
+                std::wstring err;
+                const bool ok = renderFrame(root + L"errors/" + e.name, px, err);
+                int wanted = 0;
+                const size_t k = head.find("ligne ");
+                if (k != std::string::npos) wanted = atoi(head.c_str() + k + 6);
+                const std::wstring tag = e.name + L":" + std::to_wstring(wanted) + L":";
+                if (ok || err.find(tag) == std::wstring::npos) detail += L"FAIL    " + e.name + L": expected '" + tag + L"' in the message: " + err.substr(0, 160) + L"\r\n";
+                checked++;
+            }
+            if (checked) {
+                total++;
+                if (!detail.empty()) fails++;
+                report += (detail.empty() ? L"PASS    " : L"FAIL    ") + TXF("selftest.xlang_errors", checked) + L"\r\n" + detail;
+            }
+        }
+    }
+}
+
 int runCompatSelfTest(const std::wstring& exeDir) {
     std::wstring dir = exeDir + L"tests/";
     if (!platform::dirExists(dir)) dir = exeDir + L"../tests/";
@@ -5046,6 +5161,7 @@ int runCompatSelfTest(const std::wstring& exeDir) {
         fails = 1;
     } else {
         runCompatCorpus(exeDir, dir, report, total, fails);
+        runXlangCorpus(exeDir, dir, report, total, fails);
         destroyGLContext(gl);
     }
     if (FILE* f = platform::openFile(dir + L"report.txt", "wb")) {
@@ -5172,6 +5288,7 @@ int runSelfTest(const std::wstring& exeDir, bool update, bool quiet) {
             }
         }
         runCompatCorpus(exeDir, dir, report, total, fails);
+        runXlangCorpus(exeDir, dir, report, total, fails);
         if (!shaders.empty()) {  // les formats sont verifies avec circle.glsl (a defaut le premier shader)
             std::wstring pick = shaders[0].name;
             for (const auto& en : shaders)

@@ -151,6 +151,7 @@ struct App {
         bool dragging = false;
     } curtain;
     std::wstring exeDir;
+    int downloadKind = 0;  // 0 ffmpeg, 1 dxc : ce que le telechargement en cours installe
     Settings base;
     std::vector<Override> forced;  // reglages imposes par le shader selectionne : affiches grises a la place de ceux de la fenetre
     // Reglages propres au shader selectionne : pendant qu'ils sont actifs, g.base les contient (les champs les montrent) et `general` garde les
@@ -238,6 +239,7 @@ std::wstring jobLogPath(const std::wstring& shaderPath);          // jobs/logs/<
 void rebuildPlan();                                               // le travail suivant d'un rendu en cours suit la liste (ordre, priorites, suspensions)
 std::wstring queueEtaText(double speed, double remaining);        // « fin de la file » : travaux restants, duree et heure estimees, "" s'il n'y en a pas
 void promptDownload();               // propose de telecharger ffmpeg.exe
+bool needDxcDownload();              // un shader HLSL de la liste et pas de dxc : propose de le telecharger (vrai = le travail s'arrete la)
 void startJobs(bool snapshot = false, int imageKind = 0, int cols = 0, int rows = 0, bool atPreview = false, bool selectedOnly = false, int batch = 0);  // snapshot : une image (0 PNG, 1 vignette, 2 planche cols x rows, 3 vignette intelligente, 4 recherche de boucle, 5 faces de cubemap)
 void showImageMenu();                // menu du bouton « Images » : PNG, vignette, planches-contact
 void updatePrevLabel();

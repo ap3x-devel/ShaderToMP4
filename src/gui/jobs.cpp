@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Patrick JAILLET
 
+#include "core/xlang.h"
 #include "app.h"
 #include "core/ffmpeg_download.h"
 #include "core/i18n.h"
@@ -321,6 +322,7 @@ void promptDownload() {
     g.cancel = false;
     g.previewRun = false;
     g.running = true;
+    g.downloadKind = 0;
     updateButtons();
     SendMessageW(g.prog, PBM_SETPOS, 0, 0);
     appendLog(TX("log.downloading_ffmpeg"));
@@ -333,8 +335,31 @@ void promptDownload() {
     });
 }
 
+// Un shader HLSL a traduire et dxc absent : on propose de le telecharger (somme SHA-256 verifiee), comme pour ffmpeg
+bool needDxcDownload() {
+    if (g.running || dxcPresent(g.exeDir)) return false;
+    bool any = false;
+    for (const std::wstring& p : g.paths) any = any || shaderBadge(p) == L"HLSL";
+    if (!any) return false;
+    if (MessageBoxW(g.wnd, TX("dialog.dxc_missing").c_str(), TX("dialog.dxc_missing_title").c_str(), MB_YESNO | MB_ICONQUESTION) != IDYES) return true;
+    g.cancel = false;
+    g.previewRun = false;
+    g.running = true;
+    g.downloadKind = 1;
+    updateButtons();
+    SendMessageW(g.prog, PBM_SETPOS, 0, 0);
+    appendLog(TX("log.downloading_dxc"));
+    g.worker = std::thread([] {
+        std::wstring err;
+        const bool ok = downloadDxc(g.exeDir, [](int pct, const std::wstring& msg) { PostMessageW(g.wnd, WM_APP_DL, (WPARAM)pct, (LPARAM) new std::wstring(msg)); }, &g.cancel, err);
+        PostMessageW(g.wnd, WM_APP_DLDONE, ok ? 1 : 0, (LPARAM) new std::wstring(err));
+    });
+    return true;
+}
+
 void startJobs(bool snapshot, int imageKind, int cols, int rows, bool atPreview, bool selectedOnly, int batch) {
     stopPlayer();
+    if (needDxcDownload()) return;
     if (!g.running && !ffmpegPresent(g.exeDir)) {
         promptDownload();
         return;
@@ -542,6 +567,7 @@ void orbitScene(double dx, double dy, double zoom) {
 void runPreview() {
     if (g.running || g.paths.empty()) return;
     stopPlayer();
+    if (needDxcDownload()) return;
     Settings cur = g.base;
     std::wstring serr;
     if (!uiToSettings(cur, serr)) {

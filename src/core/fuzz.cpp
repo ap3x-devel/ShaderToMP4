@@ -19,6 +19,7 @@
 #include "queue.h"
 #include "project.h"
 #include "convert.h"
+#include "xlang.h"
 #include "compat.h"
 #include "shadertoy_api.h"
 #include "shadertoy_import.h"
@@ -141,6 +142,36 @@ std::vector<FuzzTarget> builtins() {
                      adaptShaderCode(in, notes);
                      if (!analyzePortability(r.fixed).issues.empty() && r.issues.empty()) throw std::runtime_error("portability: not stable");
                  }});
+    {  // autres langages de shader : detection du langage, post-traitement du GLSL traduit, et (une entree sur 40) le vrai traducteur dans son processus
+        auto exercise = [](ShaderLang lang) {
+            return [lang](const std::string& in, const FuzzEnv& env) {
+                detectShaderLang(L"x.txt", in);
+                glslNeedsTranslation(in);
+                std::vector<std::wstring> notes;
+                finishTranslatedGlsl(in, notes);
+                std::wstring missing;
+                const std::wstring exeDir = env.dir.size() > 9 ? env.dir.substr(0, env.dir.size() - 9) : env.dir;  // fuzz_tmp/ est dans le dossier du programme
+                static std::atomic<int> counter{0};
+                if (++counter % 40 == 0 && xlangToolsPresent(exeDir, lang, lang == ShaderLang::Glsl, missing)) {
+                    std::string out;
+                    std::wstring err;
+                    translateShader(in, lang, L"fuzz", exeDir, out, err, notes);
+                }
+            };
+        };
+        t.push_back({"hlsl", L"", {"cbuffer U : register(b0) { float3 iResolution; float iTime; };\nfloat4 main(float4 p : SV_Position) : SV_Target { float2 uv = p.xy / iResolution.xy; return float4(uv, 0.5 + 0.5 * sin(iTime), 1.0); }\n",
+                                    "float4 mainImage(float2 fc) { return float4(fc, 0, 1); }\n", "Texture2D iChannel0 : register(t1);\nSamplerState s : register(s1);\nfloat4 main(float4 p : SV_Position) : SV_Target { return iChannel0.Sample(s, p.xy / 64.0); }\n", "float4 main("}, nullptr,
+                     exercise(ShaderLang::Hlsl)});
+        t.push_back({"wgsl", L"", {"struct U { iResolution: vec3<f32>, iTime: f32, };\n@group(0) @binding(0) var<uniform> u: U;\n@fragment\nfn main(@builtin(position) p: vec4<f32>) -> @location(0) vec4<f32> {\n    let uv = p.xy / u.iResolution.xy;\n    return vec4<f32>(uv, 0.5 + 0.5 * sin(u.iTime), 1.0);\n}\n",
+                                    "fn mainImage(fc: vec2<f32>) -> vec4<f32> { return vec4<f32>(fc, 0.0, 1.0); }\n", "@fragment fn main(", "@group(0) @binding(1) var t: texture_2d<f32>;\n@group(0) @binding(2) var s: sampler;\n"}, nullptr,
+                     exercise(ShaderLang::Wgsl)});
+        t.push_back({"glslnative", L"", {"#version 430 core\nuniform vec3 iResolution;\nuniform float iTime;\nlayout(location = 0) out vec4 fragColor;\nvoid main() {\n    vec2 uv = gl_FragCoord.xy / iResolution.xy;\n    fragColor = vec4(uv, 0.5 + 0.5 * sin(iTime), 1.0);\n}\n",
+                                         "#version 300 es\nprecision highp float;\nout vec4 c;\nvoid main() { c = vec4(1.0); }\n",
+                                         // sorties de spirv-cross et de naga, que le post-traitement doit savoir lire
+                                         "#version 330\n#ifdef GL_ARB_shading_language_420pack\n#extension GL_ARB_shading_language_420pack : require\n#endif\n\nlayout(binding = 0, std140) uniform type_U\n{\n    vec3 iResolution;\n    float iTime;\n} U;\n\nuniform sampler2D SPIRV_Cross_CombinediChannel0smp;\nlayout(location = 0) in vec2 in_var_TEXCOORD0;\nlayout(location = 0) out vec4 out_var_SV_Target;\n\nvoid main()\n{\n    out_var_SV_Target = texture(SPIRV_Cross_CombinediChannel0smp, in_var_TEXCOORD0) * U.iTime;\n}\n",
+                                         "#version 330 core\nstruct Uniforms {\n    vec3 iResolution;\n    float iTime;\n};\nlayout(std140) uniform Uniforms_block_0Fragment { Uniforms _group_0_binding_0_fs; };\n\nlayout(location = 0) out vec4 _fs2p_location0;\n\nvoid main() {\n    vec3 _e4 = _group_0_binding_0_fs.iResolution;\n    _fs2p_location0 = vec4(_e4, 1.0);\n    return;\n}\n"}, nullptr,
+                     exercise(ShaderLang::Glsl)});
+    }
     t.push_back({"shadertoyapi", L".json", {"{\"Shader\":{\"info\":{\"id\":\"abc123\",\"name\":\"t\"},\"renderpass\":[{\"inputs\":[{\"id\":1,\"ctype\":\"webcam\",\"src\":\"\",\"channel\":0}],\"outputs\":[],\"code\":\"void mainImage(out vec4 o,in vec2 p){o=vec4(1);}\",\"name\":\"Image\",\"type\":\"image\"}]}}", "{\"Error\":\"Invalid API Key\"}", "[1,2,3]", "{\"Shader\":{\"renderpass\":[]}}"}, nullptr,
                  [](const std::string& in, const FuzzEnv& env) {
                      std::wstring err;

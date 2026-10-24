@@ -5,6 +5,7 @@
 #include "quality.h"
 #include "channels.h"
 #include "compat.h"
+#include "xlang.h"
 #include "dateinput.h"
 #include "formats.h"
 #include "gl.h"
@@ -94,13 +95,15 @@ bool buildRig(Rig& r, const std::wstring& shaderPath, const std::wstring& exeDir
     }
     normalizeShaderText(code, quiet);
     std::vector<std::wstring> notes;
+    const std::string sourceText = code;  // reglages `// cle=valeur` : texte d'origine
+    if (!prepareShaderCode(code, shaderPath, exeDir, notes, err)) return false;
     code = adaptShaderCode(code, notes);
     if (code.find("mainImage") == std::string::npos && code.find("mainVR") == std::string::npos) {
         err = TX("error.no_main_image");
         return false;
     }
     Settings s = base;
-    parseLines(s, code, true);
+    parseLines(s, sourceText, true);
     if (!s.source.empty()) {  // mode effet : la source impose ses valeurs et ses canaux, comme pour le rendu
         std::set<std::string> pinned;
         for (const Override& o : shaderOverrides(shaderPath)) pinned.insert(o.key);
@@ -126,6 +129,8 @@ bool buildRig(Rig& r, const std::wstring& shaderPath, const std::wstring& exeDir
     r.bp.discover(shaderPath, [&](const std::wstring& p, std::string& out) {
         if (!readFile(p, out)) return false;
         normalizeShaderText(out, quiet);
+        std::wstring passErr;
+        if (!prepareShaderCode(out, p, exeDir, notes, passErr)) return false;
         out = adaptShaderCode(out, notes);
         return true;
     }, quiet);

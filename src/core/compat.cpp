@@ -143,6 +143,7 @@ std::string adaptShaderCode(const std::string& code, std::vector<std::wstring>& 
     bool version = false, extension = false, version100 = false;
     int samplerIndex = 0;
     std::vector<std::wstring> dupNames, aliasNotes, otherUniforms, varyingNotes;
+    std::vector<std::string> macroNames;  // macros posees pour ce shader : retirees apres l'enveloppe, le main du programme ne doit pas les voir
     while (pos <= code.size()) {
         size_t e = code.find('\n', pos);
         if (e == std::string::npos) e = code.size();
@@ -168,17 +169,23 @@ std::string adaptShaderCode(const std::string& code, std::vector<std::wstring>& 
             } else if (aliasUniform(type, name, expr)) {
                 aliasNotes.push_back(W(name) + L"\x01" + W(expr));
                 line = "#define " + name + " " + expr;
+                macroNames.push_back(name);
             } else if (webgl && type == "sampler2D" && samplerIndex < 4) {  // textures d'un shader WebGL : dans l'ordre, iChannel0 a iChannel3
                 aliasNotes.push_back(W(name) + L"\x01" + W("iChannel" + std::to_string(samplerIndex)));
                 line = "#define " + name + " iChannel" + std::to_string(samplerIndex++);
+                macroNames.push_back(name);
             } else if (webgl) {
                 otherUniforms.push_back(W(name));  // sans valeur : zero (declaration conservee)
             }
         } else if (webgl && parseOutDeclImpl(line, name)) {  // sortie d un shader GLSL ES 3.00 : out vec4 nom;
             line = "#define " + name + " st_fragColor";
+            macroNames.push_back(name);
         } else if (webgl && parseVaryingLine(line, type, name) && (t.compare(0, 7, "varying") == 0 || t.compare(0, 3, "in ") == 0)) {
             // un varying de position (vUv, v_uv, texCoord...) : la position normalisee du pixel ; les autres : zero
-            if (type == "vec2") line = "#define " + name + " (gl_FragCoord.xy / iResolution.xy)";
+            if (type == "vec2") {
+                line = "#define " + name + " (gl_FragCoord.xy / iResolution.xy)";
+                macroNames.push_back(name);
+            }
             else line = type + " " + name + " = " + type + "(0.0);";
             varyingNotes.push_back(W(name));
         }
@@ -221,7 +228,9 @@ std::string adaptShaderCode(const std::string& code, std::vector<std::wstring>& 
               "vec2 st_fragCoord;\n"
               "#line 1\n";
     notes.push_back(TX("log.compat_webgl1"));
-    return prelude + body + "\nvoid mainImage(out vec4 fragColor, in vec2 fragCoord) { st_fragCoord = fragCoord; st_fragColor = vec4(0.0, 0.0, 0.0, 1.0); st_webgl_main(); fragColor = st_fragColor; }\n#undef gl_FragColor\n#undef gl_FragCoord\n";
+    std::string undefs = "#undef gl_FragColor\n#undef gl_FragCoord\n";
+    for (const std::string& m : macroNames) undefs += "#undef " + m + "\n";
+    return prelude + body + "\nvoid mainImage(out vec4 st_outColor, in vec2 st_inCoord) { st_fragCoord = st_inCoord; st_fragColor = vec4(0.0, 0.0, 0.0, 1.0); st_webgl_main(); st_outColor = st_fragColor; }\n" + undefs;
 }
 
 void checkCompatibility(const std::string& allCode, const Settings& s, std::vector<std::wstring>& notes) {

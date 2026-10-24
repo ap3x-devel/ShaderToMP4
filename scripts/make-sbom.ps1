@@ -41,7 +41,7 @@ foreach ($c in $list) {
   if ($c.id -eq "ffmpeg") { $p.checksums = @(@{ algorithm = "SHA256"; checksumValue = $ffSha }) }
   if ($c.cpe) { $p.externalRefs = @(@{ referenceCategory = "SECURITY"; referenceType = "cpe23Type"; referenceLocator = ($c.cpe -replace '\{version\}', $v) }) }
   $packages.Add($p)
-  $rels.Add([ordered]@{ spdxElementId = "SPDXRef-ShaderToMP4"; relationshipType = $(if ($c.shippedIn -eq "installer") { "CONTAINED_BY" } else { "CONTAINS" }); relatedSpdxElement = "SPDXRef-" + $c.id })
+  $rels.Add([ordered]@{ spdxElementId = "SPDXRef-ShaderToMP4"; relationshipType = $(if ($c.shippedIn -eq "installer") { "CONTAINED_BY" } elseif ($c.shippedIn -eq "downloaded") { "DEPENDS_ON" } else { "CONTAINS" }); relatedSpdxElement = "SPDXRef-" + $c.id })
 }
 # CONTAINED_BY va dans l'autre sens : « le composant est contenu dans l'installeur du programme »
 $fixed = foreach ($r in $rels) {

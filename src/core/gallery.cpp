@@ -35,7 +35,7 @@ bool endsWith(const std::wstring& s, const wchar_t* tail) {
 }  // namespace
 
 const std::vector<std::wstring>& galleryCategories() {
-    static const std::vector<std::wstring> c = {L"maths", L"bruit", L"fractales", L"raymarching", L"2d", L"post", L"boucles", L"son", L"vr", L"passes"};
+    static const std::vector<std::wstring> c = {L"maths", L"bruit", L"fractales", L"raymarching", L"2d", L"post", L"boucles", L"son", L"vr", L"passes", L"autres"};
     return c;
 }
 
@@ -55,15 +55,21 @@ std::vector<GalleryItem> listGallery(const std::wstring& exeDir) {
         std::vector<platform::DirEntry> files;
         const std::wstring dir = root + L"/" + cat;
         if (!platform::listDir(dir, files)) continue;
-        std::vector<std::wstring> names;
-        for (const auto& f : files)
-            if (!f.isDir && endsWith(f.name, L".glsl") && f.name.find(L'.') == f.name.size() - 5) names.push_back(f.name.substr(0, f.name.size() - 5));  // les passes (x.bufferA.glsl) n'ont pas leur ligne
+        std::vector<std::pair<std::wstring, std::wstring>> names;  // (nom, extension) : .glsl partout, .hlsl .wgsl .frag dans « autres »
+        for (const auto& f : files) {
+            if (f.isDir) continue;
+            for (const wchar_t* ext : {L".glsl", L".hlsl", L".wgsl", L".frag"}) {
+                const size_t n = wcslen(ext);
+                if (endsWith(f.name, ext) && f.name.find(L'.') == f.name.size() - n) names.push_back({f.name.substr(0, f.name.size() - n), ext});  // les passes (x.bufferA.glsl) n'ont pas leur ligne
+            }
+        }
         std::sort(names.begin(), names.end());
-        for (const std::wstring& n : names) {
+        for (const auto& nameExt : names) {
+            const std::wstring& n = nameExt.first;
             GalleryItem it;
             it.category = cat;
             it.name = n;
-            it.path = dir + L"/" + n + L".glsl";
+            it.path = dir + L"/" + n + nameExt.second;
             const std::wstring bmp = dir + L"/" + n + L".bmp";
             if (platform::fileExists(bmp)) it.thumb = bmp;
             std::string src;

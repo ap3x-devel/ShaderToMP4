@@ -71,6 +71,11 @@ Copy-Item transitions\*.glsl "$stage\transitions"
 Copy-Item examples\effects\*.glsl "$stage\examples\effects"
 New-Item -ItemType Directory -Force "$stage\examples\gallery" | Out-Null
 Copy-Item examples\gallery\* "$stage\examples\gallery" -Recurse   # galerie : shaders, passes et vignettes
+# traducteurs HLSL / WGSL / GLSL 4.x : programmes separes et leurs licences (dxc est telecharge a la demande, jamais livre)
+foreach ($t in "spirv-cross.exe", "naga.exe", "glslang.exe") { if (-not (Test-Path "bin\tools\$t")) { throw "bin\tools\$t manque : lancer scripts\build-xlang-tools.ps1" } }
+New-Item -ItemType Directory -Force "$stage\tools\licenses" | Out-Null
+Copy-Item bin\tools\spirv-cross.exe, bin\tools\naga.exe, bin\tools\glslang.exe "$stage\tools"
+Copy-Item tools-licenses\* "$stage\tools\licenses"
 
 # --- Fichiers generes ---
 $utf8bom = New-Object System.Text.UTF8Encoding($true)

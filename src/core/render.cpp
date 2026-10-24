@@ -5,6 +5,7 @@
 #include <future>
 #include "channels.h"
 #include "compat.h"
+#include "xlang.h"
 #include "aov.h"
 #include "dpx.h"
 #include "encoder.h"
@@ -214,6 +215,8 @@ static Result convertOneImpl(const std::wstring& shaderPath, const std::wstring&
     if (!readFile(shaderPath, code)) { err = TX("error.read_file"); return Result::Failed; }
     normalizeShaderText(code, H);
     std::vector<std::wstring> notes;  // adaptations et avertissements de compatibilite, journalises avant le rendu
+    const std::string sourceText = code;  // les reglages `// cle=valeur` se lisent dans le texte d'origine (HLSL et WGSL perdent leurs commentaires a la traduction)
+    if (!prepareShaderCode(code, shaderPath, exeDir, notes, err)) return Result::Failed;
     code = adaptShaderCode(code, notes);
     if (code.find("mainImage") == std::string::npos && code.find("mainVR") == std::string::npos) {
         err = TX("error.no_main_image");
@@ -221,7 +224,7 @@ static Result convertOneImpl(const std::wstring& shaderPath, const std::wstring&
     }
 
     Settings s = base;
-    parseLines(s, code, true);
+    parseLines(s, sourceText, true);
     if (forced)
         for (const auto& kv : *forced) applySetting(s, kv.first, kv.second);
     const bool shaderOverrode = !forced && !sameSettings(s, base);  // avant que la source ne change quoi que ce soit
@@ -550,6 +553,11 @@ static Result convertOneImpl(const std::wstring& shaderPath, const std::wstring&
     bp.discover(shaderPath, [&](const std::wstring& p, std::string& out) {
         if (!readFile(p, out)) return false;
         normalizeShaderText(out, H);
+        std::wstring passErr;
+        if (!prepareShaderCode(out, p, exeDir, notes, passErr)) {
+            H.log(L"  " + passErr);
+            return false;
+        }
         out = adaptShaderCode(out, notes);
         return true;
     }, H);

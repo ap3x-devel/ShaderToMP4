@@ -51,7 +51,16 @@ bool parseLocation(const std::wstring& logLine, std::wstring& path, int& line) {
         const size_t a = p.find_first_not_of(L" \t");
         if (a == std::wstring::npos) continue;
         p = p.substr(a);
-        if (!fileExists(p)) continue;
+        if (!fileExists(p)) {  // un texte devant le chemin (« Preview ERROR: C:/dossier/x.hlsl ») : on repart de la lettre du lecteur
+            size_t drive = std::wstring::npos;
+            for (size_t k = 1; k + 1 < p.size(); k++)
+                if (p[k] == L':' && (p[k + 1] == L'\\' || p[k + 1] == L'/') && iswalpha(p[k - 1])) {
+                    drive = k - 1;
+                    break;
+                }
+            if (drive == std::wstring::npos || !fileExists(p.substr(drive))) continue;
+            p = p.substr(drive);
+        }
         path = p;
         line = (int)wcstol(logLine.substr(i + 1, j - i - 1).c_str(), nullptr, 10);
         return true;

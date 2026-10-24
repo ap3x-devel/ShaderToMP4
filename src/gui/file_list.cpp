@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Patrick JAILLET
 
+#include "core/xlang.h"
 #include "app.h"
 #include "core/i18n.h"
 #include "core/util.h"
@@ -17,7 +18,8 @@ int indexOfId(int id) {
 std::wstring itemLabel(const std::wstring& path) {
     const auto it = g.priority.find(path);
     const std::wstring mark = it == g.priority.end() || it->second == 0 ? L"" : it->second > 0 ? L"\u25B2 " : L"\u25BC ";
-    return mark + batchLabel(g.batches, path);
+    const std::wstring badge = shaderBadge(path);  // HLSL, WGSL, GLSL 4xx : le langage du shader
+    return mark + batchLabel(g.batches, path) + (badge.empty() ? L"" : L"  [" + badge + L"]");
 }
 
 void addFiles(const std::vector<std::wstring>& files) {
@@ -241,7 +243,7 @@ void browseFiles() {
     OPENFILENAMEW o{};
     o.lStructSize = sizeof(o);
     o.hwndOwner = g.wnd;
-    const std::wstring filter = makeFilter({{TX("dialog.shaders") + L" (*.txt;*.glsl;*.json;*.montage)", L"*.txt;*.glsl;*.json;*.montage"}, {TX("dialog.all_files"), L"*.*"}});
+    const std::wstring filter = makeFilter({{TX("dialog.shaders") + L" (*.txt;*.glsl;*.hlsl;*.wgsl;*.frag;*.json;*.montage)", L"*.txt;*.glsl;*.hlsl;*.wgsl;*.frag;*.json;*.montage"}, {TX("dialog.all_files"), L"*.*"}});
     o.lpstrFilter = filter.c_str();
     o.lpstrFile = buf.data();
     o.nMaxFile = (DWORD)buf.size();

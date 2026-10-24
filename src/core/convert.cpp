@@ -2,6 +2,8 @@
 // Copyright (C) 2026 Patrick JAILLET
 
 #include "convert.h"
+#include "xlang.h"
+#include "render.h"
 #include "compat.h"
 #include "i18n.h"
 #include "passfiles.h"
@@ -244,8 +246,22 @@ bool portabilityCopy(const std::wstring& shaderPath, const std::wstring& destSte
             err = TX("error.read_file") + L" " + it.src;
             return false;
         }
-        PortReport r = analyzePortability(code);
         const std::wstring name = it.src.substr(it.src.find_last_of(L"\\/") == std::wstring::npos ? 0 : it.src.find_last_of(L"\\/") + 1);
+        {  // HLSL, WGSL, GLSL 4.x : traduits en GLSL 3.30 au rendu (core/xlang) ; les regles du style Shadertoy ne s'appliquent pas, rien a corriger ici
+            std::string head = code;
+            Hooks quiet;
+            quiet.log = [](const std::wstring&) {};
+            normalizeShaderText(head, quiet);
+            const ShaderLang lang = detectShaderLang(it.src, head);
+            if (lang != ShaderLang::Glsl || glslNeedsTranslation(head)) {
+                out.lines.push_back(name + L": " + TXF("port.foreign", lang == ShaderLang::Glsl ? L"GLSL 4.x" : W(shaderLangName(lang)).c_str()));
+                PortReport same;
+                same.fixed = code;
+                reports.push_back({it, std::move(same)});
+                continue;
+            }
+        }
+        PortReport r = analyzePortability(code);
         for (const PortIssue& is : r.issues) {
             out.lines.push_back(name + L": " + describePortIssue(is));
             (is.fixable ? out.fixable : out.notFixable)++;

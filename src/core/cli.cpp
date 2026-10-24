@@ -721,7 +721,7 @@ int runRenderCli(const std::wstring& exeDir, const std::vector<std::wstring>& ar
             if (dot == std::wstring::npos || dot == 0 || name.find(L'.') != dot) return false;
             std::wstring ext = name.substr(dot);
             for (auto& ch : ext) ch = (wchar_t)towlower(ch);
-            return ext == L".glsl" || ext == L".txt";
+            return ext == L".glsl" || ext == L".txt" || ext == L".hlsl" || ext == L".wgsl" || ext == L".frag";
         };
         // Reglages d'un dossier : config.ini et --profile, profile.ini du dossier surveille, profile.ini du sous-dossier, puis les options de la ligne de commande
         const auto settingsFor = [&](const std::wstring& dir) {
@@ -750,7 +750,7 @@ int runRenderCli(const std::wstring& exeDir, const std::vector<std::wstring>& ar
                 if (en.isDir || en.name.compare(0, stem.size() + 1, stem + L".") != 0) continue;
                 std::wstring ext = en.name.substr(en.name.find_last_of(L'.'));
                 for (auto& ch : ext) ch = (wchar_t)towlower(ch);
-                if (ext != L".glsl" && ext != L".txt") continue;
+                if (ext != L".glsl" && ext != L".txt" && ext != L".hlsl" && ext != L".wgsl" && ext != L".frag") continue;
                 if (platform::moveFile(dir + sep + en.name, dest + sep + en.name, true)) out(U8(TXF("cli.moved", en.name.c_str(), dest.c_str())) + "\n", false);
             }
         };

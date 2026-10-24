@@ -31,6 +31,7 @@ const Topic kTopics[] = {
     {"start", "help.start.title", "help.start.body"},       {"main", "help.main.title", "help.main.body"},
     {"projects", "help.projects.title", "help.projects.body"},
     {"compat", "help.compat.title", "help.compat.body"},
+    {"xlang", "help.xlang.title", "help.xlang.body"},
     {"output", "help.output.title", "help.output.body"},    {"params", "help.params.title", "help.params.body"},
     {"editor", "help.editor.title", "help.editor.body"},    {"shaders", "help.shaders.title", "help.shaders.body"},
     {"gallery", "help.gallery.title", "help.gallery.body"}, {"gloss", "help.gloss.title", nullptr},

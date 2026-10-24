@@ -22,6 +22,13 @@ jobs:
         run: |
           cmake -S . -B build-cmake -A x64
           cmake --build build-cmake --config Release
+      # Other shader languages (HLSL, WGSL, GLSL 4.x): the translators are separate programs built from pinned sources (spirv-cross, naga, glslang), dxc is downloaded.
+      - name: Translators for HLSL, WGSL and GLSL 4.x
+        shell: pwsh
+        run: |
+          ./scripts/build-xlang-tools.ps1 -Out bin\tools
+          $p = Start-Process bin\ShaderToMP4.exe -ArgumentList '--get-dxc','--quiet' -Wait -PassThru -NoNewWindow
+          if ($p.ExitCode -ne 0) { throw "--get-dxc exit code $($p.ExitCode)" }
       # The program is a window application: PowerShell does not wait for it unless Start-Process -Wait is used,
       # and the hosted runners have no OpenGL 3.3 driver, so a software OpenGL (Mesa llvmpipe) is dropped next to it.
       - name: Software OpenGL for the tests (Mesa llvmpipe, not shipped)

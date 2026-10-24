@@ -26,7 +26,7 @@ bool explainGlslError(const std::wstring& line, ErrorHelp& out) {
     }
     std::string id;
     if (low.find(L"mainimage") != std::wstring::npos) id = "main";
-    else if (has(low, L"undeclared|not declared|undefined identifier|no such variable|undefined variable")) {  // nom-technique
+    else if (has(low, L"undeclared|not declared|undefined identifier|no such variable|undefined variable|no definition in scope|unknown identifier")) {  // nom-technique
         if (has(low, L"['\"](texture2d|texturecube|texture2dlod|texturelod|texture3d)['\"]")) id = "texture";
         else if (has(low, L"['\"]ichannel[0-9]+['\"]")) id = "channel";
         else id = "undeclared";
@@ -34,7 +34,7 @@ bool explainGlslError(const std::wstring& line, ErrorHelp& out) {
     else if (has(low, L"texture2d|texturecube|sampler")) id = "texture";
     else if (has(low, L"constructor|too many arguments|not enough arguments")) id = "ctor";  // nom-technique
     else if (has(low, L"no matching|cannot resolve|no overload|wrong parameter|wrong number")) id = "overload";  // nom-technique
-    else if (has(low, L"cannot convert|can't convert|type mismatch|incompatible|wrong operand|no operator|cannot implicitly|implicit conversion|implicit cast|operand types")) id = "type";  // nom-technique
+    else if (has(low, L"cannot convert|can't convert|type mismatch|incompatible|wrong operand|no operator|cannot implicitly|implicit conversion|implicit cast|operand types|is expected to be|mismatched types")) id = "type";  // nom-technique
     else if (has(low, L"syntax error|parse error|unexpected|expecting|missing")) id = "syntax";  // nom-technique
     else if (has(low, L"redefin|already defined|redeclar|duplicate")) id = "redefined";  // nom-technique
     else if (has(low, L"l-value|lvalue|cannot assign|read-only|assign.*const")) id = "assign";  // nom-technique
