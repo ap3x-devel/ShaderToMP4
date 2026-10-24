@@ -5313,6 +5313,13 @@ int runSelfTest(const std::wstring& exeDir, bool update, bool quiet) {
                     if (src.find("SPDX-License-Identifier: GPL-3.0-or-later") == std::string::npos) problem = it.name + L": no licence header";  // nom-technique
                 }
                 if (!problem.empty()) break;
+                if (it.category == L"autres") {  // les traducteurs viennent avec le programme (tools/) ; sans eux (ou sans dxc) l'exemple n'est pas rendu ici
+                    std::string head;
+                    readFile(it.path, head);
+                    const ShaderLang lg = detectShaderLang(it.path, head);
+                    std::wstring miss;
+                    if (!xlangToolsPresent(exeDir, lg, lg == ShaderLang::Glsl, miss)) continue;
+                }
                 Settings st = base;
                 std::vector<uint8_t> got;
                 Hooks H;
