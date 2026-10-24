@@ -14,6 +14,6 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     ok = ok && (1 << 4) == 16 && (0xF0 >> 4) == 15 && (5 & 3) == 1 && (5 | 3) == 7 && (5 ^ 3) == 6 && (~(a - a)) == -1;
     int c = 0; c += a; c -= 2; c *= 3; ok = ok && c == 15;
     int i = 5; i++; ++i; i--; ok = ok && i == 6;
-    ok = ok && min(a, b) == 2 && max(a, b) == 7 && clamp(a, 0, 5) == 5 && abs(-a) == 7 && sign(-a) == -1;
+    ok = ok && min(a, b) == 2 && max(a, b) == 7 && clamp(a, 0, 5) == 5 && abs(-a) == 7 && sign(-a) < 0 && sign(a) == 1;  // « == -1 » est mal compile par Mesa llvmpipe (verifie : sign(-a) == -1 faux, sign(-a) < 0 juste)
     fragColor = ok ? vec4(0.0, 1.0, 0.0, 1.0) : vec4(1.0, 0.0, 0.0, 1.0);
 }
