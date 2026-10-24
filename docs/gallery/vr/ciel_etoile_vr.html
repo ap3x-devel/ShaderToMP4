@@ -1,0 +1,72 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../../" data-title-en="360&#176; starry sky - ShaderToMP4" data-title-fr="Ciel &#233;toil&#233; &#224; 360&#176; - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>360&#176; starry sky - ShaderToMP4</title>
+<meta name="description" content="360&#176; starry sky - Stars drawn at random per direction cell, the milky way as a bright band; mainVR receives the ray direction.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../../gallery/index.html" aria-current="page"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a></p>
+<h1><span lang="en" data-lang="en">360&#176; starry sky</span><span lang="fr" data-lang="fr">Ciel &#233;toil&#233; &#224; 360&#176;</span></h1>
+<p class="lead"><span lang="en" data-lang="en">Stars drawn at random per direction cell, the milky way as a bright band; mainVR receives the ray direction.</span><span lang="fr" data-lang="fr">&#201;toiles tir&#233;es au hasard par cellule de direction, voie lact&#233;e en bande lumineuse ; mainVR re&#231;oit la direction du rayon.</span></p>
+<img class="hero-img" src="../img/vr-ciel_etoile_vr.jpg" width="480" height="270" alt="360&#176; starry sky / Ciel &#233;toil&#233; &#224; 360&#176;">
+<p><strong><span lang="en" data-lang="en">Category</span><span lang="fr" data-lang="fr">Catégorie</span></strong>: <span lang="en" data-lang="en">VR</span><span lang="fr" data-lang="fr">VR</span> - <code>ciel_etoile_vr.glsl</code> - 21 <span lang="en" data-lang="en">lines</span><span lang="fr" data-lang="fr">lignes</span> - <a href="https://github.com/ap3demak-rgb/ShaderToMP4/blob/main/examples/gallery/vr/ciel_etoile_vr.glsl"><span lang="en" data-lang="en">File on GitHub</span><span lang="fr" data-lang="fr">Fichier sur GitHub</span></a></p>
+<p><span lang="en" data-lang="en">In the program: Examples, choose it, Add to the list. Or copy the code into a file next to the program and drop it on the window.</span><span lang="fr" data-lang="fr">Dans le programme : Exemples, choisissez-le, Ajouter à la liste. Ou copiez le code dans un fichier et glissez-le sur la fenêtre.</span></p>
+<p></p>
+<h2><span lang="en" data-lang="en">Code</span><span lang="fr" data-lang="fr">Code</span></h2>
+<h3><code>ciel_etoile_vr.glsl</code></h3>
+<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Patrick JAILLET
+
+// fr: Ciel &#233;toil&#233; &#224; 360&#176; — &#201;toiles tir&#233;es au hasard par cellule de direction, voie lact&#233;e en bande lumineuse ; mainVR re&#231;oit la direction du rayon.
+// en: 360&#176; starry sky — Stars drawn at random per direction cell, the milky way as a bright band; mainVR receives the ray direction.
+
+float h(vec3 p) { return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453); }
+void mainVR(out vec4 fragColor, in vec2 fragCoord, in vec3 ro, in vec3 rd) {
+    vec3 col = vec3(0.0, 0.0, 0.02);
+    for (int l = 0; l &lt; 3; l++) {
+        vec3 p = rd * (40.0 + 30.0 * float(l));
+        vec3 id = floor(p);
+        vec3 c = id + 0.5 + (vec3(h(id), h(id + 1.0), h(id + 2.0)) - 0.5) * 0.6;
+        float d = length(normalize(c) - rd);
+        col += step(0.93, h(id + 5.0)) * smoothstep(0.012 / (1.0 + float(l)), 0.0, d) * vec3(0.8, 0.9, 1.0);
+    }
+    float band = exp(-pow(dot(rd, normalize(vec3(0.3, 1.0, 0.2))) * 5.0, 2.0));
+    col += band * vec3(0.15, 0.1, 0.25) * (0.6 + 0.4 * sin(rd.x * 20.0 + iTime * 0.1));
+    fragColor = vec4(col, 1.0);
+}</code></pre>
+
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../../" data-title-en="Sea horizon - ShaderToMP4" data-title-fr="Horizon marin - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sea horizon - ShaderToMP4</title>
+<meta name="description" content="Sea horizon - Setting sun, sea reflecting the sky and a graded sky; the ray direction gives the elevation angle.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../../gallery/index.html" aria-current="page"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a></p>
+<h1><span lang="en" data-lang="en">Sea horizon</span><span lang="fr" data-lang="fr">Horizon marin</span></h1>
+<p class="lead"><span lang="en" data-lang="en">Setting sun, sea reflecting the sky and a graded sky; the ray direction gives the elevation angle.</span><span lang="fr" data-lang="fr">Soleil couchant, mer qui refl&#232;te le ciel et ciel d&#233;grad&#233; ; la direction du rayon donne l&#39;angle d&#39;&#233;l&#233;vation.</span></p>
+<img class="hero-img" src="../img/vr-ocean_horizon_vr.jpg" width="480" height="270" alt="Sea horizon / Horizon marin">
+<p><strong><span lang="en" data-lang="en">Category</span><span lang="fr" data-lang="fr">Catégorie</span></strong>: <span lang="en" data-lang="en">VR</span><span lang="fr" data-lang="fr">VR</span> - <code>ocean_horizon_vr.glsl</code> - 21 <span lang="en" data-lang="en">lines</span><span lang="fr" data-lang="fr">lignes</span> - <a href="https://github.com/ap3demak-rgb/ShaderToMP4/blob/main/examples/gallery/vr/ocean_horizon_vr.glsl"><span lang="en" data-lang="en">File on GitHub</span><span lang="fr" data-lang="fr">Fichier sur GitHub</span></a></p>
+<p><span lang="en" data-lang="en">In the program: Examples, choose it, Add to the list. Or copy the code into a file next to the program and drop it on the window.</span><span lang="fr" data-lang="fr">Dans le programme : Exemples, choisissez-le, Ajouter à la liste. Ou copiez le code dans un fichier et glissez-le sur la fenêtre.</span></p>
+<p></p>
+<h2><span lang="en" data-lang="en">Code</span><span lang="fr" data-lang="fr">Code</span></h2>
+<h3><code>ocean_horizon_vr.glsl</code></h3>
+<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Patrick JAILLET
+
+// fr: Horizon marin — Soleil couchant, mer qui refl&#232;te le ciel et ciel d&#233;grad&#233; ; la direction du rayon donne l&#39;angle d&#39;&#233;l&#233;vation.
+// en: Sea horizon — Setting sun, sea reflecting the sky and a graded sky; the ray direction gives the elevation angle.
+
+void mainVR(out vec4 fragColor, in vec2 fragCoord, in vec3 ro, in vec3 rd) {
+    vec3 sun = normalize(vec3(0.0, 0.05 + 0.03 * sin(iTime * 0.2), -1.0));
+    vec3 d = rd;
+    vec3 col;
+    if (d.y &lt; 0.0) {
+        float w = 0.5 + 0.5 * sin(d.x * 200.0 / (-d.y + 0.1) + iTime * 2.0);
+        vec3 refl = vec3(d.x, -d.y, d.z);
+        col = mix(vec3(0.02, 0.08, 0.15), vec3(0.8, 0.4, 0.2), pow(max(dot(refl, sun), 0.0), 20.0)) + 0.05 * w;
+    } else {
+        col = mix(vec3(1.0, 0.55, 0.25), vec3(0.1, 0.2, 0.5), pow(d.y, 0.4));
+        col += vec3(1.0, 0.8, 0.5) * pow(max(dot(d, sun), 0.0), 200.0) * 3.0;
+    }
+    fragColor = vec4(col, 1.0);
+}</code></pre>
+
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

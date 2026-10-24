@@ -1,0 +1,76 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../" data-title-en="Projects, queue and shortcuts - ShaderToMP4" data-title-fr="Projets, file de travaux et raccourcis - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects, queue and shortcuts - ShaderToMP4</title>
+<meta name="description" content="Projects, queue and shortcuts - A project (.s2mproj) remembers the list of shaders, the general settings, the settings of each shader, the batches, the priorities and the passes and ">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../guide/index.html" aria-current="page"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a></p>
+<div class="layout">
+<nav class="side" aria-label="Guide"><ul>
+<li><a href="start.html"><span lang="en" data-lang="en">Getting started</span><span lang="fr" data-lang="fr">Prise en main</span></a></li>
+<li><a href="main.html"><span lang="en" data-lang="en">Main window</span><span lang="fr" data-lang="fr">Fen&#234;tre principale</span></a></li>
+<li><a href="projects.html" aria-current="page"><span lang="en" data-lang="en">Projects, queue and shortcuts</span><span lang="fr" data-lang="fr">Projets, file de travaux et raccourcis</span></a></li>
+<li><a href="compat.html"><span lang="en" data-lang="en">Importing and porting Shadertoy shaders</span><span lang="fr" data-lang="fr">Importer et adapter des shaders Shadertoy</span></a></li>
+<li><a href="output.html"><span lang="en" data-lang="en">Output window</span><span lang="fr" data-lang="fr">Fen&#234;tre Sortie</span></a></li>
+<li><a href="params.html"><span lang="en" data-lang="en">Parameters window</span><span lang="fr" data-lang="fr">Fen&#234;tre Param&#232;tres</span></a></li>
+<li><a href="editor.html"><span lang="en" data-lang="en">Editor window</span><span lang="fr" data-lang="fr">Fen&#234;tre &#201;diteur</span></a></li>
+<li><a href="shaders.html"><span lang="en" data-lang="en">Shadertoy shaders, channels and passes</span><span lang="fr" data-lang="fr">Shaders Shadertoy, canaux et passes</span></a></li>
+<li><a href="gallery.html"><span lang="en" data-lang="en">Examples and guided tour</span><span lang="fr" data-lang="fr">Exemples et visite guid&#233;e</span></a></li>
+<li><a href="errors.html"><span lang="en" data-lang="en">When something goes wrong</span><span lang="fr" data-lang="fr">Quand quelque chose ne va pas</span></a></li>
+<li><a href="xlang.html"><span lang="en" data-lang="en">Other shader languages</span><span lang="fr" data-lang="fr">Autres langages de shader</span></a></li>
+<li><a href="glossary.html"><span lang="en" data-lang="en">Glossary</span><span lang="fr" data-lang="fr">Glossaire</span></a></li>
+</ul></nav>
+<article class="prose">
+<h1><span lang="en" data-lang="en">Projects, queue and shortcuts</span><span lang="fr" data-lang="fr">Projets, file de travaux et raccourcis</span></h1>
+<div lang="en" data-lang="en">
+<p>A project (.s2mproj) remembers the list of shaders, the general settings, the settings of each shader, the batches, the priorities and the passes and media each shader uses. Use the layers button at the top right: New, Open, Save, Save as, Recent projects. Paths inside the project folder are stored relative, so the whole folder can be moved or copied; a file that is missing when the project opens is listed in the log.</p>
+<p>The list is the queue. Drag a shader, or press Alt+Up / Alt+Down, to change the order, even while a render runs: the next job always follows the list. “Hold” puts a job aside until you resume it; “Priority” makes a job render before the others. The status bar gives the estimated end of the whole queue. Each job keeps its own log (right click, “Log of this job”).</p>
+<p>The render history lists every finished render with the settings it used; “Redo this render” renders it again with the same settings. The file history.jsonl stays in the program folder and nothing is sent anywhere.</p>
+<p>In the preview, the mouse wheel zooms and dragging moves the zoomed image; Ctrl+0 fits the window and Ctrl+1 shows real pixels. “Freeze” keeps the image so the next preview is shown beside it (A/B comparison). “Scopes” shows the histogram, waveform and vectorscope of the displayed image.</p>
+<p>Ctrl+K opens the command palette: type a few letters of any command and press Enter. The shortcuts can be changed in keys.ini (menu: Edit shortcuts), then “Reload shortcuts”; a shortcut already used by another command is refused and the log says so.</p>
+</div>
+<div lang="fr" data-lang="fr">
+<p>Un projet (.s2mproj) retient la liste des shaders, les r&#233;glages g&#233;n&#233;raux, ceux de chaque shader, les lots, les priorit&#233;s et les passes et m&#233;dias que chaque shader utilise. Utilisez le bouton en haut &#224; droite (les couches) : Nouveau, Ouvrir, Enregistrer, Enregistrer sous, Projets r&#233;cents. Les chemins situ&#233;s dans le dossier du projet sont not&#233;s en relatif : tout le dossier peut &#234;tre d&#233;plac&#233; ou copi&#233; ; un fichier absent &#224; l&#39;ouverture est signal&#233; dans le journal.</p>
+<p>La liste est la file de travaux. Glissez un shader, ou appuyez sur Alt+Haut / Alt+Bas, pour changer l&#39;ordre, m&#234;me pendant un rendu : le travail suivant suit toujours la liste. &#171; Suspendre &#187; met un travail de c&#244;t&#233; jusqu&#39;&#224; sa reprise ; &#171; Priorit&#233; &#187; fait passer un travail avant les autres. La barre d&#39;&#233;tat donne la fin estim&#233;e de toute la file. Chaque travail garde son journal (clic droit, &#171; Journal de ce travail &#187;).</p>
+<p>L&#39;historique des rendus liste chaque rendu termin&#233; avec les r&#233;glages utilis&#233;s ; &#171; Refaire ce rendu &#187; le refait avec les m&#234;mes r&#233;glages. Le fichier history.jsonl reste dans le dossier du programme et rien n&#39;est envoy&#233; nulle part.</p>
+<p>Dans l&#39;aper&#231;u, la molette zoome et le glisser d&#233;place l&#39;image agrandie ; Ctrl+0 ajuste &#224; la fen&#234;tre et Ctrl+1 montre les pixels r&#233;els. &#171; Figer &#187; garde l&#39;image pour que l&#39;aper&#231;u suivant s&#39;affiche &#224; c&#244;t&#233; (comparaison A/B). &#171; Oscilloscopes &#187; montre l&#39;histogramme, la forme d&#39;onde et le vectorscope de l&#39;image affich&#233;e.</p>
+<p>Ctrl+K ouvre la palette de commandes : tapez quelques lettres d&#39;une commande et appuyez sur Entr&#233;e. Les raccourcis se changent dans keys.ini (menu : Modifier les raccourcis), puis &#171; Recharger les raccourcis &#187; ; un raccourci d&#233;j&#224; pris par une autre commande est refus&#233; et le journal le dit.</p>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

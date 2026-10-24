@@ -1,0 +1,76 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../" data-title-en="Other shader languages - ShaderToMP4" data-title-fr="Autres langages de shader - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Other shader languages - ShaderToMP4</title>
+<meta name="description" content="Other shader languages - HLSL pixel shaders (.hlsl), WGSL fragment shaders (.wgsl) and complete GLSL fragment shaders (.frag or .glsl with #version 330 to 460, ES 3.x) are ren">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../guide/index.html" aria-current="page"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a></p>
+<div class="layout">
+<nav class="side" aria-label="Guide"><ul>
+<li><a href="start.html"><span lang="en" data-lang="en">Getting started</span><span lang="fr" data-lang="fr">Prise en main</span></a></li>
+<li><a href="main.html"><span lang="en" data-lang="en">Main window</span><span lang="fr" data-lang="fr">Fen&#234;tre principale</span></a></li>
+<li><a href="projects.html"><span lang="en" data-lang="en">Projects, queue and shortcuts</span><span lang="fr" data-lang="fr">Projets, file de travaux et raccourcis</span></a></li>
+<li><a href="compat.html"><span lang="en" data-lang="en">Importing and porting Shadertoy shaders</span><span lang="fr" data-lang="fr">Importer et adapter des shaders Shadertoy</span></a></li>
+<li><a href="output.html"><span lang="en" data-lang="en">Output window</span><span lang="fr" data-lang="fr">Fen&#234;tre Sortie</span></a></li>
+<li><a href="params.html"><span lang="en" data-lang="en">Parameters window</span><span lang="fr" data-lang="fr">Fen&#234;tre Param&#232;tres</span></a></li>
+<li><a href="editor.html"><span lang="en" data-lang="en">Editor window</span><span lang="fr" data-lang="fr">Fen&#234;tre &#201;diteur</span></a></li>
+<li><a href="shaders.html"><span lang="en" data-lang="en">Shadertoy shaders, channels and passes</span><span lang="fr" data-lang="fr">Shaders Shadertoy, canaux et passes</span></a></li>
+<li><a href="gallery.html"><span lang="en" data-lang="en">Examples and guided tour</span><span lang="fr" data-lang="fr">Exemples et visite guid&#233;e</span></a></li>
+<li><a href="errors.html"><span lang="en" data-lang="en">When something goes wrong</span><span lang="fr" data-lang="fr">Quand quelque chose ne va pas</span></a></li>
+<li><a href="xlang.html" aria-current="page"><span lang="en" data-lang="en">Other shader languages</span><span lang="fr" data-lang="fr">Autres langages de shader</span></a></li>
+<li><a href="glossary.html"><span lang="en" data-lang="en">Glossary</span><span lang="fr" data-lang="fr">Glossaire</span></a></li>
+</ul></nav>
+<article class="prose">
+<h1><span lang="en" data-lang="en">Other shader languages</span><span lang="fr" data-lang="fr">Autres langages de shader</span></h1>
+<div lang="en" data-lang="en">
+<p>HLSL pixel shaders (.hlsl), WGSL fragment shaders (.wgsl) and complete GLSL fragment shaders (.frag or .glsl with #version 330 to 460, ES 3.x) are rendered like Shadertoy shaders. The program translates them to GLSL 3.30 with small programs of its tools folder. HLSL also needs the DirectX Shader Compiler: run ShaderToMP4 --get-dxc once (24 MB, checked by SHA-256).</p>
+<p>Uniforms: declare them with the Shadertoy names and types, in a cbuffer (HLSL) or in a struct bound at group 0, binding 0 (WGSL): iResolution (float3), iTime, iTimeDelta, iFrameRate (float), iFrame (int), iMouse and iDate (float4). The position (SV_Position, @builtin(position), gl_FragCoord) has its origin at the bottom left, as in Shadertoy.</p>
+<p>Textures and passes: in HLSL write Texture2D iChannel0 and a SamplerState; in WGSL the textures in the order they are declared are iChannel0 to iChannel3. Choose the channels with the usual comments (// iChannel0=bufferA). Passes are files next to the shader: name.bufferA.hlsl, name.common.hlsl (functions only, added before every pass), name.post.hlsl.</p>
+<p>Errors are shown as file:line: message with an explanation; double-click in the log to open the file at that line.</p>
+<p>Limits: fragment shaders only (no compute, geometry or tessellation), one colour output, a source of 1 MB at most and 30 seconds of translation.</p>
+</div>
+<div lang="fr" data-lang="fr">
+<p>Les pixel shaders HLSL (.hlsl), les fragment shaders WGSL (.wgsl) et les fragment shaders GLSL complets (.frag ou .glsl avec #version 330 &#224; 460, ES 3.x) sont rendus comme des shaders Shadertoy. Le programme les traduit en GLSL 3.30 avec de petits programmes de son dossier tools. Le HLSL demande aussi le DirectX Shader Compiler : lancez une fois ShaderToMP4 --get-dxc (24 Mo, v&#233;rifi&#233; par SHA-256).</p>
+<p>Uniforms : d&#233;clarez-les avec les noms et les types de Shadertoy, dans un cbuffer (HLSL) ou dans une struct li&#233;e au groupe 0, liaison 0 (WGSL) : iResolution (float3), iTime, iTimeDelta, iFrameRate (float), iFrame (int), iMouse et iDate (float4). La position (SV_Position, @builtin(position), gl_FragCoord) a son origine en bas &#224; gauche, comme dans Shadertoy.</p>
+<p>Textures et passes : en HLSL, &#233;crivez Texture2D iChannel0 et un SamplerState ; en WGSL, les textures dans l&#39;ordre de leur d&#233;claration sont iChannel0 &#224; iChannel3. Choisissez les canaux avec les commentaires habituels (// iChannel0=bufferA). Les passes sont des fichiers &#224; c&#244;t&#233; du shader : nom.bufferA.hlsl, nom.common.hlsl (des fonctions seulement, ajout&#233;es devant chaque passe), nom.post.hlsl.</p>
+<p>Les erreurs s&#39;affichent sous la forme fichier:ligne: message avec une explication ; un double-clic dans le journal ouvre le fichier &#224; cette ligne.</p>
+<p>Limites : fragment shaders seulement (ni calcul, ni g&#233;om&#233;trie, ni tessellation), une seule sortie de couleur, une source de 1 Mo au plus et 30 secondes de traduction.</p>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

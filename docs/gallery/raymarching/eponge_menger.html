@@ -1,0 +1,83 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../../" data-title-en="Menger sponge - ShaderToMP4" data-title-fr="&#201;ponge de Menger - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menger sponge - ShaderToMP4</title>
+<meta name="description" content="Menger sponge - Distance function of the sponge by repeatedly subtracting crosses; the camera orbits around it.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../../gallery/index.html" aria-current="page"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a></p>
+<h1><span lang="en" data-lang="en">Menger sponge</span><span lang="fr" data-lang="fr">&#201;ponge de Menger</span></h1>
+<p class="lead"><span lang="en" data-lang="en">Distance function of the sponge by repeatedly subtracting crosses; the camera orbits around it.</span><span lang="fr" data-lang="fr">Fonction de distance de l&#39;&#233;ponge par soustraction r&#233;p&#233;t&#233;e de croix ; la cam&#233;ra tourne autour.</span></p>
+<img class="hero-img" src="../img/raymarching-eponge_menger.jpg" width="480" height="270" alt="Menger sponge / &#201;ponge de Menger">
+<p><strong><span lang="en" data-lang="en">Category</span><span lang="fr" data-lang="fr">Catégorie</span></strong>: <span lang="en" data-lang="en">Ray marching</span><span lang="fr" data-lang="fr">Ray marching</span> - <code>eponge_menger.glsl</code> - 32 <span lang="en" data-lang="en">lines</span><span lang="fr" data-lang="fr">lignes</span> - <a href="https://github.com/ap3demak-rgb/ShaderToMP4/blob/main/examples/gallery/raymarching/eponge_menger.glsl"><span lang="en" data-lang="en">File on GitHub</span><span lang="fr" data-lang="fr">Fichier sur GitHub</span></a></p>
+<p><span lang="en" data-lang="en">In the program: Examples, choose it, Add to the list. Or copy the code into a file next to the program and drop it on the window.</span><span lang="fr" data-lang="fr">Dans le programme : Exemples, choisissez-le, Ajouter à la liste. Ou copiez le code dans un fichier et glissez-le sur la fenêtre.</span></p>
+<p></p>
+<h2><span lang="en" data-lang="en">Code</span><span lang="fr" data-lang="fr">Code</span></h2>
+<h3><code>eponge_menger.glsl</code></h3>
+<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Patrick JAILLET
+
+// fr: &#201;ponge de Menger — Fonction de distance de l&#39;&#233;ponge par soustraction r&#233;p&#233;t&#233;e de croix ; la cam&#233;ra tourne autour.
+// en: Menger sponge — Distance function of the sponge by repeatedly subtracting crosses; the camera orbits around it.
+
+float sdBox(vec3 p, vec3 b) { vec3 q = abs(p) - b; return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0); }
+float map(vec3 p) {
+    float d = sdBox(p, vec3(1.0));
+    float s = 1.0;
+    for (int i = 0; i &lt; 4; i++) {
+        vec3 a = mod(p * s, 2.0) - 1.0;
+        s *= 3.0;
+        vec3 r = abs(1.0 - 3.0 * abs(a));
+        float c = (min(max(r.x, r.y), min(max(r.y, r.z), max(r.z, r.x))) - 1.0) / s;
+        d = max(d, c);
+    }
+    return d;
+}
+void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+    vec2 uv = (fragCoord - 0.5 * iResolution.xy) / iResolution.y;
+    float a = iTime * 0.3;
+    vec3 ro = 3.2 * vec3(sin(a), 0.5, cos(a));
+    vec3 f = normalize(-ro), r = normalize(cross(vec3(0, 1, 0), f)), u = cross(f, r);
+    vec3 rd = normalize(f * 1.6 + r * uv.x + u * uv.y);
+    float t = 0.0, it = 0.0;
+    for (int i = 0; i &lt; 90; i++) { float d = map(ro + rd * t); if (d &lt; 0.0008 || t &gt; 8.0) break; t += d; it += 1.0; }
+    vec3 col = vec3(0.02, 0.03, 0.06);
+    if (t &lt; 8.0) col = (0.5 + 0.5 * cos(t * 1.5 + vec3(0.0, 1.0, 2.0))) * (1.0 - it / 90.0);
+    fragColor = vec4(pow(col, vec3(0.5)), 1.0);
+}</code></pre>
+
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

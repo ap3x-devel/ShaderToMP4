@@ -1,0 +1,137 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../" data-title-en="Project file - ShaderToMP4" data-title-fr="Fichier projet - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project file - ShaderToMP4</title>
+<meta name="description" content="The .s2mproj project file format.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../reference/index.html" aria-current="page"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a></p>
+<div class="layout">
+<nav class="side" aria-label="Reference / R&#233;f&#233;rence"><ul>
+<li><a href="settings.html"><span lang="en" data-lang="en">Settings</span><span lang="fr" data-lang="fr">R&#233;glages</span></a></li>
+<li><a href="project.html" aria-current="page"><span lang="en" data-lang="en">Project file</span><span lang="fr" data-lang="fr">Fichier projet</span></a></li>
+<li><a href="cli.html"><span lang="en" data-lang="en">Command line</span><span lang="fr" data-lang="fr">Ligne de commande</span></a></li>
+</ul></nav>
+<article class="prose">
+<h1><span lang="en" data-lang="en">Project file format (.s2mproj)</span><span lang="fr" data-lang="fr">Format du fichier projet (.s2mproj)</span></h1>
+<div lang="en" data-lang="en">
+<p>A project is a JSON file written by the program (<code>ShaderToMP4 --dump-reference=project</code>). Paths inside the project folder are written relative to it, so the folder can be moved. Example, as the program writes it:</p>
+<pre tabindex="0"><code>{
+  &quot;format&quot;: &quot;ShaderToMP4 project&quot;,
+  &quot;version&quot;: 1,
+  &quot;name&quot;: &quot;example&quot;,
+  &quot;general&quot;: [
+    &quot;width=1920&quot;,
+    &quot;fps=30&quot;
+  ],
+  &quot;shaders&quot;: [
+    {
+      &quot;path&quot;: &quot;clip.glsl&quot;,
+      &quot;batch&quot;: 1,
+      &quot;priority&quot;: 1,
+      &quot;settings&quot;: [
+        &quot;fps=60&quot;
+      ],
+      &quot;passes&quot;: [
+        &quot;clip.bufferA.glsl&quot;
+      ],
+      &quot;media&quot;: [
+        &quot;texture.png&quot;
+      ]
+    }
+  ]
+}</code></pre>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Field, Type, Description"><table class="ref"><thead><tr><th scope="col">Field</th><th scope="col">Type</th><th scope="col">Description</th></tr></thead><tbody>
+<tr id="f-format"><th scope="row"><code>format</code></th><td>string</td><td>Always <code>ShaderToMP4 project</code>.</td></tr>
+<tr id="f-version"><th scope="row"><code>version</code></th><td>number</td><td>Format version; a newer file than the program is refused, an older one is migrated.</td></tr>
+<tr id="f-name"><th scope="row"><code>name</code></th><td>string</td><td>Name of the project.</td></tr>
+<tr id="f-general"><th scope="row"><code>general</code></th><td>string[]</td><td>The general settings, one <code>key=value</code> line each (the same lines as <code>config.ini</code>).</td></tr>
+<tr id="f-shaders"><th scope="row"><code>shaders</code></th><td>object[]</td><td>The shaders of the list, in rendering order.</td></tr>
+<tr id="f-shaders-path"><th scope="row"><code>shaders[].path</code></th><td>string</td><td>File of the shader (relative when it is inside the project folder).</td></tr>
+<tr id="f-shaders-batch"><th scope="row"><code>shaders[].batch</code></th><td>number</td><td>Batch number from 1 to 4; absent: none.</td></tr>
+<tr id="f-shaders-priority"><th scope="row"><code>shaders[].priority</code></th><td>number</td><td><code>1</code> high, <code>-1</code> low; absent: normal.</td></tr>
+<tr id="f-shaders-settings"><th scope="row"><code>shaders[].settings</code></th><td>string[]</td><td>Settings of this shader only (&quot;This shader only&quot;), <code>key=value</code> lines.</td></tr>
+<tr id="f-shaders-passes"><th scope="row"><code>shaders[].passes</code></th><td>string[]</td><td>Pass files that exist (Buffer A to D, Common, ...).</td></tr>
+<tr id="f-shaders-media"><th scope="row"><code>shaders[].media</code></th><td>string[]</td><td>Images, sounds and videos of the channels <code>iChannel0</code> to <code>iChannel3</code>.</td></tr>
+</tbody></table></div>
+<p>Format version written and read by this program: 1.</p>
+</div>
+<div lang="fr" data-lang="fr">
+<p>Un projet est un fichier JSON &#233;crit par le programme (<code>ShaderToMP4 --dump-reference=project</code>). Les chemins situ&#233;s dans le dossier du projet y sont relatifs : le dossier peut &#234;tre d&#233;plac&#233;. Exemple, tel que le programme l&#39;&#233;crit :</p>
+<pre tabindex="0"><code>{
+  &quot;format&quot;: &quot;ShaderToMP4 project&quot;,
+  &quot;version&quot;: 1,
+  &quot;name&quot;: &quot;example&quot;,
+  &quot;general&quot;: [
+    &quot;width=1920&quot;,
+    &quot;fps=30&quot;
+  ],
+  &quot;shaders&quot;: [
+    {
+      &quot;path&quot;: &quot;clip.glsl&quot;,
+      &quot;batch&quot;: 1,
+      &quot;priority&quot;: 1,
+      &quot;settings&quot;: [
+        &quot;fps=60&quot;
+      ],
+      &quot;passes&quot;: [
+        &quot;clip.bufferA.glsl&quot;
+      ],
+      &quot;media&quot;: [
+        &quot;texture.png&quot;
+      ]
+    }
+  ]
+}</code></pre>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Champ, Type, Description"><table class="ref"><thead><tr><th scope="col">Champ</th><th scope="col">Type</th><th scope="col">Description</th></tr></thead><tbody>
+<tr id="fr-f-format"><th scope="row"><code>format</code></th><td>string</td><td>Toujours <code>ShaderToMP4 project</code>.</td></tr>
+<tr id="fr-f-version"><th scope="row"><code>version</code></th><td>number</td><td>Version du format ; un fichier plus r&#233;cent que le programme est refus&#233;, un plus ancien est migr&#233;.</td></tr>
+<tr id="fr-f-name"><th scope="row"><code>name</code></th><td>string</td><td>Nom du projet.</td></tr>
+<tr id="fr-f-general"><th scope="row"><code>general</code></th><td>string[]</td><td>Les r&#233;glages g&#233;n&#233;raux, une ligne <code>cl&#233;=valeur</code> chacun (les m&#234;mes lignes que <code>config.ini</code>).</td></tr>
+<tr id="fr-f-shaders"><th scope="row"><code>shaders</code></th><td>object[]</td><td>Les shaders de la liste, dans l&#39;ordre de rendu.</td></tr>
+<tr id="fr-f-shaders-path"><th scope="row"><code>shaders[].path</code></th><td>string</td><td>Fichier du shader (relatif quand il est dans le dossier du projet).</td></tr>
+<tr id="fr-f-shaders-batch"><th scope="row"><code>shaders[].batch</code></th><td>number</td><td>Num&#233;ro de lot de 1 &#224; 4 ; absent : aucun.</td></tr>
+<tr id="fr-f-shaders-priority"><th scope="row"><code>shaders[].priority</code></th><td>number</td><td><code>1</code> haute, <code>-1</code> basse ; absent : normale.</td></tr>
+<tr id="fr-f-shaders-settings"><th scope="row"><code>shaders[].settings</code></th><td>string[]</td><td>R&#233;glages de ce shader seulement (&#171; Ce shader seul &#187;), lignes <code>cl&#233;=valeur</code>.</td></tr>
+<tr id="fr-f-shaders-passes"><th scope="row"><code>shaders[].passes</code></th><td>string[]</td><td>Fichiers des passes qui existent (Buffer A &#224; D, Common, ...).</td></tr>
+<tr id="fr-f-shaders-media"><th scope="row"><code>shaders[].media</code></th><td>string[]</td><td>Images, sons et vid&#233;os des canaux <code>iChannel0</code> &#224; <code>iChannel3</code>.</td></tr>
+</tbody></table></div>
+<p>Version du format &#233;crite et lue par ce programme : 1.</p>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

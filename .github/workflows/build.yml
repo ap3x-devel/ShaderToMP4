@@ -90,6 +90,11 @@ jobs:
       - name: Repository checks
         shell: pwsh
         run: ./scripts/check-repo.ps1
+      - name: Site checks (pages up to date, links, contrast, pages opened in Edge)
+        shell: pwsh
+        run: |
+          ./scripts/check-site.ps1
+          if ($LASTEXITCODE -ne 0) { throw "site check failed" }
       - name: Package
         shell: pwsh
         run: ./scripts/package-windows.ps1

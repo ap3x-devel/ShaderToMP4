@@ -1,0 +1,86 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../../" data-title-en="Game of life - ShaderToMP4" data-title-fr="Jeu de la vie - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game of life - ShaderToMP4</title>
+<meta name="description" content="Game of life - Conway&#39;s automaton on a grid of 4 pixels per cell; buffer A reads its eight neighbours and updates every 6 frames.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../../gallery/index.html" aria-current="page"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a></p>
+<h1><span lang="en" data-lang="en">Game of life</span><span lang="fr" data-lang="fr">Jeu de la vie</span></h1>
+<p class="lead"><span lang="en" data-lang="en">Conway&#39;s automaton on a grid of 4 pixels per cell; buffer A reads its eight neighbours and updates every 6 frames.</span><span lang="fr" data-lang="fr">Automate de Conway sur une grille de 4 pixels par cellule ; le tampon A lit ses huit voisines et se met &#224; jour tous les 6 images.</span></p>
+<img class="hero-img" src="../img/passes-jeu_de_la_vie.jpg" width="480" height="270" alt="Game of life / Jeu de la vie">
+<p><strong><span lang="en" data-lang="en">Category</span><span lang="fr" data-lang="fr">Catégorie</span></strong>: <span lang="en" data-lang="en">Multiple passes</span><span lang="fr" data-lang="fr">Passes multiples</span> - <code>jeu_de_la_vie.glsl</code> - 14 <span lang="en" data-lang="en">lines</span><span lang="fr" data-lang="fr">lignes</span> - <a href="https://github.com/ap3demak-rgb/ShaderToMP4/blob/main/examples/gallery/passes/jeu_de_la_vie.glsl"><span lang="en" data-lang="en">File on GitHub</span><span lang="fr" data-lang="fr">Fichier sur GitHub</span></a></p>
+<p><span lang="en" data-lang="en">In the program: Examples, choose it, Add to the list. Or copy the code into a file next to the program and drop it on the window.</span><span lang="fr" data-lang="fr">Dans le programme : Exemples, choisissez-le, Ajouter à la liste. Ou copiez le code dans un fichier et glissez-le sur la fenêtre.</span></p>
+<p><span lang="en" data-lang="en">This example uses several passes: the files below go together.</span><span lang="fr" data-lang="fr">Cet exemple utilise plusieurs passes : les fichiers ci-dessous vont ensemble.</span></p>
+<h2><span lang="en" data-lang="en">Code</span><span lang="fr" data-lang="fr">Code</span></h2>
+<h3><code>jeu_de_la_vie.glsl</code></h3>
+<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Patrick JAILLET
+
+// fr: Jeu de la vie — Automate de Conway sur une grille de 4 pixels par cellule ; le tampon A lit ses huit voisines et se met &#224; jour tous les 6 images.
+// en: Game of life — Conway&#39;s automaton on a grid of 4 pixels per cell; buffer A reads its eight neighbours and updates every 6 frames.
+
+// iChannel0=bufferA
+void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+    float a = texelFetch(iChannel0, ivec2(fragCoord / 4.0), 0).r;
+    vec3 col = mix(vec3(0.03, 0.04, 0.08), vec3(0.4, 1.0, 0.6), a);
+    col *= 0.85 + 0.15 * step(0.5, fract(fragCoord.x / 4.0)) * step(0.5, fract(fragCoord.y / 4.0));
+    fragColor = vec4(col, 1.0);
+}</code></pre>
+<h3><code>jeu_de_la_vie.bufferA.glsl</code></h3>
+<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Patrick JAILLET
+
+// iChannel0=bufferA
+float h(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+    ivec2 p = ivec2(fragCoord);
+    if (iFrame &lt; 2) { fragColor = vec4(step(0.72, h(fragCoord)), 0.0, 0.0, 1.0); return; }
+    float self = texelFetch(iChannel0, p, 0).r;
+    if (iFrame % 6 != 0) { fragColor = vec4(self, 0.0, 0.0, 1.0); return; }
+    ivec2 sz = ivec2(iResolution.xy / 4.0);
+    if (p.x &gt;= sz.x || p.y &gt;= sz.y) { fragColor = vec4(0.0, 0.0, 0.0, 1.0); return; }
+    float n = 0.0;
+    for (int j = -1; j &lt;= 1; j++)
+        for (int i = -1; i &lt;= 1; i++)
+            if (i != 0 || j != 0) n += texelFetch(iChannel0, (p + ivec2(i, j) + sz) % sz, 0).r;
+    float alive = (self &gt; 0.5) ? (n == 2.0 || n == 3.0 ? 1.0 : 0.0) : (n == 3.0 ? 1.0 : 0.0);
+    if (iFrame % 300 == 0) alive = max(alive, step(0.9, h(fragCoord + float(iFrame))));
+    fragColor = vec4(alive, 0.0, 0.0, 1.0);
+}</code></pre>
+
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

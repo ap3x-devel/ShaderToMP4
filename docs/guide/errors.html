@@ -1,0 +1,74 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../" data-title-en="When something goes wrong - ShaderToMP4" data-title-fr="Quand quelque chose ne va pas - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When something goes wrong - ShaderToMP4</title>
+<meta name="description" content="When something goes wrong - ffmpeg not found: the program offers to download it, or you can put ffmpeg next to the program. No OpenGL 3.3: update the graphics driver. Run the pro">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../guide/index.html" aria-current="page"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a></p>
+<div class="layout">
+<nav class="side" aria-label="Guide"><ul>
+<li><a href="start.html"><span lang="en" data-lang="en">Getting started</span><span lang="fr" data-lang="fr">Prise en main</span></a></li>
+<li><a href="main.html"><span lang="en" data-lang="en">Main window</span><span lang="fr" data-lang="fr">Fen&#234;tre principale</span></a></li>
+<li><a href="projects.html"><span lang="en" data-lang="en">Projects, queue and shortcuts</span><span lang="fr" data-lang="fr">Projets, file de travaux et raccourcis</span></a></li>
+<li><a href="compat.html"><span lang="en" data-lang="en">Importing and porting Shadertoy shaders</span><span lang="fr" data-lang="fr">Importer et adapter des shaders Shadertoy</span></a></li>
+<li><a href="output.html"><span lang="en" data-lang="en">Output window</span><span lang="fr" data-lang="fr">Fen&#234;tre Sortie</span></a></li>
+<li><a href="params.html"><span lang="en" data-lang="en">Parameters window</span><span lang="fr" data-lang="fr">Fen&#234;tre Param&#232;tres</span></a></li>
+<li><a href="editor.html"><span lang="en" data-lang="en">Editor window</span><span lang="fr" data-lang="fr">Fen&#234;tre &#201;diteur</span></a></li>
+<li><a href="shaders.html"><span lang="en" data-lang="en">Shadertoy shaders, channels and passes</span><span lang="fr" data-lang="fr">Shaders Shadertoy, canaux et passes</span></a></li>
+<li><a href="gallery.html"><span lang="en" data-lang="en">Examples and guided tour</span><span lang="fr" data-lang="fr">Exemples et visite guid&#233;e</span></a></li>
+<li><a href="errors.html" aria-current="page"><span lang="en" data-lang="en">When something goes wrong</span><span lang="fr" data-lang="fr">Quand quelque chose ne va pas</span></a></li>
+<li><a href="xlang.html"><span lang="en" data-lang="en">Other shader languages</span><span lang="fr" data-lang="fr">Autres langages de shader</span></a></li>
+<li><a href="glossary.html"><span lang="en" data-lang="en">Glossary</span><span lang="fr" data-lang="fr">Glossaire</span></a></li>
+</ul></nav>
+<article class="prose">
+<h1><span lang="en" data-lang="en">When something goes wrong</span><span lang="fr" data-lang="fr">Quand quelque chose ne va pas</span></h1>
+<div lang="en" data-lang="en">
+<p>ffmpeg not found: the program offers to download it, or you can put ffmpeg next to the program.</p>
+<p>No OpenGL 3.3: update the graphics driver. Run the program with --diagnostic on the command line to see what was found.</p>
+<p>A compile error shows the file, the line, an explanation and a suggested fix; double-click it in the log to open the file at that line.</p>
+<p>The render is slow: look at the GPU cost map in the Images menu and at the render time estimate. Supersampling and motion blur multiply the cost.</p>
+</div>
+<div lang="fr" data-lang="fr">
+<p>ffmpeg introuvable : le programme propose de le t&#233;l&#233;charger, ou vous pouvez placer ffmpeg &#224; c&#244;t&#233; du programme.</p>
+<p>Pas d&#39;OpenGL 3.3 : mettez &#224; jour le pilote graphique. Lancez le programme avec --diagnostic en ligne de commande pour voir ce qui a &#233;t&#233; trouv&#233;.</p>
+<p>Une erreur de compilation montre le fichier, la ligne, une explication et une correction propos&#233;e ; double-cliquez dessus dans le journal pour ouvrir le fichier &#224; cette ligne.</p>
+<p>Le rendu est lent : regardez la carte du co&#251;t GPU dans le menu Images et l&#39;estimation du temps de rendu. Le sur-&#233;chantillonnage et le flou de mouvement multiplient le co&#251;t.</p>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

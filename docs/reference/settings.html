@@ -1,0 +1,245 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../" data-title-en="Settings - ShaderToMP4" data-title-fr="R&#233;glages - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings - ShaderToMP4</title>
+<meta name="description" content="Every setting of config.ini with its default value.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../reference/index.html" aria-current="page"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a></p>
+<div class="layout">
+<nav class="side" aria-label="Reference / R&#233;f&#233;rence"><ul>
+<li><a href="settings.html" aria-current="page"><span lang="en" data-lang="en">Settings</span><span lang="fr" data-lang="fr">R&#233;glages</span></a></li>
+<li><a href="project.html"><span lang="en" data-lang="en">Project file</span><span lang="fr" data-lang="fr">Fichier projet</span></a></li>
+<li><a href="cli.html"><span lang="en" data-lang="en">Command line</span><span lang="fr" data-lang="fr">Ligne de commande</span></a></li>
+</ul></nav>
+<article class="prose">
+<h1><span lang="en" data-lang="en">Settings reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence des r&#233;glages</span></h1>
+<div lang="en" data-lang="en">
+<p>Written by the program itself (<code>ShaderToMP4 --dump-reference=settings</code>): every key that <code>config.ini</code> can hold, with the value it gets by default. A key can be written in <code>config.ini</code>, in a <code>// key=value</code> comment of a shader and on the command line as <code>--key=value</code>.</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Key, Default, Description"><table class="ref"><thead><tr><th scope="col">Key</th><th scope="col">Default</th><th scope="col">Description</th></tr></thead><tbody>
+<tr id="s-width"><th scope="row"><code>width</code></th><td><code>1920</code></td><td>picture width in pixels, 16 to 16384 (rounded to an even number)</td></tr>
+<tr id="s-height"><th scope="row"><code>height</code></th><td><code>1080</code></td><td>picture height in pixels, 16 to 16384 (rounded to an even number)</td></tr>
+<tr id="s-fps"><th scope="row"><code>fps</code></th><td><code>60</code></td><td>frames per second, 1 to 240</td></tr>
+<tr id="s-duration"><th scope="row"><code>duration</code></th><td><code>90</code></td><td>seconds (90 = one full loop of this shader)</td></tr>
+<tr id="s-start"><th scope="row"><code>start</code></th><td><code>0</code></td><td>start time (iTime) in seconds</td></tr>
+<tr id="s-crf"><th scope="row"><code>crf</code></th><td><code>12</code></td><td>quality: 0 = lossless, 12 = nearly perfect, 18 = very good</td></tr>
+<tr id="s-preset"><th scope="row"><code>preset</code></th><td><code>slow</code></td><td>ultrafast ... medium ... slow ... veryslow (slower = smaller file)</td></tr>
+<tr id="s-codec"><th scope="row"><code>codec</code></th><td><code>h264</code></td><td>h264, h265, vp9 or av1</td></tr>
+<tr id="s-container"><th scope="row"><code>container</code></th><td><code>mp4</code></td><td>mp4, mov, mkv or webm</td></tr>
+<tr id="s-ss"><th scope="row"><code>ss</code></th><td><code>1</code></td><td>smoothing (supersampling): 1 = none, 2 = x2, 3 = x3, 4 = x4</td></tr>
+<tr id="s-outdir"><th scope="row"><code>outdir</code></th><td><em>empty</em></td><td>output folder (empty = next to the shader)</td></tr>
+<tr id="s-bitrate"><th scope="row"><code>bitrate</code></th><td><code>0</code></td><td>kb/s; 0 = constant quality (crf)</td></tr>
+<tr id="s-color"><th scope="row"><code>color</code></th><td><code>bt709</code></td><td>bt709, bt709full (full range), srgb or bt601</td></tr>
+<tr id="s-blur"><th scope="row"><code>blur</code></th><td><code>1</code></td><td>motion blur: sub-frames per frame (1 = none, 4, 8, 16)</td></tr>
+<tr id="s-shutter"><th scope="row"><code>shutter</code></th><td><code>0.5</code></td><td>blur shutter, as a fraction of a frame (0.5 = 180 degrees)</td></tr>
+<tr id="s-loop"><th scope="row"><code>loop</code></th><td><code>0</code></td><td>shader period in seconds: the duration becomes a whole multiple (0 = free)</td></tr>
+<tr id="s-audio"><th scope="row"><code>audio</code></th><td><em>empty</em></td><td>sound file mixed into the video, aligned with the start time (empty = none)</td></tr>
+<tr id="s-fadein"><th scope="row"><code>fadein</code></th><td><code>0</code></td><td>fade-in in seconds (picture and sound)</td></tr>
+<tr id="s-fadeout"><th scope="row"><code>fadeout</code></th><td><code>0</code></td><td>fade-out in seconds</td></tr>
+<tr id="s-encoder"><th scope="row"><code>encoder</code></th><td><code>cpu</code></td><td>cpu, auto, nvenc, amf or qsv (hardware encoding when available)</td></tr>
+<tr id="s-pbo"><th scope="row"><code>pbo</code></th><td><code>3</code></td><td>depth of the GPU read-back queue (2 to 8)</td></tr>
+<tr id="s-depth"><th scope="row"><code>depth</code></th><td><code>8</code></td><td>8 or 10 (bits per channel; 10 for H.265, AV1, VP9, ProRes, 16-bit PNG/TIFF)</td></tr>
+<tr id="s-name"><th scope="row"><code>name</code></th><td><em>empty</em></td><td>output file name template: {shader} {w} {h} {fps} {date} {codec}</td></tr>
+<tr id="s-exists"><th scope="row"><code>exists</code></th><td><code>overwrite</code></td><td>when the output already exists: overwrite, number or skip</td></tr>
+<tr id="s-gpu"><th scope="row"><code>gpu</code></th><td><code>default</code></td><td>graphics card on a two-GPU PC (Linux): default, high (the powerful one) or low (the integrated one); needs a restart</td></tr>
+<tr id="s-endaction"><th scope="row"><code>endaction</code></th><td><code>none</code></td><td>after a successful batch: none, folder (show the last file) or sleep</td></tr>
+<tr id="s-chunk"><th scope="row"><code>chunk</code></th><td><code>30</code></td><td>render in parts of N seconds, resumable after an interruption (0 = never)</td></tr>
+<tr id="s-warmup"><th scope="row"><code>warmup</code></th><td><code>0</code></td><td>warm-up: frames simulated before the first one (buffers are warmed up, iFrame starts at N), 0 = none</td></tr>
+<tr id="s-vr"><th scope="row"><code>vr</code></th><td><code>auto</code></td><td>mainVR shader: auto (when there is no mainImage), off, mono or stereo (360&#176; equirectangular, stereo = left eye on top)</td></tr>
+<tr id="s-vripd"><th scope="row"><code>vripd</code></th><td><code>0.064</code></td><td>distance between the two eyes of the stereo VR render, in shader units (0.064 by default)</td></tr>
+<tr id="s-metadata"><th scope="row"><code>metadata</code></th><td><code>1</code></td><td>1 = write title and comment in the video file, 0 = none</td></tr>
+<tr id="s-loopmode"><th scope="row"><code>loopmode</code></th><td><em>written only when it is no longer the default</em></td><td>seamless loop: none | crossfade | pingpong</td></tr>
+<tr id="s-loopfade"><th scope="row"><code>loopfade</code></th><td><em>written only when it is no longer the default</em></td><td>duration of the crossfade loop in seconds</td></tr>
+<tr id="s-timemap"><th scope="row"><code>timemap</code></th><td><em>written only when it is no longer the default</em></td><td>time curve <code>video:shader</code> in seconds, for example <code>0:0;4:1;8:5</code> (empty = real time)</td></tr>
+<tr id="s-speed"><th scope="row"><code>speed</code></th><td><em>written only when it is no longer the default</em></td><td>speed of the shader time (0.25 = four times slower)</td></tr>
+<tr id="s-audiofollow"><th scope="row"><code>audiofollow</code></th><td><em>written only when it is no longer the default</em></td><td>the sound follows the constant speed (tempo, pitch kept)</td></tr>
+<tr id="s-ichannel0"><th scope="row"><code>iChannel0</code></th><td><em>written only when it is no longer the default</em></td><td>texture of iChannel0-3: image path, noise or grid (+ .filter nearest|linear|mipmap, .wrap clamp|repeat, .vflip 0|1)</td></tr>
+<tr id="s-buffera"><th scope="row"><code>bufferA</code></th><td><em>written only when it is no longer the default</em></td><td>size of Buffer A to D: <code>bufferA.scale</code> (fraction of the render size) or <code>bufferA.size</code> (<code>WxH</code> pixels)</td></tr>
+<tr id="s-date"><th scope="row"><code>date</code></th><td><em>written only when it is no longer the default</em></td><td>fixed iDate: YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS (reproducible render), add +rate=R for seconds of date per second of video (default 1, 0 = frozen)</td></tr>
+<tr id="s-variant"><th scope="row"><code>variant</code></th><td><em>written only when it is no longer the default</em></td><td>extra rendering of the same shader: name:key=value|key=value (e.g. 720p:width=1280|height=720|crf=23); repeat the line for each variant</td></tr>
+<tr id="s-report"><th scope="row"><code>report</code></th><td><em>written only when it is no longer the default</em></td><td>render report next to the video: json or text (off = none)</td></tr>
+<tr id="s-samples"><th scope="row"><code>samples</code></th><td><em>written only when it is no longer the default</em></td><td>still image: samples averaged (1 = one)</td></tr>
+<tr id="s-precheck"><th scope="row"><code>precheck</code></th><td><em>written only when it is no longer the default</em></td><td>quality check before each video render (flashes, invalid values)</td></tr>
+<tr id="s-target"><th scope="row"><code>target</code></th><td><em>written only when it is no longer the default</em></td><td>publication target: youtube-shorts, tiktok, instagram-reel, discord, x, ... (see presets/targets.ini), sets size, duration, codec and weight</td></tr>
+<tr id="s-targetsize"><th scope="row"><code>targetsize</code></th><td><em>written only when it is no longer the default</em></td><td>target file size, e.g. 8MB or 25MB: the bitrate is computed and corrected until the file fits (h264, h265, vp9, av1)</td></tr>
+<tr id="s-crop"><th scope="row"><code>crop</code></th><td><em>written only when it is no longer the default</em></td><td>crop after rendering: W:H, W:H:X:Y or a ratio such as 9:16 (centred); the shader is rendered in full</td></tr>
+<tr id="s-mastercache"><th scope="row"><code>mastercache</code></th><td><em>written only when it is no longer the default</em></td><td>1 = keep a lossless master in cache/ and derive every format from it without rendering again</td></tr>
+<tr id="s-cachemax"><th scope="row"><code>cachemax</code></th><td><em>written only when it is no longer the default</em></td><td>maximum size of cache/ in GB (oldest masters are removed first)</td></tr>
+<tr id="s-embed"><th scope="row"><code>embed</code></th><td><em>written only when it is no longer the default</em></td><td>1 = embed the shader, its passes and the settings in the video tag so --reproduce can render it again</td></tr>
+<tr id="s-animpreview"><th scope="row"><code>animpreview</code></th><td><em>written only when it is no longer the default</em></td><td>animated preview of the finished video: off, gif or webp (a short loop next to the video)</td></tr>
+<tr id="s-source"><th scope="row"><code>source</code></th><td><em>written only when it is no longer the default</em></td><td>effect mode: a video, an image, a sequence (<code>img_%04d.png</code>) or a folder, read as <code>iChannel0</code>; size, rate, duration and sound follow it</td></tr>
+<tr id="s-source2"><th scope="row"><code>source2</code></th><td><em>written only when it is no longer the default</em></td><td>second source, <code>iChannel1</code>: with a shader that reads <code>iProgress</code>, a transition from <code>source</code> to <code>source2</code></td></tr>
+<tr id="s-sourcematch"><th scope="row"><code>sourcematch</code></th><td><em>written only when it is no longer the default</em></td><td>what the source imposes when <code>source</code> is set: size, fps, duration (a list) or none</td></tr>
+<tr id="s-sourceaudio"><th scope="row"><code>sourceaudio</code></th><td><em>written only when it is no longer the default</em></td><td>1 = take the sound of the source (default), 0 = keep the audio setting</td></tr>
+<tr id="s-reverse"><th scope="row"><code>reverse</code></th><td><em>written only when it is no longer the default</em></td><td>1 = play the time range backwards</td></tr>
+<tr id="s-sourcefps"><th scope="row"><code>sourcefps</code></th><td><em>written only when it is no longer the default</em></td><td>rate of an image sequence used as source, in images per second (0 = 25)</td></tr>
+<tr id="s-transitionduration"><th scope="row"><code>transitionduration</code></th><td><em>written only when it is no longer the default</em></td><td>duration of the transition between source and source2, in seconds</td></tr>
+<tr id="s-transitionoffset"><th scope="row"><code>transitionoffset</code></th><td><em>written only when it is no longer the default</em></td><td>shifts the start of the transition, in seconds (positive = later)</td></tr>
+<tr id="s-parallel"><th scope="row"><code>parallel</code></th><td><em>written only when it is no longer the default</em></td><td>parts rendered at the same time by this many OpenGL contexts (1 to 16; needs chunk, the render by parts)</td></tr>
+<tr id="s-farm"><th scope="row"><code>farm</code></th><td><em>written only when it is no longer the default</em></td><td>shared folder of a render farm: several computers render the parts of the same video (needs <code>chunk</code>)</td></tr>
+<tr id="s-farmtimeout"><th scope="row"><code>farmtimeout</code></th><td><em>written only when it is no longer the default</em></td><td>seconds without a sign of life after which the lock of a farm part is taken over (computer switched off)</td></tr>
+<tr id="s-bpm"><th scope="row"><code>bpm</code></th><td><em>written only when it is no longer the default</em></td><td>tempo imposed on the sound analysis, in beats per minute (0 or absent = detected)</td></tr>
+<tr id="s-beatsperbar"><th scope="row"><code>beatsperbar</code></th><td><em>written only when it is no longer the default</em></td><td>beats per bar (2 to 12), used for the bars and the sections</td></tr>
+<tr id="s-markers"><th scope="row"><code>markers</code></th><td><em>written only when it is no longer the default</em></td><td>markers from the rhythm of the sound: off, chapters (sections as chapters of the file), file (marker files) or all</td></tr>
+<tr id="s-beatsync"><th scope="row"><code>beatsync</code></th><td><em>written only when it is no longer the default</em></td><td>montage: cuts placed on the music: off, beat, bar or section</td></tr>
+<tr id="s-autocredit"><th scope="row"><code>autocredit</code></th><td><em>written only when it is no longer the default</em></td><td>1 = write the shader title and author on the first seconds of the video</td></tr>
+<tr id="s-stillformat"><th scope="row"><code>stillformat</code></th><td><em>written only when it is no longer the default</em></td><td>still image format: png | tiff (16 bits per channel with depth=10)</td></tr>
+<tr id="s-aov"><th scope="row"><code>aov</code></th><td><em>written only when it is no longer the default</em></td><td>output passes written to EXR sequences: name=bufferB.r;normal=bufferC.rgb;alpha;motion (<code>off</code> clears)</td></tr>
+<tr id="s-exrcompression"><th scope="row"><code>exrcompression</code></th><td><em>written only when it is no longer the default</em></td><td>EXR compression: none, zips (one line per block) or zip (sixteen lines, default)</td></tr>
+<tr id="s-exrprecision"><th scope="row"><code>exrprecision</code></th><td><em>written only when it is no longer the default</em></td><td>EXR precision of the colour: half (16 bits, default) or float (32 bits); depth and id are always 32 bits</td></tr>
+<tr id="s-alphamode"><th scope="row"><code>alphamode</code></th><td><em>written only when it is no longer the default</em></td><td>alpha written to PNG, TIFF, DPX and EXR: straight (default) or premult (colour multiplied by alpha)</td></tr>
+<tr id="s-depthrange"><th scope="row"><code>depthrange</code></th><td><em>written only when it is no longer the default</em></td><td>depth bounds near:far: the depth.Z channel is written normalised between them and the bounds are declared in the EXR header (empty: raw values)</td></tr>
+<tr id="s-tifffloat"><th scope="row"><code>tifffloat</code></th><td><em>written only when it is no longer the default</em></td><td>1 = TIFF sequences written by the program in 32-bit floating point (RGB or RGBA)</td></tr>
+<tr id="s-vectorblur"><th scope="row"><code>vectorblur</code></th><td><em>written only when it is no longer the default</em></td><td>vector motion blur of the EXR output: fraction of the movement between two frames (0 = none, 1 = all of it); needs a motion pass</td></tr>
+<tr id="s-tile"><th scope="row"><code>tile</code></th><td><em>written only when it is no longer the default</em></td><td>still image: tile side in pixels (0 = automatic)</td></tr>
+<tr id="s-printdpi"><th scope="row"><code>printdpi</code></th><td><em>written only when it is no longer the default</em></td><td>PNG still image: resolution written in the file (dots per inch)</td></tr>
+<tr id="s-alpha"><th scope="row"><code>alpha</code></th><td><em>written only when it is no longer the default</em></td><td><code>1</code> keeps the alpha channel of the shader (ProRes 4444, VP9 WebM, WebP, PNG, TIFF, EXR)</td></tr>
+<tr id="s-hdr"><th scope="row"><code>hdr</code></th><td><em>written only when it is no longer the default</em></td><td>HDR output: <code>pq</code> (HDR10) or <code>hlg</code>; <code>off</code> for none</td></tr>
+<tr id="s-hdrpeak"><th scope="row"><code>hdrpeak</code></th><td><em>written only when it is no longer the default</em></td><td>declared MaxCLL in cd/m&#178; (1000 by default)</td></tr>
+<tr id="s-hdrfall"><th scope="row"><code>hdrfall</code></th><td><em>written only when it is no longer the default</em></td><td>declared MaxFALL in cd/m&#178; (400 by default)</td></tr>
+<tr id="s-hdrwhite"><th scope="row"><code>hdrwhite</code></th><td><em>written only when it is no longer the default</em></td><td>luminance in cd/m&#178; of a shader white of 1.0 (203 by default)</td></tr>
+<tr id="s-interp"><th scope="row"><code>interp</code></th><td><em>written only when it is no longer the default</em></td><td>output frame rate by interpolation (0 = none); the render is made at <code>fps</code></td></tr>
+<tr id="s-scale"><th scope="row"><code>scale</code></th><td><em>written only when it is no longer the default</em></td><td>output size: <code>1920x1080</code>, a factor (<code>2</code>, <code>0.5x</code>); empty = the render size</td></tr>
+<tr id="s-scalefilter"><th scope="row"><code>scalefilter</code></th><td><em>written only when it is no longer the default</em></td><td>scaling filter: <code>lanczos</code>, <code>bicubic</code>, <code>bilinear</code>, <code>area</code> or <code>neighbor</code></td></tr>
+<tr id="s-loudnorm"><th scope="row"><code>loudnorm</code></th><td><em>written only when it is no longer the default</em></td><td>sound normalization in LUFS, for example <code>-16</code> (0 or <code>off</code> = none)</td></tr>
+<tr id="s-title"><th scope="row"><code>title</code></th><td><em>written only when it is no longer the default</em></td><td>text drawn in the middle of the picture during the first seconds</td></tr>
+<tr id="s-credit"><th scope="row"><code>credit</code></th><td><em>written only when it is no longer the default</em></td><td>text drawn at the bottom left during the first seconds</td></tr>
+<tr id="s-titledur"><th scope="row"><code>titledur</code></th><td><em>written only when it is no longer the default</em></td><td>duration in seconds of <code>title</code> and <code>credit</code> (3 by default)</td></tr>
+<tr id="s-post"><th scope="row"><code>post</code></th><td><em>written only when it is no longer the default</em></td><td>post-processing effects, e.g. bloom:0.4,grain,vignette (sharpen chroma bloom contrast saturation hue vignette grain; amount after the colon)</td></tr>
+<tr id="s-lut"><th scope="row"><code>lut</code></th><td><em>written only when it is no longer the default</em></td><td>color LUT in .cube format applied after the effects (1D or 3D, path relative to the shader)</td></tr>
+</tbody></table></div>
+<p>The Pro edition adds its own keys (3D scene, signals and data, colour and quality, dressing and delivery, performance): they are listed in the Pro settings window, one field per key.</p>
+</div>
+<div lang="fr" data-lang="fr">
+<p>&#201;crit par le programme lui-m&#234;me (<code>ShaderToMP4 --dump-reference=settings</code>) : toutes les cl&#233;s que <code>config.ini</code> peut contenir, avec leur valeur par d&#233;faut. Une cl&#233; s&#39;&#233;crit dans <code>config.ini</code>, dans un commentaire <code>// cl&#233;=valeur</code> d&#39;un shader et sur la ligne de commande sous la forme <code>--cl&#233;=valeur</code>.</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Cl&#233;, D&#233;faut, Description"><table class="ref"><thead><tr><th scope="col">Cl&#233;</th><th scope="col">D&#233;faut</th><th scope="col">Description</th></tr></thead><tbody>
+<tr id="fr-s-width"><th scope="row"><code>width</code></th><td><code>1920</code></td><td>largeur de l&#39;image en pixels, 16 &#224; 16384 (arrondie &#224; un nombre pair)</td></tr>
+<tr id="fr-s-height"><th scope="row"><code>height</code></th><td><code>1080</code></td><td>hauteur de l&#39;image en pixels, 16 &#224; 16384 (arrondie &#224; un nombre pair)</td></tr>
+<tr id="fr-s-fps"><th scope="row"><code>fps</code></th><td><code>60</code></td><td>images par seconde, 1 &#224; 240</td></tr>
+<tr id="fr-s-duration"><th scope="row"><code>duration</code></th><td><code>90</code></td><td>secondes (90 = une boucle compl&#232;te de ce shader)</td></tr>
+<tr id="fr-s-start"><th scope="row"><code>start</code></th><td><code>0</code></td><td>temps de d&#233;part (iTime) en secondes</td></tr>
+<tr id="fr-s-crf"><th scope="row"><code>crf</code></th><td><code>12</code></td><td>qualit&#233; : 0 = sans perte, 12 = quasi parfait, 18 = tr&#232;s bon</td></tr>
+<tr id="fr-s-preset"><th scope="row"><code>preset</code></th><td><code>slow</code></td><td>ultrafast ... medium ... slow ... veryslow (plus lent = fichier plus petit)</td></tr>
+<tr id="fr-s-codec"><th scope="row"><code>codec</code></th><td><code>h264</code></td><td>h264, h265, vp9 ou av1</td></tr>
+<tr id="fr-s-container"><th scope="row"><code>container</code></th><td><code>mp4</code></td><td>mp4, mov, mkv ou webm</td></tr>
+<tr id="fr-s-ss"><th scope="row"><code>ss</code></th><td><code>1</code></td><td>lissage (supersampling) : 1 = aucun, 2 = x2, 3 = x3, 4 = x4</td></tr>
+<tr id="fr-s-outdir"><th scope="row"><code>outdir</code></th><td><em>vide</em></td><td>dossier de sortie (vide = &#224; c&#244;t&#233; du shader)</td></tr>
+<tr id="fr-s-bitrate"><th scope="row"><code>bitrate</code></th><td><code>0</code></td><td>kb/s ; 0 = qualit&#233; constante (crf)</td></tr>
+<tr id="fr-s-color"><th scope="row"><code>color</code></th><td><code>bt709</code></td><td>bt709, bt709full (pleine plage), srgb ou bt601</td></tr>
+<tr id="fr-s-blur"><th scope="row"><code>blur</code></th><td><code>1</code></td><td>flou de mouvement : sous-images par image (1 = aucun, 4, 8, 16)</td></tr>
+<tr id="fr-s-shutter"><th scope="row"><code>shutter</code></th><td><code>0.5</code></td><td>obturateur du flou, en fraction d&#39;une image (0.5 = 180 degr&#233;s)</td></tr>
+<tr id="fr-s-loop"><th scope="row"><code>loop</code></th><td><code>0</code></td><td>p&#233;riode du shader en secondes : la dur&#233;e devient un multiple entier (0 = libre)</td></tr>
+<tr id="fr-s-audio"><th scope="row"><code>audio</code></th><td><em>vide</em></td><td>fichier son mix&#233; dans la vid&#233;o, align&#233; sur l&#39;instant de d&#233;but (vide = aucun)</td></tr>
+<tr id="fr-s-fadein"><th scope="row"><code>fadein</code></th><td><code>0</code></td><td>fondu d&#39;entr&#233;e en secondes (image et son)</td></tr>
+<tr id="fr-s-fadeout"><th scope="row"><code>fadeout</code></th><td><code>0</code></td><td>fondu de sortie en secondes</td></tr>
+<tr id="fr-s-encoder"><th scope="row"><code>encoder</code></th><td><code>cpu</code></td><td>cpu, auto, nvenc, amf ou qsv (encodage mat&#233;riel si disponible)</td></tr>
+<tr id="fr-s-pbo"><th scope="row"><code>pbo</code></th><td><code>3</code></td><td>profondeur de la file de lecture GPU (2 &#224; 8)</td></tr>
+<tr id="fr-s-depth"><th scope="row"><code>depth</code></th><td><code>8</code></td><td>8 ou 10 (bits par canal ; 10 pour H.265, AV1, VP9, ProRes, PNG/TIFF en 16 bits)</td></tr>
+<tr id="fr-s-name"><th scope="row"><code>name</code></th><td><em>vide</em></td><td>mod&#232;le du nom de sortie : {shader} {w} {h} {fps} {date} {codec}</td></tr>
+<tr id="fr-s-exists"><th scope="row"><code>exists</code></th><td><code>overwrite</code></td><td>si la sortie existe d&#233;j&#224; : overwrite (&#233;craser), number (num&#233;roter) ou skip (ignorer)</td></tr>
+<tr id="fr-s-gpu"><th scope="row"><code>gpu</code></th><td><code>default</code></td><td>carte graphique sur un PC &#224; deux GPU (Linux) : default, high (la puissante) ou low (l&#39;int&#233;gr&#233;e) ; demande un red&#233;marrage</td></tr>
+<tr id="fr-s-endaction"><th scope="row"><code>endaction</code></th><td><code>none</code></td><td>apr&#232;s un lot r&#233;ussi : none, folder (montrer le dernier fichier) ou sleep (veille)</td></tr>
+<tr id="fr-s-chunk"><th scope="row"><code>chunk</code></th><td><code>30</code></td><td>rendu par parties de N secondes, reprenable apr&#232;s interruption (0 = jamais)</td></tr>
+<tr id="fr-s-warmup"><th scope="row"><code>warmup</code></th><td><code>0</code></td><td>chauffe : images simul&#233;es avant la premi&#232;re (les tampons sont chauff&#233;s, iFrame d&#233;marre &#224; N), 0 = aucune</td></tr>
+<tr id="fr-s-vr"><th scope="row"><code>vr</code></th><td><code>auto</code></td><td>shader mainVR : auto (quand il n&#39;y a pas de mainImage), off, mono ou stereo (360&#176; &#233;quirectangulaire, stereo = œil gauche en haut)</td></tr>
+<tr id="fr-s-vripd"><th scope="row"><code>vripd</code></th><td><code>0.064</code></td><td>distance entre les deux yeux du rendu VR st&#233;r&#233;o, en unit&#233;s du shader (0.064 par d&#233;faut)</td></tr>
+<tr id="fr-s-metadata"><th scope="row"><code>metadata</code></th><td><code>1</code></td><td>1 = &#233;crire titre et commentaire dans le fichier vid&#233;o, 0 = aucun</td></tr>
+<tr id="fr-s-loopmode"><th scope="row"><code>loopmode</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>boucle sans couture : none | crossfade | pingpong</td></tr>
+<tr id="fr-s-loopfade"><th scope="row"><code>loopfade</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>dur&#233;e du fondu de la boucle en secondes</td></tr>
+<tr id="fr-s-timemap"><th scope="row"><code>timemap</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>courbe de temps <code>vid&#233;o:shader</code> en secondes, par exemple <code>0:0;4:1;8:5</code> (vide = temps r&#233;el)</td></tr>
+<tr id="fr-s-speed"><th scope="row"><code>speed</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>vitesse du temps du shader (0.25 = quatre fois plus lent)</td></tr>
+<tr id="fr-s-audiofollow"><th scope="row"><code>audiofollow</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>le son suit la vitesse constante (tempo, hauteur conserv&#233;e)</td></tr>
+<tr id="fr-s-ichannel0"><th scope="row"><code>iChannel0</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>texture de iChannel0-3 : chemin d&#39;image, noise ou grid (+ .filter nearest|linear|mipmap, .wrap clamp|repeat, .vflip 0|1)</td></tr>
+<tr id="fr-s-buffera"><th scope="row"><code>bufferA</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>taille des Buffer A &#224; D : <code>bufferA.scale</code> (fraction de la taille du rendu) ou <code>bufferA.size</code> (pixels <code>LxH</code>)</td></tr>
+<tr id="fr-s-date"><th scope="row"><code>date</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>iDate fixe : AAAA-MM-JJ ou AAAA-MM-JJTHH:MM:SS (rendu reproductible), ajouter +rate=R pour R secondes de date par seconde de vid&#233;o (1 par d&#233;faut, 0 = fig&#233;e)</td></tr>
+<tr id="fr-s-variant"><th scope="row"><code>variant</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>rendu suppl&#233;mentaire du m&#234;me shader : nom:cl&#233;=valeur|cl&#233;=valeur (ex. 720p:width=1280|height=720|crf=23) ; une ligne par variante</td></tr>
+<tr id="fr-s-report"><th scope="row"><code>report</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>rapport de rendu &#224; c&#244;t&#233; de la vid&#233;o : json ou text (off = aucun)</td></tr>
+<tr id="fr-s-samples"><th scope="row"><code>samples</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>image fixe : &#233;chantillons moyenn&#233;s (1 = un seul)</td></tr>
+<tr id="fr-s-precheck"><th scope="row"><code>precheck</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>contr&#244;le qualit&#233; avant chaque rendu vid&#233;o (flashs, valeurs invalides)</td></tr>
+<tr id="fr-s-target"><th scope="row"><code>target</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>destination de publication : youtube-shorts, tiktok, instagram-reel, discord, x, ... (voir presets/targets.ini), r&#232;gle taille, dur&#233;e, codec et poids</td></tr>
+<tr id="fr-s-targetsize"><th scope="row"><code>targetsize</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>poids cible du fichier, par ex. 8MB ou 25MB : le d&#233;bit est calcul&#233; et corrig&#233; jusqu&#39;&#224; ce que le fichier tienne (h264, h265, vp9, av1)</td></tr>
+<tr id="fr-s-crop"><th scope="row"><code>crop</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>recadrage apr&#232;s rendu : L:H, L:H:X:Y ou un rapport comme 9:16 (centr&#233;) ; le shader est rendu en entier</td></tr>
+<tr id="fr-s-mastercache"><th scope="row"><code>mastercache</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>1 = garde un ma&#238;tre sans perte dans cache/ et en tire chaque format sans refaire le rendu</td></tr>
+<tr id="fr-s-cachemax"><th scope="row"><code>cachemax</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>taille maximale de cache/ en Go (les ma&#238;tres les plus anciens partent en premier)</td></tr>
+<tr id="fr-s-embed"><th scope="row"><code>embed</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>1 = embarque le shader, ses passes et les r&#233;glages dans la balise de la vid&#233;o pour que --reproduce puisse la refaire</td></tr>
+<tr id="fr-s-animpreview"><th scope="row"><code>animpreview</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>aper&#231;u anim&#233; de la vid&#233;o termin&#233;e : off, gif ou webp (une courte boucle &#224; c&#244;t&#233; de la vid&#233;o)</td></tr>
+<tr id="fr-s-source"><th scope="row"><code>source</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>mode effet : une vid&#233;o, une image, une s&#233;quence (<code>img_%04d.png</code>) ou un dossier, lus comme <code>iChannel0</code> ; taille, cadence, dur&#233;e et son la suivent</td></tr>
+<tr id="fr-s-source2"><th scope="row"><code>source2</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>deuxi&#232;me source, <code>iChannel1</code> : avec un shader qui lit <code>iProgress</code>, une transition de <code>source</code> vers <code>source2</code></td></tr>
+<tr id="fr-s-sourcematch"><th scope="row"><code>sourcematch</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>ce que la source impose quand <code>source</code> est r&#233;gl&#233; : size, fps, duration (une liste) ou none</td></tr>
+<tr id="fr-s-sourceaudio"><th scope="row"><code>sourceaudio</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>1 = reprendre le son de la source (d&#233;faut), 0 = garder le r&#233;glage audio</td></tr>
+<tr id="fr-s-reverse"><th scope="row"><code>reverse</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>1 = jouer la plage de temps &#224; l&#39;envers</td></tr>
+<tr id="fr-s-sourcefps"><th scope="row"><code>sourcefps</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>cadence d&#39;une s&#233;quence d&#39;images utilis&#233;e comme source, en images par seconde (0 = 25)</td></tr>
+<tr id="fr-s-transitionduration"><th scope="row"><code>transitionduration</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>dur&#233;e de la transition entre source et source2, en secondes</td></tr>
+<tr id="fr-s-transitionoffset"><th scope="row"><code>transitionoffset</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>d&#233;cale le d&#233;but de la transition, en secondes (positif = plus tard)</td></tr>
+<tr id="fr-s-parallel"><th scope="row"><code>parallel</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>parties rendues en m&#234;me temps par autant de contextes OpenGL (1 &#224; 16 ; demande chunk, le rendu par parties)</td></tr>
+<tr id="fr-s-farm"><th scope="row"><code>farm</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>dossier partag&#233; d&#39;une ferme de rendu : plusieurs ordinateurs rendent les parties d&#39;une m&#234;me vid&#233;o (demande <code>chunk</code>)</td></tr>
+<tr id="fr-s-farmtimeout"><th scope="row"><code>farmtimeout</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>secondes sans signe de vie apr&#232;s lesquelles le verrou d&#39;une partie de la ferme est repris (ordinateur &#233;teint)</td></tr>
+<tr id="fr-s-bpm"><th scope="row"><code>bpm</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>tempo impos&#233; &#224; l&#39;analyse du son, en temps par minute (0 ou absent = d&#233;tect&#233;)</td></tr>
+<tr id="fr-s-beatsperbar"><th scope="row"><code>beatsperbar</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>temps par mesure (2 &#224; 12), pour les mesures et les sections</td></tr>
+<tr id="fr-s-markers"><th scope="row"><code>markers</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>rep&#232;res tir&#233;s du rythme du son : off, chapters (sections en chapitres du fichier), file (fichiers de rep&#232;res) ou all</td></tr>
+<tr id="fr-s-beatsync"><th scope="row"><code>beatsync</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>montage : coupes pos&#233;es sur la musique : off, beat (temps), bar (mesures) ou section</td></tr>
+<tr id="fr-s-autocredit"><th scope="row"><code>autocredit</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>1 = &#233;crit le titre et l&#39;auteur du shader sur les premi&#232;res secondes de la vid&#233;o</td></tr>
+<tr id="fr-s-stillformat"><th scope="row"><code>stillformat</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>format de l&#39;image fixe : png | tiff (16 bits par canal avec depth=10)</td></tr>
+<tr id="fr-s-aov"><th scope="row"><code>aov</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>passes de sortie &#233;crites dans une s&#233;quence EXR : nom=bufferB.r;normal=bufferC.rgb;alpha;motion (<code>off</code> efface)</td></tr>
+<tr id="fr-s-exrcompression"><th scope="row"><code>exrcompression</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>compression EXR : none, zips (une ligne par bloc) ou zip (seize lignes, d&#233;faut)</td></tr>
+<tr id="fr-s-exrprecision"><th scope="row"><code>exrprecision</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>pr&#233;cision de la couleur EXR : half (16 bits, d&#233;faut) ou float (32 bits) ; la profondeur et les identifiants sont toujours en 32 bits</td></tr>
+<tr id="fr-s-alphamode"><th scope="row"><code>alphamode</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>alpha &#233;crit dans les PNG, TIFF, DPX et EXR : straight (droit, d&#233;faut) ou premult (couleur multipli&#233;e par l&#39;alpha)</td></tr>
+<tr id="fr-s-depthrange"><th scope="row"><code>depthrange</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>bornes de la profondeur proche:loin : le canal depth.Z est &#233;crit normalis&#233; entre elles et les bornes sont d&#233;clar&#233;es dans l&#39;en-t&#234;te EXR (vide : valeurs brutes)</td></tr>
+<tr id="fr-s-tifffloat"><th scope="row"><code>tifffloat</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>1 = s&#233;quences TIFF &#233;crites par le programme en virgule flottante 32 bits (RGB ou RGBA)</td></tr>
+<tr id="fr-s-vectorblur"><th scope="row"><code>vectorblur</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>flou de mouvement vectoriel de la sortie EXR : part du d&#233;placement entre deux images (0 = aucun, 1 = tout) ; demande une passe de mouvement</td></tr>
+<tr id="fr-s-tile"><th scope="row"><code>tile</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>image fixe : c&#244;t&#233; des tuiles en pixels (0 = automatique)</td></tr>
+<tr id="fr-s-printdpi"><th scope="row"><code>printdpi</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>image fixe PNG : r&#233;solution &#233;crite dans le fichier (points par pouce)</td></tr>
+<tr id="fr-s-alpha"><th scope="row"><code>alpha</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td><code>1</code> garde le canal alpha du shader (ProRes 4444, VP9 WebM, WebP, PNG, TIFF, EXR)</td></tr>
+<tr id="fr-s-hdr"><th scope="row"><code>hdr</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>sortie HDR : <code>pq</code> (HDR10) ou <code>hlg</code> ; <code>off</code> pour aucune</td></tr>
+<tr id="fr-s-hdrpeak"><th scope="row"><code>hdrpeak</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>MaxCLL d&#233;clar&#233; en cd/m&#178; (1000 par d&#233;faut)</td></tr>
+<tr id="fr-s-hdrfall"><th scope="row"><code>hdrfall</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>MaxFALL d&#233;clar&#233; en cd/m&#178; (400 par d&#233;faut)</td></tr>
+<tr id="fr-s-hdrwhite"><th scope="row"><code>hdrwhite</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>luminance en cd/m&#178; d&#39;un blanc de shader &#224; 1,0 (203 par d&#233;faut)</td></tr>
+<tr id="fr-s-interp"><th scope="row"><code>interp</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>cadence de sortie par interpolation (0 = aucune) ; le rendu se fait &#224; <code>fps</code></td></tr>
+<tr id="fr-s-scale"><th scope="row"><code>scale</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>taille de sortie : <code>1920x1080</code>, un facteur (<code>2</code>, <code>0.5x</code>) ; vide = la taille du rendu</td></tr>
+<tr id="fr-s-scalefilter"><th scope="row"><code>scalefilter</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>filtre de mise &#224; l&#39;&#233;chelle : <code>lanczos</code>, <code>bicubic</code>, <code>bilinear</code>, <code>area</code> ou <code>neighbor</code></td></tr>
+<tr id="fr-s-loudnorm"><th scope="row"><code>loudnorm</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>normalisation du son en LUFS, par exemple <code>-16</code> (0 ou <code>off</code> = aucune)</td></tr>
+<tr id="fr-s-title"><th scope="row"><code>title</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>texte dessin&#233; au milieu de l&#39;image pendant les premi&#232;res secondes</td></tr>
+<tr id="fr-s-credit"><th scope="row"><code>credit</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>texte dessin&#233; en bas &#224; gauche pendant les premi&#232;res secondes</td></tr>
+<tr id="fr-s-titledur"><th scope="row"><code>titledur</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>dur&#233;e en secondes de <code>title</code> et <code>credit</code> (3 par d&#233;faut)</td></tr>
+<tr id="fr-s-post"><th scope="row"><code>post</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>effets de post-traitement, par ex. bloom:0.4,grain,vignette (sharpen chroma bloom contrast saturation hue vignette grain ; quantit&#233; apr&#232;s les deux-points)</td></tr>
+<tr id="fr-s-lut"><th scope="row"><code>lut</code></th><td><em>&#233;crite seulement quand elle n&#39;a plus sa valeur par d&#233;faut</em></td><td>LUT couleur au format .cube appliqu&#233;e apr&#232;s les effets (1D ou 3D, chemin relatif au shader)</td></tr>
+</tbody></table></div>
+<p>L&#39;&#233;dition Pro ajoute ses propres cl&#233;s (sc&#232;ne 3D, signaux et donn&#233;es, couleur et qualit&#233;, habillage et diffusion, performance) : elles sont list&#233;es dans la fen&#234;tre des r&#233;glages Pro, un champ par cl&#233;.</p>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

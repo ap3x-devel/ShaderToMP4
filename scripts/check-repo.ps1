@@ -253,6 +253,11 @@ if ((Test-Path $refExe) -and (Test-Path docs\reference)) {
   }
 }
 
+# Site : pages produites par scripts\make-site.ps1 a jour, liens, structure et contrastes (le navigateur est essaye par scripts\check-site.ps1 seul et par l'integration continue)
+Section "Site"
+$siteOut = @(& powershell -NoProfile -ExecutionPolicy Bypass -File scripts\check-site.ps1 -NoBrowser)
+if ($LASTEXITCODE -ne 0) { foreach ($l in $siteOut) { if ($l -match 'PROBLEME') { Fail ("site : " + ($l -replace '^\s*PROBLEME : ', '')) } } }
+
 # --- 5. Portabilite -------------------------------------------------------------------------------
 Section "Portabilite"
 $banned = 'RegOpenKey|RegCreateKey|RegSetValue|RegQueryValue|RegDeleteKey|RegDeleteValue|SHGetFolderPath|SHGetKnownFolderPath|CSIDL_|APPDATA|SHGetSpecialFolder'

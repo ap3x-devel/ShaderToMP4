@@ -1,0 +1,147 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../" data-title-en="Command line - ShaderToMP4" data-title-fr="Ligne de commande - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Command line - ShaderToMP4</title>
+<meta name="description" content="The command-line options of ShaderToMP4.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../reference/index.html" aria-current="page"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a></p>
+<div class="layout">
+<nav class="side" aria-label="Reference / R&#233;f&#233;rence"><ul>
+<li><a href="settings.html"><span lang="en" data-lang="en">Settings</span><span lang="fr" data-lang="fr">R&#233;glages</span></a></li>
+<li><a href="project.html"><span lang="en" data-lang="en">Project file</span><span lang="fr" data-lang="fr">Fichier projet</span></a></li>
+<li><a href="cli.html" aria-current="page"><span lang="en" data-lang="en">Command line</span><span lang="fr" data-lang="fr">Ligne de commande</span></a></li>
+</ul></nav>
+<article class="prose">
+<h1><span lang="en" data-lang="en">Command line</span><span lang="fr" data-lang="fr">Ligne de commande</span></h1>
+<div lang="en" data-lang="en">
+<p>The options of <code>ShaderToMP4</code>, written by the program itself (<code>ShaderToMP4 --dump-reference=cli</code>); they are the lines of <code>--help</code>. Any setting of the settings reference can be given as <code>--key=value</code>.</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Option, Description"><table class="ref"><thead><tr><th scope="col">Option</th><th scope="col">Description</th></tr></thead><tbody>
+<tr id="o-shader-files"><th scope="row"><code>shader files</code></th><td>Add the files and start rendering right away</td></tr>
+<tr id="o-selftest"><th scope="row"><code>--selftest</code></th><td>Render the reference shaders and compare them (see tests/)</td></tr>
+<tr id="o-update"><th scope="row"><code>--update</code></th><td>With --selftest: rewrite the reference images</td></tr>
+<tr id="o-render"><th scope="row"><code>--render</code></th><td>Render the files without a window (any system, see below)</td></tr>
+<tr id="o-quiet"><th scope="row"><code>--quiet</code></th><td>No message box (--selftest, --get-ffmpeg)</td></tr>
+<tr id="o-get-ffmpeg"><th scope="row"><code>--get-ffmpeg</code></th><td>Download and install ffmpeg, without a window</td></tr>
+<tr id="o-version"><th scope="row"><code>--version</code></th><td>Show the version, copyright and license</td></tr>
+<tr id="o-help"><th scope="row"><code>--help</code></th><td>Show this help</td></tr>
+<tr id="o-key-value"><th scope="row"><code>--key=value</code></th><td>Any setting of the settings table (--width=1280 --codec=h265 --container=mp4 --crf=18 --outdir=C:\out ...)</td></tr>
+<tr id="o-profile-f"><th scope="row"><code>--profile=f</code></th><td>Apply an .ini profile (the --key=value options come after it)</td></tr>
+<tr id="o-progress-json-text-none"><th scope="row"><code>--progress=json|text|none</code></th><td>JSON lines (start, progress, log, done, error, end) or a line every 10 %</td></tr>
+<tr id="o-png"><th scope="row"><code>--png</code></th><td>Render a single PNG image at the start time</td></tr>
+<tr id="o-thumb-s"><th scope="row"><code>--thumb[=s]</code></th><td>A cover thumbnail PNG (1280 pixels wide at most) at second s, by default the middle of the range</td></tr>
+<tr id="o-verify"><th scope="row"><code>--verify</code></th><td>Re-read finished videos: duration, rate, frame count, SHA-256, and compare with the render report; exit code 7 on a mismatch</td></tr>
+<tr id="o-beats-list-clear-sound"><th scope="row"><code>--beats[=list|clear] sound...</code></th><td>analyse the tempo, beats, bars and sections of sound files (writes &lt;sound&gt;.beats.json next to each; list prints the times, clear removes the corrections made by hand)</td></tr>
+<tr id="o-parallel-n-farm-folder-farm-status-folder"><th scope="row"><code>--parallel=N, --farm=folder, --farm-status folder</code></th><td>render the parts of a video with N OpenGL contexts, or with several computers on a shared folder (same command on each; --farm-status lists the parts done, in progress and free); needs --chunk; --benchmark --parallel measures the gain</td></tr>
+<tr id="o-source-file-folder-img-04d-png-source2-file"><th scope="row"><code>--source=file|folder|img_%04d.png, --source2=file</code></th><td>apply the shader to a video, an image, a sequence or every file of a folder (iChannel0; the second source is iChannel1 and iProgress runs from 0 to 1 for transitions); size, rate, duration, sound, subtitles and chapters come from the source (--sourcematch=..., --sourceaudio=0), --reverse=1 plays backwards</td></tr>
+<tr id="o-aov-depth-bufferb-r-normal-bufferc-rgb-alpha-motion-exrcompression-none-zips-zip-exrprecision-half-float-alphamode-straight-premult-depthrange-near-far-tifffloat-1"><th scope="row"><code>--aov=depth=bufferB.r;normal=bufferC.rgb;alpha;motion, --exrcompression=none|zips|zip, --exrprecision=half|float, --alphamode=straight|premult, --depthrange=near:far, --tifffloat=1</code></th><td>multilayer OpenEXR written by the program (container exr); --exr-info file|folder lists the layers, --depthmap file|folder [--depthinvert] writes a 16-bit depth map</td></tr>
+<tr id="o-reproduce"><th scope="row"><code>--reproduce</code></th><td>Extract the source embedded in a video (embed=1) and render it again into &lt;video&gt;_reproduced/</td></tr>
+<tr id="o-export-html"><th scope="row"><code>--export-html</code></th><td>Write a standalone HTML page (WebGL 2) from the shader and its passes instead of a video</td></tr>
+<tr id="o-cache-purge"><th scope="row"><code>--cache-purge</code></th><td>Empty the lossless master cache (cache/ next to the program)</td></tr>
+<tr id="o-check-list"><th scope="row"><code>--check[=list]</code></th><td>Quality check without rendering: flash, nan, flicker, alias, portability (all by default); exit code 6 when something is found</td></tr>
+<tr id="o-compare-a-b"><th scope="row"><code>--compare a b</code></th><td>Compare two shaders (--compare-video=sbs|curtain|diff, --tolerance=N); exit code 7 when they differ</td></tr>
+<tr id="o-golden-record-verify"><th scope="row"><code>--golden=record|verify</code></th><td>Keep reference frames of a shader in golden/ or check against them (exit code 7 on a change)</td></tr>
+<tr id="o-dry-run"><th scope="row"><code>--dry-run</code></th><td>Estimate the render time (a few measured seconds per file) without writing the video</td></tr>
+<tr id="o-png-best"><th scope="row"><code>--png=best</code></th><td>Smart thumbnail: the three richest frames of the range, written as name_thumb.png, name_thumb2.png, name_thumb3.png</td></tr>
+<tr id="o-cubefaces-n"><th scope="row"><code>--cubefaces[=n]</code></th><td>The six faces (n x n pixels) of a cubemap of a mainVR shader: name_px.png, _nx, _py, _ny, _pz, _nz</td></tr>
+<tr id="o-heatmap-cxr"><th scope="row"><code>--heatmap[=CxR]</code></th><td>Cost map: the GPU time of each zone of the screen (16x9 by default) as name_heat.png</td></tr>
+<tr id="o-samples-n"><th scope="row"><code>--samples=N</code></th><td>With --png: average N independent samples of the same instant (path-traced shaders)</td></tr>
+<tr id="o-find-loop-s"><th scope="row"><code>--find-loop[=s]</code></th><td>Search the period of the shader over s seconds (no render) and print the duration= / loop= to use</td></tr>
+<tr id="o-sheet-cxr"><th scope="row"><code>--sheet=CxR</code></th><td>A contact sheet PNG of C x R thumbnails taken evenly over the duration (--sheet=4x3)</td></tr>
+<tr id="o-param-name-value"><th scope="row"><code>--param=name=value</code></th><td>Set a shader parameter (// uniform): --param=speed=2.5 or keyframes --param=&quot;speed=smooth 0:1 ; 4:3&quot;</td></tr>
+<tr id="o-watch-dir"><th scope="row"><code>--watch=dir</code></th><td>Keep running and render every .glsl / .txt that appears in the folder (stop with Ctrl+C; --watch-count=N stops after N renders)</td></tr>
+<tr id="o-watch-move"><th scope="row"><code>--watch-move</code></th><td>With --watch: move each shader (and its passes) to done/ or failed/ after its render; profile.ini in the folder or a sub-folder sets its settings</td></tr>
+<tr id="o-log-file"><th scope="row"><code>--log=file</code></th><td>Also write everything that is displayed, with a time stamp, to this file (appended)</td></tr>
+<tr id="o-report-json-text"><th scope="row"><code>--report=json|text</code></th><td>Write a render report (time, speed, bottleneck, size, warnings) next to each video</td></tr>
+<tr id="o-a-json-file"><th scope="row"><code>a .json file</code></th><td>An export of a Shadertoy shader (Export button of the page): imported into the &quot;shadertoy&quot; folder, then rendered. No account or key needed</td></tr>
+<tr id="o-diagnostic"><th scope="row"><code>--diagnostic</code></th><td>Print system, graphics card, OpenGL, ffmpeg and encoders (no path, no personal data) for a bug report</td></tr>
+<tr id="o-benchmark"><th scope="row"><code>--benchmark</code></th><td>Measure frames per second by resolution and encoder (--seconds=N, --quick, --full, --json, --compare=file, --max-drop=N)</td></tr>
+<tr id="o-license-info"><th scope="row"><code>--license-info</code></th><td>Show the license status and the file expected next to the program</td></tr>
+<tr id="o-check-update-url-download"><th scope="row"><code>--check-update[=url] [--download]</code></th><td>Ask GitHub for the latest version (only when you run this); exit code 8 when a newer one exists; --download saves the installer in updates/ after checking its SHA-256, installs nothing</td></tr>
+</tbody></table></div>
+<p>Exit codes: 0 all done, 1 a render failed, 2 invalid command line, 3 no OpenGL 3.3, 4 ffmpeg not found, 5 benchmark regression, 6 --check found something, 7 --compare / --golden found a difference</p>
+</div>
+<div lang="fr" data-lang="fr">
+<p>Les options de <code>ShaderToMP4</code>, &#233;crites par le programme lui-m&#234;me (<code>ShaderToMP4 --dump-reference=cli</code>) ; ce sont les lignes de <code>--help</code>. Tout r&#233;glage de la r&#233;f&#233;rence des r&#233;glages peut &#234;tre donn&#233; sous la forme <code>--cl&#233;=valeur</code>.</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Option, Description"><table class="ref"><thead><tr><th scope="col">Option</th><th scope="col">Description</th></tr></thead><tbody>
+<tr id="fr-o-fichiers-shader"><th scope="row"><code>fichiers shader</code></th><td>Ajoute les fichiers et lance le rendu tout de suite</td></tr>
+<tr id="fr-o-selftest"><th scope="row"><code>--selftest</code></th><td>Rend les shaders de r&#233;f&#233;rence et les compare (voir tests/)</td></tr>
+<tr id="fr-o-update"><th scope="row"><code>--update</code></th><td>Avec --selftest : r&#233;&#233;crit les images de r&#233;f&#233;rence</td></tr>
+<tr id="fr-o-render"><th scope="row"><code>--render</code></th><td>Rend les fichiers sans fen&#234;tre (tous les syst&#232;mes, voir plus bas)</td></tr>
+<tr id="fr-o-quiet"><th scope="row"><code>--quiet</code></th><td>Aucune bo&#238;te de message (--selftest, --get-ffmpeg)</td></tr>
+<tr id="fr-o-get-ffmpeg"><th scope="row"><code>--get-ffmpeg</code></th><td>T&#233;l&#233;charge et installe ffmpeg, sans fen&#234;tre</td></tr>
+<tr id="fr-o-version"><th scope="row"><code>--version</code></th><td>Affiche la version, le copyright et la licence</td></tr>
+<tr id="fr-o-help"><th scope="row"><code>--help</code></th><td>Affiche cette aide</td></tr>
+<tr id="fr-o-cl-valeur"><th scope="row"><code>--cl&#233;=valeur</code></th><td>Tout r&#233;glage du tableau des r&#233;glages (--width=1280 --codec=h265 --container=mp4 --crf=18 --outdir=C:\sortie ...)</td></tr>
+<tr id="fr-o-profile-f"><th scope="row"><code>--profile=f</code></th><td>Applique un profil .ini (les options --cl&#233;=valeur passent apr&#232;s)</td></tr>
+<tr id="fr-o-progress-json-text-none"><th scope="row"><code>--progress=json|text|none</code></th><td>Lignes JSON (start, progress, log, done, error, end) ou une ligne tous les 10 %</td></tr>
+<tr id="fr-o-png"><th scope="row"><code>--png</code></th><td>Rend une seule image PNG au temps de d&#233;part</td></tr>
+<tr id="fr-o-thumb-s"><th scope="row"><code>--thumb[=s]</code></th><td>Une vignette de couverture PNG (1280 pixels de large au plus) &#224; la seconde s, par d&#233;faut au milieu de la plage</td></tr>
+<tr id="fr-o-verify"><th scope="row"><code>--verify</code></th><td>Relit des vid&#233;os termin&#233;es : dur&#233;e, cadence, nombre d&#39;images, SHA-256, et les compare au rapport de rendu ; code de sortie 7 en cas de diff&#233;rence</td></tr>
+<tr id="fr-o-beats-list-clear-son"><th scope="row"><code>--beats[=list|clear] son...</code></th><td>analyse le tempo, les temps, les mesures et les sections de fichiers son (&#233;crit &lt;son&gt;.beats.json &#224; c&#244;t&#233; de chacun ; list affiche les instants, clear retire les corrections faites &#224; la main)</td></tr>
+<tr id="fr-o-parallel-n-farm-dossier-farm-status-dossier"><th scope="row"><code>--parallel=N, --farm=dossier, --farm-status dossier</code></th><td>rend les parties d&#39;une vid&#233;o avec N contextes OpenGL, ou avec plusieurs ordinateurs sur un dossier partag&#233; (la m&#234;me commande sur chacun ; --farm-status liste les parties faites, en cours et libres) ; demande --chunk ; --benchmark --parallel mesure le gain</td></tr>
+<tr id="fr-o-source-fichier-dossier-img-04d-png-source2-fichier"><th scope="row"><code>--source=fichier|dossier|img_%04d.png, --source2=fichier</code></th><td>applique le shader &#224; une vid&#233;o, une image, une s&#233;quence ou &#224; chaque fichier d&#39;un dossier (iChannel0 ; la deuxi&#232;me source est iChannel1 et iProgress va de 0 &#224; 1 pour les transitions) ; taille, cadence, dur&#233;e, son, sous-titres et chapitres viennent de la source (--sourcematch=..., --sourceaudio=0), --reverse=1 joue &#224; l&#39;envers</td></tr>
+<tr id="fr-o-aov-depth-bufferb-r-normal-bufferc-rgb-alpha-motion-exrcompression-none-zips-zip-exrprecision-half-float-alphamode-straight-premult-depthrange-proche-loin-tifffloat-1"><th scope="row"><code>--aov=depth=bufferB.r;normal=bufferC.rgb;alpha;motion, --exrcompression=none|zips|zip, --exrprecision=half|float, --alphamode=straight|premult, --depthrange=proche:loin, --tifffloat=1</code></th><td>OpenEXR multicouche &#233;crit par le programme (conteneur exr) ; --exr-info fichier|dossier liste les couches, --depthmap fichier|dossier [--depthinvert] &#233;crit une carte de profondeur 16 bits</td></tr>
+<tr id="fr-o-reproduce"><th scope="row"><code>--reproduce</code></th><td>Extrait la source embarqu&#233;e dans une vid&#233;o (embed=1) et la rend de nouveau dans &lt;vid&#233;o&gt;_reproduced/</td></tr>
+<tr id="fr-o-export-html"><th scope="row"><code>--export-html</code></th><td>&#201;crit une page HTML autonome (WebGL 2) &#224; partir du shader et de ses passes au lieu d&#39;une vid&#233;o</td></tr>
+<tr id="fr-o-cache-purge"><th scope="row"><code>--cache-purge</code></th><td>Vide le cache des ma&#238;tres sans perte (cache/ &#224; c&#244;t&#233; du programme)</td></tr>
+<tr id="fr-o-check-liste"><th scope="row"><code>--check[=liste]</code></th><td>Contr&#244;le qualit&#233; sans rendu : flash, nan, flicker, alias, portability (tout par d&#233;faut) ; code de sortie 6 si quelque chose est trouv&#233;</td></tr>
+<tr id="fr-o-compare-a-b"><th scope="row"><code>--compare a b</code></th><td>Compare deux shaders (--compare-video=sbs|curtain|diff, --tolerance=N) ; code de sortie 7 s&#39;ils diff&#232;rent</td></tr>
+<tr id="fr-o-golden-record-verify"><th scope="row"><code>--golden=record|verify</code></th><td>Garde des images de r&#233;f&#233;rence d&#39;un shader dans golden/ ou v&#233;rifie qu&#39;elles n&#39;ont pas chang&#233; (code de sortie 7 si elles changent)</td></tr>
+<tr id="fr-o-dry-run"><th scope="row"><code>--dry-run</code></th><td>Estime le temps de rendu (quelques secondes mesur&#233;es par fichier) sans &#233;crire la vid&#233;o</td></tr>
+<tr id="fr-o-png-best"><th scope="row"><code>--png=best</code></th><td>Vignette intelligente : les trois images les plus riches de la plage, &#233;crites en nom_thumb.png, nom_thumb2.png, nom_thumb3.png</td></tr>
+<tr id="fr-o-cubefaces-n"><th scope="row"><code>--cubefaces[=n]</code></th><td>Les six faces (n x n pixels) d&#39;une cubemap d&#39;un shader mainVR : nom_px.png, _nx, _py, _ny, _pz, _nz</td></tr>
+<tr id="fr-o-heatmap-cxr"><th scope="row"><code>--heatmap[=CxR]</code></th><td>Carte du co&#251;t : le temps GPU de chaque zone de l&#39;&#233;cran (16x9 par d&#233;faut) en nom_heat.png</td></tr>
+<tr id="fr-o-samples-n"><th scope="row"><code>--samples=N</code></th><td>Avec --png : moyenne de N &#233;chantillons ind&#233;pendants du m&#234;me instant (shaders &#224; trac&#233; de chemin)</td></tr>
+<tr id="fr-o-find-loop-s"><th scope="row"><code>--find-loop[=s]</code></th><td>Cherche la p&#233;riode du shader sur s secondes (sans rendu) et affiche le duration= / loop= &#224; utiliser</td></tr>
+<tr id="fr-o-sheet-cxl"><th scope="row"><code>--sheet=CxL</code></th><td>Une planche-contact PNG de C x L vignettes tir&#233;es &#224; intervalles &#233;gaux sur la dur&#233;e (--sheet=4x3)</td></tr>
+<tr id="fr-o-param-nom-valeur"><th scope="row"><code>--param=nom=valeur</code></th><td>R&#232;gle un param&#232;tre du shader (// uniform) : --param=vitesse=2.5 ou des images cl&#233;s --param=&quot;vitesse=smooth 0:1 ; 4:3&quot;</td></tr>
+<tr id="fr-o-watch-dossier"><th scope="row"><code>--watch=dossier</code></th><td>Reste actif et rend chaque .glsl / .txt qui appara&#238;t dans le dossier (Ctrl+C pour arr&#234;ter ; --watch-count=N arr&#234;te apr&#232;s N rendus)</td></tr>
+<tr id="fr-o-watch-move"><th scope="row"><code>--watch-move</code></th><td>Avec --watch : d&#233;place chaque shader (et ses passes) vers done/ ou failed/ apr&#232;s son rendu ; un profile.ini dans le dossier ou un sous-dossier r&#232;gle ses param&#232;tres</td></tr>
+<tr id="fr-o-log-fichier"><th scope="row"><code>--log=fichier</code></th><td>&#201;crit aussi tout ce qui est affich&#233;, horodat&#233;, dans ce fichier (ajout en fin de fichier)</td></tr>
+<tr id="fr-o-report-json-text"><th scope="row"><code>--report=json|text</code></th><td>&#201;crit un rapport de rendu (dur&#233;e, cadence, goulot, taille, avertissements) &#224; c&#244;t&#233; de chaque vid&#233;o</td></tr>
+<tr id="fr-o-un-fichier-json"><th scope="row"><code>un fichier .json</code></th><td>Export d&#39;un shader Shadertoy (bouton Export de la page) : import&#233; dans le dossier &#171; shadertoy &#187;, puis rendu. Ni compte ni cl&#233; n&#233;cessaires</td></tr>
+<tr id="fr-o-diagnostic"><th scope="row"><code>--diagnostic</code></th><td>Affiche syst&#232;me, carte graphique, OpenGL, ffmpeg et encodeurs (sans chemin ni donn&#233;e personnelle) pour un rapport de bug</td></tr>
+<tr id="fr-o-benchmark"><th scope="row"><code>--benchmark</code></th><td>Mesure les images par seconde par r&#233;solution et par encodeur (--seconds=N, --quick, --full, --json, --compare=file, --max-drop=N)</td></tr>
+<tr id="fr-o-license-info"><th scope="row"><code>--license-info</code></th><td>Affiche l&#39;&#233;tat de la licence et le fichier attendu &#224; c&#244;t&#233; du programme</td></tr>
+<tr id="fr-o-check-update-url-download"><th scope="row"><code>--check-update[=url] [--download]</code></th><td>Demande &#224; GitHub la derni&#232;re version (seulement quand vous lancez cette commande) ; code de sortie 8 si une plus r&#233;cente existe ; --download enregistre l&#39;installeur dans updates/ apr&#232;s contr&#244;le SHA-256, sans rien installer</td></tr>
+</tbody></table></div>
+<p>Codes de sortie : 0 tout est fait, 1 un rendu a &#233;chou&#233;, 2 ligne de commande invalide, 3 pas d&#39;OpenGL 3.3, 4 ffmpeg introuvable, 5 r&#233;gression du benchmark, 6 --check a trouv&#233; quelque chose, 7 --compare / --golden a trouv&#233; une diff&#233;rence</p>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../" data-title-en="Getting started - ShaderToMP4" data-title-fr="Prise en main - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting started - ShaderToMP4</title>
+<meta name="description" content="Getting started - ShaderToMP4 turns a Shadertoy shader into a video, frame by frame, with ffmpeg. 1. Add a shader: drop a .glsl or .txt file on the window, or press Add">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../guide/index.html" aria-current="page"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a></p>
+<div class="layout">
+<nav class="side" aria-label="Guide"><ul>
+<li><a href="start.html" aria-current="page"><span lang="en" data-lang="en">Getting started</span><span lang="fr" data-lang="fr">Prise en main</span></a></li>
+<li><a href="main.html"><span lang="en" data-lang="en">Main window</span><span lang="fr" data-lang="fr">Fen&#234;tre principale</span></a></li>
+<li><a href="projects.html"><span lang="en" data-lang="en">Projects, queue and shortcuts</span><span lang="fr" data-lang="fr">Projets, file de travaux et raccourcis</span></a></li>
+<li><a href="compat.html"><span lang="en" data-lang="en">Importing and porting Shadertoy shaders</span><span lang="fr" data-lang="fr">Importer et adapter des shaders Shadertoy</span></a></li>
+<li><a href="output.html"><span lang="en" data-lang="en">Output window</span><span lang="fr" data-lang="fr">Fen&#234;tre Sortie</span></a></li>
+<li><a href="params.html"><span lang="en" data-lang="en">Parameters window</span><span lang="fr" data-lang="fr">Fen&#234;tre Param&#232;tres</span></a></li>
+<li><a href="editor.html"><span lang="en" data-lang="en">Editor window</span><span lang="fr" data-lang="fr">Fen&#234;tre &#201;diteur</span></a></li>
+<li><a href="shaders.html"><span lang="en" data-lang="en">Shadertoy shaders, channels and passes</span><span lang="fr" data-lang="fr">Shaders Shadertoy, canaux et passes</span></a></li>
+<li><a href="gallery.html"><span lang="en" data-lang="en">Examples and guided tour</span><span lang="fr" data-lang="fr">Exemples et visite guid&#233;e</span></a></li>
+<li><a href="errors.html"><span lang="en" data-lang="en">When something goes wrong</span><span lang="fr" data-lang="fr">Quand quelque chose ne va pas</span></a></li>
+<li><a href="xlang.html"><span lang="en" data-lang="en">Other shader languages</span><span lang="fr" data-lang="fr">Autres langages de shader</span></a></li>
+<li><a href="glossary.html"><span lang="en" data-lang="en">Glossary</span><span lang="fr" data-lang="fr">Glossaire</span></a></li>
+</ul></nav>
+<article class="prose">
+<h1><span lang="en" data-lang="en">Getting started</span><span lang="fr" data-lang="fr">Prise en main</span></h1>
+<div lang="en" data-lang="en">
+<p>ShaderToMP4 turns a Shadertoy shader into a video, frame by frame, with ffmpeg.</p>
+<ol>
+<li>Add a shader: drop a .glsl or .txt file on the window, or press Add (Ctrl+O). The Examples button offers sixty ready-made ones.</li>
+<li>Choose the size, frame rate, duration and codec in the video settings, or click one of the five preset chips.</li>
+<li>Look at a frame in the Preview card, then press Start (F5). The video is written next to the shader, or in the output folder.</li>
+</ol>
+<p>Nothing is written outside the program folder. Press F1 in any window to read the help of that window.</p>
+</div>
+<div lang="fr" data-lang="fr">
+<p>ShaderToMP4 transforme un shader Shadertoy en vid&#233;o, image par image, gr&#226;ce &#224; ffmpeg.</p>
+<ol>
+<li>Ajoutez un shader : glissez un fichier .glsl ou .txt sur la fen&#234;tre, ou cliquez sur Ajouter (Ctrl+O). Le bouton Exemples en propose soixante, pr&#234;ts &#224; l&#39;emploi.</li>
+<li>Choisissez la taille, la cadence, la dur&#233;e et le codec dans les r&#233;glages vid&#233;o, ou cliquez sur l&#39;une des cinq pastilles de pr&#233;r&#233;glage.</li>
+<li>Regardez une image dans la carte Aper&#231;u, puis cliquez sur D&#233;marrer (F5). La vid&#233;o est &#233;crite &#224; c&#244;t&#233; du shader, ou dans le dossier de sortie.</li>
+</ol>
+<p>Rien n&#39;est &#233;crit en dehors du dossier du programme. Appuyez sur F1 dans n&#39;importe quelle fen&#234;tre pour lire l&#39;aide de cette fen&#234;tre.</p>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

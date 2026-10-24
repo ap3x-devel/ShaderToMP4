@@ -1,0 +1,53 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="" data-title-en="Search - ShaderToMP4" data-title-fr="Rechercher - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search - ShaderToMP4</title>
+<meta name="description" content="Search the guide, the examples and the reference of ShaderToMP4.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="search.html" aria-current="page"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<h1><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></h1>
+<p class="lead"><span lang="en" data-lang="en">Searches the guide, the examples (title, description, code) and the reference. Everything happens in your browser: nothing is sent.</span><span lang="fr" data-lang="fr">Cherche dans le guide, les exemples (titre, description, code) et la référence. Tout se passe dans votre navigateur : rien n&rsquo;est envoyé.</span></p>
+<form id="searchForm" class="search-box" role="search" action="search.html" method="get">
+  <label class="sr" for="q"><span lang="en" data-lang="en">Search the site</span><span lang="fr" data-lang="fr">Rechercher dans le site</span></label>
+  <input id="q" name="q" type="search" autocomplete="off" placeholder="loop, fbm, crf, bufferA...">
+  <button class="btn" type="submit"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></button>
+</form>
+<p id="searchStatus" role="status" aria-live="polite"></p>
+<ul id="results" class="results"></ul>
+<noscript><p class="notice"><span lang="en" data-lang="en">The search needs JavaScript. Without it, use the <a href="guide/index.html">guide</a>, the <a href="gallery/index.html">examples</a> and the <a href="reference/index.html">reference</a>.</span><span lang="fr" data-lang="fr">La recherche a besoin de JavaScript. Sans lui, utilisez le <a href="guide/index.html">guide</a>, les <a href="gallery/index.html">exemples</a> et la <a href="reference/index.html">référence</a>.</span></p></noscript>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3demak-rgb/ShaderToMP4">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+  </div>
+</footer>
+<script src="assets/search-data.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>
