@@ -21,7 +21,7 @@ file(GLOB CORE_SOURCES CONFIGURE_DEPENDS src/core/*.cpp)
 if(WIN32)
     file(GLOB GUI_SOURCES CONFIGURE_DEPENDS src/gui/*.cpp)
     add_executable(ShaderToMP4 WIN32 src/main.cpp ${CORE_SOURCES} ${GUI_SOURCES}
-        src/platform/shared.cpp src/platform/windows/platform_win.cpp res/app.rc)
+        src/platform/shared.cpp src/platform/windows/platform_win.cpp src/platform/windows/localserver.cpp res/app.rc)
     target_include_directories(ShaderToMP4 PRIVATE src res)
     target_compile_options(ShaderToMP4 PRIVATE /utf-8 /MP /EHsc)
     target_link_options(ShaderToMP4 PRIVATE /MANIFEST:NO /Brepro)  # sortie reproductible : pas d horodatage dans l entete
