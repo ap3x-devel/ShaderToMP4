@@ -6,7 +6,7 @@
 
 Format: one section per version, newest first. The section of a tagged version is copied into the release notes.
 
-## Unreleased
+## 3.1.0 — 2026-10-24
 
 ### Added
 
