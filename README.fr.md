@@ -595,6 +595,32 @@ Exemples : catégorie **Autres langages** de la galerie (neuf shaders, trois par
 
 Le programme que vous avez est l'**édition libre** : il est distribué sous GPL-3.0-or-later, toutes ses fonctions marchent, et rien n'est jamais verrouillé ni chronométré. Ce qui est publié sous GPL reste libre pour ceux qui l'ont reçu.
 
+**Comparaison des deux éditions** (✔ = incluse, — = absente de cette édition) :
+
+| Fonction | Édition libre | Édition Pro |
+|---|:---:|:---:|
+| **Licence et prix** | | |
+| Licence | GPL-3.0-or-later | Partagiciel, contrat d'utilisation (EULA) |
+| Prix | Gratuit, pour toujours | 5, 10 ou 15 € une fois, par PayPal |
+| Code source | Publié | Non publié |
+| Limite de durée | Aucune | Aucune : sans licence les fonctions Pro marchent, leur sortie porte un petit filigrane |
+| **Rendu et outils (les deux éditions)** | | |
+| Shaders Shadertoy en vidéo, tous les formats, tampons, son, VR, textures, parties reprenables | ✔ | ✔ |
+| Paramètres animés, post-traitement, HDR, transparence, montage, éditeur | ✔ | ✔ |
+| Projets, file de travaux, historique des rendus, raccourcis, palette de commandes | ✔ | ✔ |
+| Import Shadertoy, rapport de portabilité, shaders HLSL / WGSL / GLSL natif | ✔ | ✔ |
+| Galerie d'exemples, aide, visite guidée | ✔ | ✔ |
+| Ligne de commande, dossier surveillé, benchmark, rapports de rendu | ✔ | ✔ |
+| **Fonctions Pro** | | |
+| Scènes 3D : maillages OBJ / PLY / glTF, caméra, ombres, reflets, calcul GPU | — | ✔ |
+| Outils d'édition : annuler / rétablir, éditeurs de courbes, de temps et de montage, repères d'écran | — | ✔ |
+| Signaux MIDI et de données qui pilotent le shader | — | ✔ |
+| Couleur : courbe de tons, espaces colorimétriques, chaînes de LUT, profil ICC | — | ✔ |
+| Qualité : débruitage, palette et tramage du GIF | — | ✔ |
+| Habillage et diffusion : calques, sous-titres, cartons, livrables | — | ✔ |
+| Performance : cache des shaders, décodage vidéo matériel, budget mémoire, aperçu progressif | — | ✔ |
+| Fenêtre des réglages Pro : un champ pour chaque réglage Pro, préréglages Pro | — | ✔ |
+
 L'**édition Pro** (les versions qui ajoutent les fonctions Pro, après la 2.2) est un shareware sous le contrat d'utilisation [EULA.fr.md](EULA.fr.md) :
 
 - **Sans limite de durée.** Sans licence, les fonctions Pro restent utilisables ; une sortie qui en utilise une porte un petit filigrane sur sa couleur (les passes de données — profondeur, identifiants, mouvement — ne sont jamais touchées). Une sortie qui n'utilise aucune fonction Pro n'en porte jamais. Le journal et les métadonnées du fichier disent quand un filigrane a été appliqué.

@@ -595,6 +595,32 @@ Examples: category **Other languages** of the examples gallery (nine shaders, th
 
 The program you have is the **free edition**: it is distributed under the GPL-3.0-or-later, every function works, and nothing is ever locked or timed. What is published under the GPL stays free for those who received it.
 
+**Comparison of the two editions** (✔ = included, — = not in this edition):
+
+| Function | Free edition | Pro edition |
+|---|:---:|:---:|
+| **Licence and price** | | |
+| License | GPL-3.0-or-later | Shareware, user agreement (EULA) |
+| Price | Free, for good | 5, 10 or 15 € once, by PayPal |
+| Source code | Published | Not published |
+| Time limit | None | None: without a license the Pro functions still work, their output carries a small watermark |
+| **Rendering and tools (both editions)** | | |
+| Shadertoy shaders to video, every format, buffers, sound, VR, textures, parts that resume | ✔ | ✔ |
+| Animated parameters, post-processing, HDR, transparency, montage, editor | ✔ | ✔ |
+| Projects, job queue, render history, shortcuts, command palette | ✔ | ✔ |
+| Shadertoy import, portability report, HLSL / WGSL / native GLSL shaders | ✔ | ✔ |
+| Example gallery, help, first-launch tour | ✔ | ✔ |
+| Command line, watch folder, benchmark, render reports | ✔ | ✔ |
+| **Pro functions** | | |
+| 3D scenes: OBJ / PLY / glTF meshes, camera, shadows, reflections, GPU compute | — | ✔ |
+| Editing tools: undo and redo, curve, time curve and montage editors, screen guides | — | ✔ |
+| MIDI and data signals driving the shader | — | ✔ |
+| Colour: tone mapping, colour spaces, LUT chains, ICC profile | — | ✔ |
+| Quality: denoising, GIF palette and dithering | — | ✔ |
+| Dressing and delivery: layers, subtitles, title cards, deliverables | — | ✔ |
+| Performance: shader cache, hardware video decoding, memory budget, progressive preview | — | ✔ |
+| Pro settings window: a field for every Pro setting, Pro presets | — | ✔ |
+
 The **Pro edition** (the versions that add the Pro features, after 2.2) is shareware under the user agreement [EULA.md](EULA.md):
 
 - **No time limit.** Without a license, the Pro features stay usable; an output that uses one carries a small watermark on its colour (the data passes — depth, identifiers, motion — are never touched). An output that uses no Pro feature never has one. The log and the file metadata say when a watermark was applied.
