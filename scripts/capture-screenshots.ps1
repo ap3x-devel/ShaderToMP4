@@ -150,6 +150,9 @@ try {
     [System.Windows.Forms.SendKeys]::SendWait("pr"); Start-Sleep -Milliseconds 600
     Shot ([Cap]::FindWindow("ShaderToMP4Palette", [NullString]::Value)) "$out\palette.png"
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 500
+    Cmd $ID.ID_IMPORT_ST; Start-Sleep -Seconds 2
+    Shot ([Cap]::FindWindow("ShaderToMP4Import", [NullString]::Value)) "$out\import.png"
+    Close-Wnd "ShaderToMP4Import"
     Cmd $ID.ID_HISTORY; Start-Sleep -Seconds 2
     Shot ([Cap]::FindWindow("ShaderToMP4History", [NullString]::Value)) "$out\history.png"
     Close-Wnd "ShaderToMP4History"

@@ -74,6 +74,10 @@ bin\ShaderToMP4.exe --fuzz=json           # one target
 
 Every reader of a file or a text written in the program (JSON, `.montage`, `.ini`, `.cube`, EXR, floating-point TIFF, the `.beats.json` sheet, `jobs\*.ini`, `queue.txt`, expressions, time curves...) is fed damaged inputs; the exit code is 0 when none crashes, loops for more than 8 seconds or throws (97 and 98 otherwise). The input being tried is always in `fuzz_tmp\fuzz_last_<target>.*`: after a crash it is the faulty case. Copy it to `tests\fuzz\<target>\` so it is replayed from then on. A new reader must get its own target (`core\fuzz.cpp`, `registerFuzzTarget`).
 
+### Compatibility corpus
+
+`tests\compat` holds 113 original shaders that check themselves (green when right, red otherwise; `// expect=refused` marks the ones the program must refuse, `// expect=refused fix` the ones whose corrected copy must render). Pass files (`name.bufferA.glsl`...) sit next to the shader they belong to. The self-test renders all of them and prints the counts; `bin\ShaderToMP4.exe --selftest-compat` runs only this corpus and writes `tests\report.txt`. A new shader is a new file in that folder: keep the line `// expect=...` and a green result as the only success.
+
 ### Memory errors (AddressSanitizer)
 
 ```

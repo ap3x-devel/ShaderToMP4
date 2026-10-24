@@ -5,6 +5,7 @@
 #include "core/i18n.h"
 #include "core/util.h"
 #include "core/batches.h"
+#include "core/convert.h"
 #include "ui_theme.h"
 
 int indexOfId(int id) {
@@ -146,6 +147,7 @@ void showListMenu() {
         AppendMenuW(m, MF_POPUP, (UINT_PTR)sub, TX("ui.menu.priority").c_str());
     }
     AppendMenuW(m, MF_STRING, 10, TX("ui.menu.job_log").c_str());
+    AppendMenuW(m, MF_STRING, 11, TX("ui.menu.port_check").c_str());
     AppendMenuW(m, MF_SEPARATOR, 0, nullptr);
     AppendMenuW(m, MF_STRING | en, 4, TX("ui.menu.render_selection").c_str());
     AppendMenuW(m, MF_STRING, 8, TX("ui.menu.edit").c_str());
@@ -184,6 +186,7 @@ void showListMenu() {
     else if (cmd == 8) showEditor(g.wnd);
     else if (cmd == 9) toggleHoldSelected();
     else if (cmd == 10) openJobLog();
+    else if (cmd == 11) portabilityCheckSelected();
     else if (cmd >= 51 && cmd <= 53) setPriorityOfSelected(cmd == 51 ? 1 : cmd == 52 ? 0 : -1);
     else if (cmd > 20 && cmd <= 20 + kBatchCount) setBatchOfSelected(cmd - 20);
     else if (cmd == 30) setBatchOfSelected(0);
@@ -305,6 +308,35 @@ void openJobLog() {
         return;
     }
     ShellExecuteW(g.wnd, L"open", L"notepad.exe", (L"\"" + log + L"\"").c_str(), nullptr, SW_SHOWNORMAL);
+}
+
+// Rapport de portabilite : chaque probleme avec sa correction ; s'il y en a de mecaniques, une copie corrigee (<nom>.fixed.glsl et ses passes) est proposee, a cote
+// de l'original qui n'est jamais modifie, et ajoutee a la liste
+void portabilityCheckSelected() {
+    const std::wstring shader = selectedShaderPath();
+    if (shader.empty()) return;
+    FixedCopy fc;
+    std::wstring err;
+    if (!portabilityCopy(shader, L"", fc, err)) {
+        appendLog(TXF("log.error", err.c_str()));
+        return;
+    }
+    appendLog(TXF("log.port_header", shader.c_str()));
+    if (fc.lines.empty()) {
+        appendLog(L"  " + TX("port.none"));
+        return;
+    }
+    for (const auto& l : fc.lines) appendLog(L"  " + l);
+    if (fc.fixable == 0) return;  // rien de mecanique : le rapport suffit
+    if (MessageBoxW(g.wnd, TXF("ui.port.ask", fc.fixable).c_str(), TX("ui.port.title").c_str(), MB_YESNO | MB_ICONQUESTION) != IDYES) return;
+    const std::wstring stem = shader.substr(0, shader.find_last_of(L'.')) + L".fixed";
+    FixedCopy made;
+    if (!portabilityCopy(shader, stem, made, err)) {
+        appendLog(TXF("log.error", err.c_str()));
+        return;
+    }
+    for (const auto& f : made.files) appendLog(L"  " + TXF("port.written", f.c_str()));
+    if (!made.files.empty()) addFiles({made.files[0]});
 }
 
 // Glisser les travaux selectionnes : un trait montre l'endroit ou ils seront deposes

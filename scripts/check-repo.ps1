@@ -217,6 +217,16 @@ foreach ($pair in @(@("CHANGELOG.md", "README.md", "Unreleased"), @("CHANGELOG.f
   if (($log -match ('(?m)^## ' + $pair[2])) -and ($readme -notmatch ('\| ' + $pair[2]))) { Fail "section non publiee du $($pair[0]) absente du tableau des fonctions par version de $($pair[1])" }
 }
 
+# Le corpus de compatibilite : le nombre de shaders annonce par le README est celui du dossier tests\compat (les fichiers de passes ont un deuxieme point)
+if (Test-Path tests\compat) {
+  $corpus = @(Get-ChildItem tests\compat -Filter *.glsl | Where-Object { $_.Name.Split('.').Count -eq 2 }).Count
+  foreach ($r in @("README.md", "README.fr.md")) {
+    if (-not (Test-Path $r)) { continue }
+    $m = [regex]::Match((Get-Content $r -Raw -Encoding UTF8), 'tests/compat` (?:holds|contient) (\d+)')
+    if (-not $m.Success -or [int]$m.Groups[1].Value -ne $corpus) { Fail "le $r annonce un autre nombre de shaders que tests\compat ($corpus)" }
+  }
+}
+
 # --- 5. Portabilite -------------------------------------------------------------------------------
 Section "Portabilite"
 $banned = 'RegOpenKey|RegCreateKey|RegSetValue|RegQueryValue|RegDeleteKey|RegDeleteValue|SHGetFolderPath|SHGetKnownFolderPath|CSIDL_|APPDATA|SHGetSpecialFolder'

@@ -24,6 +24,8 @@ const std::vector<ActionDef>& baseTable() {
         {"project_open", "shortcut.action.project_open", ID_PROJ_OPEN, "Ctrl+Shift+O", false},
         {"project_save", "shortcut.action.project_save", ID_PROJ_SAVE, "Ctrl+S", false},
         {"project_saveas", "shortcut.action.project_saveas", ID_PROJ_SAVEAS, "Ctrl+Shift+S", false},
+        {"import_shadertoy", "shortcut.action.import_shadertoy", ID_IMPORT_ST, "Ctrl+Shift+I", false},
+        {"port_check", "shortcut.action.port_check", ID_PORT_CHECK, "Ctrl+Shift+C", false},
         {"add", "shortcut.action.add", ID_ADD, "Ctrl+O", false},
         {"remove", "shortcut.action.remove", ID_REMOVE, "", false},
         {"clear", "shortcut.action.clear", ID_CLEAR, "", false},

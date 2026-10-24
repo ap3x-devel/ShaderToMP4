@@ -174,6 +174,8 @@ void showProjectMenu() {
     AppendMenuW(m, MF_STRING, ID_PROJ_SAVE, menuText("project_save").c_str());
     AppendMenuW(m, MF_STRING, ID_PROJ_SAVEAS, menuText("project_saveas").c_str());
     AppendMenuW(m, MF_SEPARATOR, 0, nullptr);
+    AppendMenuW(m, MF_STRING | idle, ID_IMPORT_ST, menuText("import_shadertoy").c_str());
+    AppendMenuW(m, MF_STRING, ID_PORT_CHECK, menuText("port_check").c_str());
     AppendMenuW(m, MF_STRING, ID_HISTORY, menuText("history").c_str());
     {  // outils de l'apercu
         HMENU sub = CreatePopupMenu();

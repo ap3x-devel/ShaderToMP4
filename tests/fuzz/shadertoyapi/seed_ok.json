@@ -1,0 +1,1 @@
+{"Shader":{"info":{"id":"abc123","name":"t"},"renderpass":[{"inputs":[{"id":1,"ctype":"music","src":"","channel":0}],"outputs":[],"code":"void mainImage(out vec4 o,in vec2 p){o=vec4(1);}","name":"Image","type":"image"}]}}

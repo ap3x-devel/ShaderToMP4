@@ -18,6 +18,10 @@
 #include "quality.h"
 #include "queue.h"
 #include "project.h"
+#include "convert.h"
+#include "compat.h"
+#include "shadertoy_api.h"
+#include "shadertoy_import.h"
 #include "history.h"
 #include "keys.h"
 #include "rhythm.h"
@@ -128,6 +132,25 @@ std::vector<FuzzTarget> builtins() {
                      loadHistory(env.dir);
                      HistoryEntry e;
                      parseHistoryLine(in, e);
+                 }});
+    t.push_back({"portability", L".glsl", {"#version 100\nprecision mediump float;\nuniform vec2 resolution;\nuniform float time;\nvarying vec2 vUv;\nvoid main() {\n    gl_FragColor = vec4(texture2D(tex, vUv).rgb, 1.0);\n}\n", "uniform float iTime;\nvoid mainImage(out vec4 o, in vec2 p) { o = vec4(iGlobalTime); }\n", "out vec4 c;\nvoid main(){ c = textureCube(s, vec3(gl_FragCoord.xy, 0.0)); }", "void main("}, nullptr,
+                 [](const std::string& in, const FuzzEnv&) {
+                     const PortReport r = analyzePortability(in);
+                     for (const PortIssue& is : r.issues) describePortIssue(is);
+                     std::vector<std::wstring> notes;
+                     adaptShaderCode(in, notes);
+                     if (!analyzePortability(r.fixed).issues.empty() && r.issues.empty()) throw std::runtime_error("portability: not stable");
+                 }});
+    t.push_back({"shadertoyapi", L".json", {"{\"Shader\":{\"info\":{\"id\":\"abc123\",\"name\":\"t\"},\"renderpass\":[{\"inputs\":[{\"id\":1,\"ctype\":\"webcam\",\"src\":\"\",\"channel\":0}],\"outputs\":[],\"code\":\"void mainImage(out vec4 o,in vec2 p){o=vec4(1);}\",\"name\":\"Image\",\"type\":\"image\"}]}}", "{\"Error\":\"Invalid API Key\"}", "[1,2,3]", "{\"Shader\":{\"renderpass\":[]}}"}, nullptr,
+                 [](const std::string& in, const FuzzEnv& env) {
+                     std::wstring err;
+                     checkShadertoyAnswer(in, err);
+                     shadertoyId(W(in.substr(0, 200)));
+                     ShadertoyImport res;
+                     ImportMedia media;
+                     media.video = L"v.mp4";
+                     media.mic = L"a.wav";
+                     importShadertoyText(in, env.dir + L"fuzz_import", res, err, media);
                  }});
     t.push_back({"montage", L".montage",{"# montage\nset width=64\nset height=64\nset fps=10\nset codec=h264\nduration=2\na.glsl\n\"a.glsl\" 2 crossfade 0.5\na.glsl 2 cut\na.glsl 2 fade 1\n", "set audio=song.mp3\nset beatsync=bar\na.glsl 4\n"}, nullptr,
                  [](const std::string&, const FuzzEnv& env) {

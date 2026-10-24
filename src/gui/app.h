@@ -26,7 +26,7 @@ enum {
     ID_BITRATE, ID_COLOR, ID_BLUR, ID_LOOP, ID_AUDIO, ID_AUDIOB, ID_FADEIN, ID_FADEOUT, ID_PAUSE, ID_FOLDER, ID_PREVIEW,
     ID_PREVTRK, ID_PREVBTN, ID_ENCODER, ID_PRE0, ID_PRE1, ID_PRE2, ID_PRE3, ID_PRE4, ID_DEPTH, ID_PLAY, ID_ABOUT, ID_LANG, ID_PARAMS, ID_OUTPUT, ID_FILESCOPE, ID_EDITOR, ID_FINDLOOP, ID_BUY, ID_UNDO, ID_REDO, ID_GUIDES, ID_HELP, ID_GALLERY,
     ID_PROJECT, ID_PROJ_NEW, ID_PROJ_OPEN, ID_PROJ_SAVE, ID_PROJ_SAVEAS, ID_HISTORY, ID_PALETTE, ID_SCOPES, ID_HOLD, ID_FREEZE, ID_ZOOMFIT, ID_ZOOM100,
-    ID_KEYS_EDIT, ID_KEYS_RELOAD, ID_JOBLOG, ID_PRIO_UP, ID_PRIO_DOWN, ID_PRIO_NORMAL, ID_MOVE_UP, ID_MOVE_DOWN, ID_RENDER_SEL
+    ID_KEYS_EDIT, ID_KEYS_RELOAD, ID_JOBLOG, ID_PRIO_UP, ID_PRIO_DOWN, ID_PRIO_NORMAL, ID_MOVE_UP, ID_MOVE_DOWN, ID_RENDER_SEL, ID_IMPORT_ST, ID_PORT_CHECK
 };
 constexpr int kRecentProjectBase = 3000;  // identifiants des projets recents du menu Projet (3000 a 3009)
 enum {
@@ -253,6 +253,12 @@ void openProjectDialog();
 bool saveProjectNow(bool saveAs);   // faux si l'utilisateur annule ou si l'ecriture echoue
 void showProjectMenu();             // menu du bouton Projet : projets, historique, outils d'apercu, palette, raccourcis
 void updateTitle();                 // titre de la fenetre : version et nom du projet
+
+// --- import_dialog.cpp : import d'un shader Shadertoy par son identifiant et la cle d'API de l'utilisateur ---
+void showImportShadertoy(HWND owner);
+
+// --- file_list.cpp : rapport de portabilite du shader selectionne (propose une copie corrigee, jamais l'original) ---
+void portabilityCheckSelected();
 
 // --- history_dialog.cpp : historique des rendus ---
 void showHistory(HWND owner);

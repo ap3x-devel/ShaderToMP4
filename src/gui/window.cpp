@@ -1313,6 +1313,8 @@ LRESULT CALLBACK wndProc(HWND hw, UINT msg, WPARAM wp, LPARAM lp) {
                 case ID_SCOPES: showScopes(hw); break;
                 case ID_HOLD: toggleHoldSelected(); break;
                 case ID_RENDER_SEL: startJobs(false, 0, 0, 0, false, true); break;
+                case ID_IMPORT_ST: showImportShadertoy(hw); break;
+                case ID_PORT_CHECK: portabilityCheckSelected(); break;
                 case ID_JOBLOG: openJobLog(); break;
                 case ID_PRIO_UP: setPriorityOfSelected(1); break;
                 case ID_PRIO_NORMAL: setPriorityOfSelected(0); break;

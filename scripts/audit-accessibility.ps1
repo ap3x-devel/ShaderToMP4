@@ -43,7 +43,7 @@ try {
     $next++
   }
   $targets = @(@("main", "ShaderToMP4Main", 0), @("about", "ShaderToMP4About", 157), @("help", "ShaderToMP4Help", 168), @("gallery", "ShaderToMP4Gallery", 169),
-               @("history", "ShaderToMP4History", $ID.ID_HISTORY), @("scopes", "ShaderToMP4Scopes", $ID.ID_SCOPES), @("palette", "ShaderToMP4Palette", $ID.ID_PALETTE))
+               @("history", "ShaderToMP4History", $ID.ID_HISTORY), @("scopes", "ShaderToMP4Scopes", $ID.ID_SCOPES), @("palette", "ShaderToMP4Palette", $ID.ID_PALETTE), @("import", "ShaderToMP4Import", $ID.ID_IMPORT_ST))
   # controles interactifs reconnus par leur classe Windows (le type UI Automation « panneau » des controles systeme depend du client : la classe est sure)
   $interactive = @("Button", "Edit", "ComboBox", "ListBox", "SysListView32", "STSlider", "RICHEDIT50W")
   foreach ($t in $targets) {

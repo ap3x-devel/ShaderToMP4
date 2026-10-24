@@ -74,6 +74,10 @@ bin\ShaderToMP4.exe --fuzz=json           # une seule cible
 
 Chaque lecteur de fichier ou de texte écrit dans le programme (JSON, `.montage`, `.ini`, `.cube`, EXR, TIFF flottant, fiche `.beats.json`, `jobs\*.ini`, `queue.txt`, expressions, courbes de temps...) reçoit des entrées abîmées ; le code de sortie est 0 quand aucune ne plante, ne boucle plus de 8 secondes ni ne lève d'exception (97 et 98 sinon). L'entrée en cours d'essai est toujours dans `fuzz_tmp\fuzz_last_<cible>.*` : après un plantage, c'est le cas fautif. Copiez-la dans `tests\fuzz\<cible>\` pour qu'elle soit rejouée désormais. Un nouveau lecteur doit avoir sa propre cible (`core\fuzz.cpp`, `registerFuzzTarget`).
 
+### Corpus de compatibilité
+
+`tests\compat` contient 113 shaders originaux qui se vérifient eux-mêmes (verts quand c'est juste, rouges sinon ; `// expect=refused` marque ceux que le programme doit refuser, `// expect=refused fix` ceux dont la copie corrigée doit se rendre). Les fichiers de passes (`nom.bufferA.glsl`...) sont à côté du shader auquel ils appartiennent. L'auto-test les rend tous et écrit les comptes ; `bin\ShaderToMP4.exe --selftest-compat` ne lance que ce corpus et écrit `tests\report.txt`. Un nouveau shader est un nouveau fichier dans ce dossier : gardez la ligne `// expect=...` et un résultat vert comme seul succès.
+
 ### Erreurs de mémoire (AddressSanitizer)
 
 ```
