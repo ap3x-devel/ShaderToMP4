@@ -31,7 +31,8 @@ New-Item -ItemType Directory -Force $tmp | Out-Null
 $diag = Join-Path $tmp "diag.txt"
 Start-Process $exeFull -ArgumentList "--diagnostic" -Wait -NoNewWindow -RedirectStandardOutput $diag | Out-Null
 $renderer = ((Get-Content $diag | Select-String "OpenGL" | Where-Object { $_.Line -match "renderer|Moteur|Renderer" } | Select-Object -First 1).Line -replace '^[^:]*:\s*', '')
-$machine = [ordered]@{ renderer = $renderer; processors = [Environment]::ProcessorCount; os = [Environment]::OSVersion.VersionString }
+$cpu = try { (Get-CimInstance Win32_Processor | Select-Object -First 1).Name.Trim() } catch { "" }   # modele du processeur : sur l'integration continue, deux executions n'ont pas la meme machine
+$machine = [ordered]@{ renderer = $renderer; processors = [Environment]::ProcessorCount; cpu = $cpu; os = [Environment]::OSVersion.VersionString }
 
 # --- 1. Banc d'essai ---
 $runs = @()
@@ -103,8 +104,8 @@ Write-Output ($journal | ConvertTo-Json -Depth 6)
 if (-not $Previous) { exit 0 }
 if (-not (Test-Path $Previous)) { Write-Output "Pas de journal precedent ($Previous) : rien a comparer."; exit 0 }
 $old = Get-Content $Previous -Raw | ConvertFrom-Json
-if ($old.machine.renderer -ne $machine.renderer -or [int]$old.machine.processors -ne $machine.processors) {
-  Write-Output "Comparaison sautee : autre poste (precedent : $($old.machine.renderer), $($old.machine.processors) processeurs ; maintenant : $($machine.renderer), $($machine.processors))."
+if ($old.machine.renderer -ne $machine.renderer -or [int]$old.machine.processors -ne $machine.processors -or [string]$old.machine.cpu -ne [string]$machine.cpu) {
+  Write-Output "Comparaison sautee : autre poste (precedent : $($old.machine.renderer), $($old.machine.processors) processeurs, processeur '$($old.machine.cpu)' ; maintenant : $($machine.renderer), $($machine.processors), '$($machine.cpu)')."
   exit 0
 }
 $bad = New-Object System.Collections.Generic.List[string]

@@ -23,6 +23,7 @@ Format : une section par version, la plus récente en premier. La section d'une 
 
 ### Corrigé
 
+- Le journal des performances d'une version n'est comparé au précédent que si le modèle de processeur est aussi le même (deux exécutions de l'intégration continue n'ont pas la même machine : un écart de 15 % entre deux machines de même taille a bloqué une version alors que le programme allait aussi vite qu'avant).
 - Les réglages écrits pour « Ce shader seul » et l'historique notent maintenant `loudnorm=off` au lieu de `loudnorm=0`, relu comme une normalisation à −5 LUFS.
 
 ## 3.0.0 — 2026-10-23
