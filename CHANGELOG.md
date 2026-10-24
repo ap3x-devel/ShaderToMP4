@@ -6,15 +6,6 @@
 
 Format: one section per version, newest first. The section of a tagged version is copied into the release notes.
 
-## Unreleased
-
-### Added
-
-- **Reference written by the program** (`--dump-reference=settings|project|cli`, `--lang=`): every key of `config.ini` with its default value and an explanation, the `.s2mproj` project format with an example the program writes, and the command-line options (the lines of `--help`), in English and French, in `docs/reference/`. `scripts/make-reference.ps1` writes the files; `scripts/check-repo.ps1` refuses a file that differs from what the program writes and a setting that is not mentioned in both READMEs; a self-test case checks that every setting has an explanation in both languages.
-- **New website** (`docs/`): a guide with one page per help topic and a glossary (the help texts of the program, English and French), the gallery of the 69 examples with a picture, the description and the code of each (filter by category), the reference pages, a local search (no request leaves the browser) and a skip link, focus outlines and screen-reader names on every page. `scripts/make-site.ps1` produces the pages from the sources; `scripts/make-site-media.ps1` renders the pictures with the program; `scripts/check-site.ps1` checks that the pages are up to date, every link and anchor, the page structure, text contrast (4.5 minimum) and opens pages in Edge without a window (filter and search); it runs in `check-repo` and in the continuous integration.
-- **Illustrated release notes**: `scripts/make-release-media.ps1` renders a mosaic and two short animations from example shaders with the program itself and writes the English and French texts that the release job appends to the notes.
-- The README explains why Windows shows a warning (no Authenticode signature) and how to check the download.
-
 ## 3.1.0 — 2026-10-24
 
 ### Added
@@ -29,6 +20,10 @@ Format: one section per version, newest first. The section of a tagged version i
 - **Other shader languages**: HLSL pixel shaders (`.hlsl`), WGSL fragment shaders (`.wgsl`) and complete GLSL fragment shaders (`#version` 330 to 460, ES 3.x, `void main`) are rendered like Shadertoy shaders. They are translated to GLSL 3.30 before compiling by separate programs in `tools/` (`naga` for WGSL, `glslang` and `spirv-cross` for GLSL 4.x, `dxc` for HLSL, downloaded on request with `--get-dxc`); Buffer A to D, Common and the channel comments work in the three languages; errors are reported as `file:line:` with a plain explanation; the list shows the language, the gallery has an “Other languages” category, the portability report and the editor know the languages. `tests/xlang`: 60 programs compared to their Shadertoy reference, fuzzing targets `hlsl`, `wgsl`, `glslnative`. Also fixed: a GLSL ES 3.00 shader whose output variable is called `fragColor` rendered black.
 - **Comparison table of the free and Pro editions** in the README and on the website (new “Editions” section).
 - Help topic “Projects, queue and shortcuts”; `scripts/test-queue.ps1` drives the window (priority, hold, failure, cancellation, live reordering, mouse drag, `Alt+Up`, project, shortcuts, palette, history redo); the accessibility audit covers the new windows.
+- **Reference written by the program** (`--dump-reference=settings|project|cli`, `--lang=`): every key of `config.ini` with its default value and an explanation, the `.s2mproj` project format with an example the program writes, and the command-line options (the lines of `--help`), in English and French, in `docs/reference/`. `scripts/make-reference.ps1` writes the files; `scripts/check-repo.ps1` refuses a file that differs from what the program writes and a setting that is not mentioned in both READMEs; a self-test case checks that every setting has an explanation in both languages.
+- **New website** (`docs/`): a guide with one page per help topic and a glossary (the help texts of the program, English and French), the gallery of the 69 examples with a picture, the description and the code of each (filter by category), the reference pages, a local search (no request leaves the browser) and a skip link, focus outlines and screen-reader names on every page. `scripts/make-site.ps1` produces the pages from the sources; `scripts/make-site-media.ps1` renders the pictures with the program; `scripts/check-site.ps1` checks that the pages are up to date, every link and anchor, the page structure, text contrast (4.5 minimum) and opens pages in Edge without a window (filter and search); it runs in `check-repo` and in the continuous integration.
+- **Illustrated release notes**: `scripts/make-release-media.ps1` renders a mosaic and two short animations from example shaders with the program itself and writes the English and French texts that the release job appends to the notes.
+- The README explains why Windows shows a warning (no Authenticode signature) and how to check the download.
 
 ### Fixed
 
