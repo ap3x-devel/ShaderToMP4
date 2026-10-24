@@ -10,6 +10,7 @@
 #include "platform/platform.h"
 #include "core/ffmpeg_download.h"
 #include "core/xlang.h"
+#include "core/reference.h"
 #include "core/i18n.h"
 #include "core/prolicense.h"
 #include "core/proext.h"
@@ -96,6 +97,7 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
     int argc = 0;
     wchar_t** argv = CommandLineToArgvW(GetCommandLineW(), &argc);
     std::vector<std::wstring> files;
+    std::string dumpReference, dumpLang;
     bool selftestCompat = false, portability = false, portFix = false, importShadertoy = false;
     std::vector<std::wstring> importArgs;
     bool selftest = false, update = false, quiet = false, getFfmpeg = false, getDxc = false, version = false, help = false, render = false,
@@ -131,6 +133,8 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
         else if (a == L"--update") update = true;
         else if (a == L"--quiet") quiet = true;
         else if (a == L"--get-ffmpeg") getFfmpeg = true;
+        else if (a.compare(0, 17, L"--dump-reference=") == 0) dumpReference = U8(a.substr(17));  // documentation de reference ecrite par le programme : core/reference.h
+        else if (a.compare(0, 7, L"--lang=") == 0) dumpLang = U8(a.substr(7));
         else if (a == L"--get-dxc") getDxc = true;  // compilateur HLSL (traduction des shaders .hlsl) : voir core/xlang.h
         else if (a == L"--version") version = true;
         else if (a == L"--help" || a == L"-h" || a == L"/?") help = true;
@@ -193,6 +197,13 @@ int WINAPI wWinMain(HINSTANCE hi, HINSTANCE, PWSTR, int show) {
         return ok ? 0 : 1;
     }
 
+    if (!dumpReference.empty()) {  // ShaderToMP4.exe --dump-reference=settings|project|cli [--lang=fr] : Markdown sur la sortie
+        if (!dumpLang.empty()) i18n::setLanguage(dumpLang);
+        const std::string md = referenceMarkdown(dumpReference);
+        if (md.empty()) return 2;
+        writeConsole(md);
+        return 0;
+    }
     if (getDxc) {  // ShaderToMP4.exe --get-dxc [--quiet]
         std::wstring e;
         bool ok = downloadDxc(g.exeDir, [](int, const std::wstring&) {}, nullptr, e);

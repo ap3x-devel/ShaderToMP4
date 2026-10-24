@@ -3,6 +3,7 @@
 
 #include "selftest.h"
 #include "xlang.h"
+#include "reference.h"
 #include "formats.h"
 #include "gallery.h"
 #include "updatecheck.h"
@@ -5289,6 +5290,29 @@ int runSelfTest(const std::wstring& exeDir, bool update, bool quiet) {
         }
         runCompatCorpus(exeDir, dir, report, total, fails);
         runXlangCorpus(exeDir, dir, report, total, fails);
+        {  // documentation de reference ecrite par le programme : chaque cle de config.ini est un reglage connu, a une explication dans les deux langues, et l'exemple de projet se relit
+            total++;
+            std::wstring problem;
+            const std::string previous = i18n::language();
+            int rows = 0;
+            for (const char* code : {"en", "fr"}) {
+                i18n::setLanguage(code);
+                for (const SettingRef& r : settingsReference()) {
+                    rows++;
+                    std::string low = r.key;
+                    for (char& c : low) c = (char)tolower((unsigned char)c);
+                    if (r.key != "bufferA" && !isSettingKey(low)) problem = TXF("selftest.fmt_bad", W(std::string("config.ini writes a key that is not a setting: ") + r.key).c_str());
+                    else if (r.text.empty()) problem = TXF("selftest.fmt_bad", W(std::string(code) + ": no explanation for " + r.key).c_str());
+                    if (!problem.empty()) break;
+                }
+                if (problem.empty() && (referenceMarkdown("project").find("\"version\": 1") == std::string::npos || referenceMarkdown("cli").find("--render") == std::string::npos)) problem = TXF("selftest.fmt_bad", W("project or command line reference").c_str());
+                if (!problem.empty()) break;
+            }
+            i18n::setLanguage(previous);
+            if (problem.empty() && rows < 120) problem = TXF("selftest.fmt_bad", W("only " + std::to_string(rows) + " rows").c_str());
+            report += (problem.empty() ? L"PASS    " : L"FAIL    ") + TXF("selftest.reference", rows / 2) + (problem.empty() ? L"" : L": " + problem) + L"\r\n";
+            if (!problem.empty()) fails++;
+        }
         if (!shaders.empty()) {  // les formats sont verifies avec circle.glsl (a defaut le premier shader)
             std::wstring pick = shaders[0].name;
             for (const auto& en : shaders)

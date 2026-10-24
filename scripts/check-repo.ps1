@@ -173,7 +173,7 @@ $srcFiles = Get-ChildItem src -Recurse -Include *.cpp, *.h
 $used = @{}
 foreach ($f in $srcFiles) {
   $text = Get-Content $f.FullName -Raw -Encoding UTF8
-  foreach ($m in [regex]::Matches($text, '"((?:ui|log|error|dialog|status|dl|selftest|ini|about|cli|diag|expr|rhythm|farm|lic|buy|meta|explain|help|tour|gallery|update|crash|project|job|hist|view|shortcut|palette|port|xlang)\.[a-z0-9_.]+)"')) { $used[$m.Groups[1].Value] = $f.Name }
+  foreach ($m in [regex]::Matches($text, '"((?:ui|log|error|dialog|status|dl|selftest|ini|about|cli|diag|expr|rhythm|farm|lic|buy|meta|explain|help|tour|gallery|update|crash|project|job|hist|view|shortcut|palette|port|xlang|ref|refset|projfmt)\.[a-z0-9_.]+)"')) { $used[$m.Groups[1].Value] = $f.Name }
 }
 # Textes de l'installeur Windows : les cles installer.* sont lues par scripts/package-installer.ps1 (pas par le code du programme)
 foreach ($f in "scripts/package-installer.ps1") {
@@ -181,7 +181,8 @@ foreach ($f in "scripts/package-installer.ps1") {
   foreach ($m in [regex]::Matches($text, '"(installer\.[a-z0-9_.]+)"')) { $used[$m.Groups[1].Value] = $f }
 }
 foreach ($k in $used.Keys) { if ($enKeys -notcontains $k -and $k -notmatch "\.h$|\.cpp$") { Fail "cle utilisee mais absente de lang/en.json : $k ($($used[$k]))" } }
-foreach ($k in $enKeys) { if (-not $used.ContainsKey($k)) { Fail "cle de langue jamais utilisee : $k" } }
+# refset.<cle> : explication d'un reglage, cherchee par reference.cpp sous le nom du reglage (la liste des reglages vient du code ; le controle est celui de la section Reference)
+foreach ($k in $enKeys) { if (-not $used.ContainsKey($k) -and $k -notlike "refset.*") { Fail "cle de langue jamais utilisee : $k" } }
 # Texte visible ecrit en dur : deux mots separes par une espace dans un litteral large, hors arguments ffmpeg, adresses et noms techniques.
 $allowLine = '-hide_banner|-pix_fmt|-f rawvideo|-vf|-map|-c:v|-ss |-movflags|-nostdin|-framerate|-preset|-rc |-quality|-global_quality|-tag:v|-colorspace|nullsrc|tar\.exe|fade=|http|Segoe UI|Cascadia|DarkMode|^\s*//|#include|#pragma|PASS|FAIL|UPDATED|i18n-bootstrap|nom-technique|NVIDIA NVENC|APP_NAME_WSTR L" "|L" \(|L"\) ?"|%ls|%d|%02d|%05'
 foreach ($f in $srcFiles) {
@@ -225,6 +226,30 @@ if (Test-Path tests\compat) {
     if (-not (Test-Path $r)) { continue }
     $m = [regex]::Match((Get-Content $r -Raw -Encoding UTF8), 'tests/compat` (?:holds|contient) (\d+)')
     if (-not $m.Success -or [int]$m.Groups[1].Value -ne $corpus) { Fail "le $r annonce un autre nombre de shaders que tests\compat ($corpus)" }
+  }
+}
+
+# Reference produite par le programme (reglages, format du projet, ligne de commande) : les fichiers de docs\reference sont ceux que le programme ecrit, et
+# chaque reglage de la reference est cite dans les deux README (un tableau du README ne peut pas oublier ni inventer un reglage)
+Section "Reference"
+if (Test-Path docs\reference\settings.md) {
+  $refKeys = @([regex]::Matches((Get-Content docs\reference\settings.md -Raw -Encoding UTF8), '(?m)^\| `([A-Za-z0-9.]+)` \|') | ForEach-Object { $_.Groups[1].Value })
+  foreach ($r in @("README.md", "README.fr.md")) {
+    $text = Get-Content $r -Raw -Encoding UTF8
+    foreach ($k in $refKeys) {
+      $name = if ($k -eq "iChannel0") { "iChannel0" } elseif ($k -eq "bufferA") { "bufferA" } else { $k }
+      if ($text -notmatch ('`' + [regex]::Escape($name) + '[`.=]') -and $text -notmatch ('`[^`]*\b' + [regex]::Escape($name) + '\b[^`]*`')) { Fail "le reglage $k de docs\reference\settings.md n'est pas cite dans $r" }
+    }
+  }
+}
+$refExe = "bin\ShaderToMP4.exe"
+if ((Test-Path $refExe) -and (Test-Path docs\reference)) {
+  $newest = (@(Get-ChildItem src -Recurse -Include *.cpp, *.h) + @(Get-ChildItem lang -Filter *.json) | Sort-Object LastWriteTime -Descending | Select-Object -First 1).LastWriteTime
+  if ((Get-Item $refExe).LastWriteTime -ge $newest) {
+    $diff = @(& powershell -NoProfile -ExecutionPolicy Bypass -File scripts\make-reference.ps1 -Check)
+    foreach ($d in $diff) { if ($d) { Fail "$d : la reference n'est pas celle que le programme produit (lancer scripts\make-reference.ps1)" } }
+  } else {
+    Write-Host "  (reference non comparee : bin\ShaderToMP4.exe est plus ancien que les sources ; le contr\u00f4le se fait sur un programme a jour)" -ForegroundColor DarkYellow
   }
 }
 
