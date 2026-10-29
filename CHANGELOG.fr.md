@@ -10,6 +10,7 @@ Format : une section par version, la plus récente en premier. La section d'une 
 
 ### Ajouté
 
+- **Pilotage en direct** pendant la sortie en direct : OSC en UDP (`--live-osc`) et entrée MIDI (`--live-midi`) pilotent les paramètres `// uniform` (`osc.nom`, `midi.cc7`, `midi.note(60)`, `iNote`...), délai mesuré, cible de fuzzing OSC.
 - **Sortie en direct** (`--live`) : rendu en temps réel dans une fenêtre sans bordure sur l'écran choisi, cadence et images perdues mesurées, enregistrement sans perte image par image (`--live-record`), flux SRT et RTMP vers une adresse donnée par l'utilisateur (`--live-stream`). Cas d'auto-test `live_*`, script d'essai sur écrans réels `scripts/test-live.ps1`.
 - **Fichier de licence par glisser-déposer** : glissez `ShaderToMP4.license` sur la fenêtre « À propos » ; il est vérifié (signature, version, expiration) avant d'être copié à côté du programme, un fichier refusé ne change rien, le résultat s'affiche dans la fenêtre et le bouton d'achat disparaît. Nouveau cas d'auto-test `lic_install`, script de bout en bout `scripts/test-license-drop.ps1`.
 
