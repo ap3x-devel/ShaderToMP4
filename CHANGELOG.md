@@ -10,6 +10,7 @@ Format: one section per version, newest first. The section of a tagged version i
 
 ### Added
 
+- **Local API** (`--serve`): HTTP / JSON on 127.0.0.1 with a token, jobs queue (add, follow, cancel, outputs), JSON schema checked against real outputs, examples in PowerShell and Python run by the self-test, request reader fuzzing target, exit codes documented with a test for each.
 - **Live output from the window**: Project menu, Live output, on a screen or in a window (`scripts/test-live-gui.ps1`).
 - **Spout texture sharing** for the live output (`--live-spout`), Spout2 (BSD) compiled in with its registry writes disabled; end-to-end script `scripts/test-live-portable.ps1` (registry, files, network).
 - **Live control** during the live output: OSC over UDP (`--live-osc`) and MIDI input (`--live-midi`) drive the `// uniform` parameters (`osc.name`, `midi.cc7`, `midi.note(60)`, `iNote`...), delay measured, OSC fuzzing target.

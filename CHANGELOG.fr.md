@@ -10,6 +10,7 @@ Format : une section par version, la plus récente en premier. La section d'une 
 
 ### Ajouté
 
+- **API locale** (`--serve`) : HTTP / JSON sur 127.0.0.1 avec un jeton, file de travaux (ajouter, suivre, annuler, sorties), schéma JSON vérifié contre de vraies sorties, exemples PowerShell et Python lancés par l'auto-test, cible de fuzzing du lecteur de requêtes, codes de sortie documentés avec un essai pour chacun.
 - **Sortie en direct depuis la fenêtre** : menu Projet, Sortie en direct, sur un écran ou dans une fenêtre (`scripts/test-live-gui.ps1`).
 - **Partage de texture Spout** pour la sortie en direct (`--live-spout`), Spout2 (BSD) compilé avec ses écritures du registre désactivées ; script de bout en bout `scripts/test-live-portable.ps1` (registre, fichiers, réseau).
 - **Pilotage en direct** pendant la sortie en direct : OSC en UDP (`--live-osc`) et entrée MIDI (`--live-midi`) pilotent les paramètres `// uniform` (`osc.nom`, `midi.cc7`, `midi.note(60)`, `iNote`...), délai mesuré, cible de fuzzing OSC.

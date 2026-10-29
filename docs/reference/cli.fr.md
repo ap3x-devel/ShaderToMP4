@@ -46,6 +46,7 @@ Les options de `ShaderToMP4`, écrites par le programme lui-même (`ShaderToMP4 
 | `un fichier .json` | Export d'un shader Shadertoy (bouton Export de la page) : importé dans le dossier « shadertoy », puis rendu. Ni compte ni clé nécessaires |
 | `--diagnostic` | Affiche système, carte graphique, OpenGL, ffmpeg et encodeurs (sans chemin ni donnée personnelle) pour un rapport de bug |
 | `--benchmark` | Mesure les images par seconde par résolution et par encodeur (--seconds=N, --quick, --full, --json, --compare=file, --max-drop=N) |
+| `--serve[=port]` | API locale (HTTP / JSON sur 127.0.0.1 seulement, jeton dans serve.token, arrêtée par POST /api/v1/shutdown) ; inactive sans cette option, port 8765 par défaut |
 | `--live` | Sortie en direct dans une fenêtre sans bordure sur un écran (--live-monitor=N, --live-monitors, --live-window[=LxH], --live-seconds=N, --live-fps=N, --live-record=fichier.mkv, --live-stream=srt://... ou rtmp://..., --live-bitrate=kb/s, --live-spout=nom, --live-osc=hôte:port, --live-midi=N, --live-midi-devices, --live-json) |
 | `--license-info` | Affiche l'état de la licence et le fichier attendu à côté du programme |
 | `--check-update[=url] [--download]` | Demande à GitHub la dernière version (seulement quand vous lancez cette commande) ; code de sortie 8 si une plus récente existe ; --download enregistre l'installeur dans updates/ après contrôle SHA-256, sans rien installer |

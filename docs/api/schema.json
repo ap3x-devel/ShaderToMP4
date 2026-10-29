@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ap3x-devel.github.io/ShaderToMP4/api/schema.json",
+  "title": "ShaderToMP4 local API, progress events and render report",
+  "description": "Answers of the local API (--serve, address /api/v1), the lines of --progress=json and the file written by --report=json. The self-test checks real outputs against this file.",
+  "$defs": {
+    "error": {
+      "type": "object",
+      "required": ["error"],
+      "properties": { "error": { "type": "string" } },
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "object",
+      "required": ["program", "version", "api", "state", "queued", "running", "jobs"],
+      "properties": {
+        "program": { "const": "ShaderToMP4" },
+        "version": { "type": "string" },
+        "api": { "const": 1 },
+        "state": { "enum": ["idle", "busy"] },
+        "queued": { "type": "integer" },
+        "running": { "type": "integer" },
+        "jobs": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "settings": {
+      "type": "object",
+      "description": "Every setting of the settings table as text (see docs/reference/settings.md); keys are the names used in config.ini and on the command line.",
+      "additionalProperties": { "type": "string" }
+    },
+    "progress": {
+      "type": "object",
+      "required": ["frame", "total", "fps", "remaining_s"],
+      "properties": {
+        "frame": { "type": "integer" },
+        "total": { "type": "integer" },
+        "fps": { "type": "number" },
+        "remaining_s": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "job": {
+      "type": "object",
+      "required": ["id", "path", "state", "progress", "error", "outputs"],
+      "properties": {
+        "id": { "type": "integer" },
+        "path": { "type": "string" },
+        "state": { "enum": ["queued", "running", "done", "failed", "cancelled"] },
+        "progress": { "$ref": "#/$defs/progress" },
+        "error": { "type": "string" },
+        "outputs": { "type": "array", "items": { "type": "string" } },
+        "log": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "jobs": {
+      "type": "object",
+      "required": ["jobs"],
+      "properties": { "jobs": { "type": "array", "items": { "$ref": "#/$defs/job" } } },
+      "additionalProperties": false
+    },
+    "outputs": {
+      "type": "object",
+      "required": ["outputs"],
+      "properties": { "outputs": { "type": "array", "items": { "type": "string" } } },
+      "additionalProperties": false
+    },
+    "ok": {
+      "type": "object",
+      "required": ["ok"],
+      "properties": { "ok": { "const": true } },
+      "additionalProperties": false
+    },
+    "progressEvent": {
+      "description": "One line of --progress=json",
+      "oneOf": [
+        { "type": "object", "required": ["event", "file", "index", "count"], "properties": { "event": { "const": "start" }, "file": { "type": "string" }, "index": { "type": "integer" }, "count": { "type": "integer" } }, "additionalProperties": false },
+        { "type": "object", "required": ["event", "message"], "properties": { "event": { "const": "log" }, "message": { "type": "string" } }, "additionalProperties": false },
+        { "type": "object", "required": ["event", "file", "frame", "frames", "percent", "fps", "eta"], "properties": { "event": { "const": "progress" }, "file": { "type": "string" }, "frame": { "type": "integer" }, "frames": { "type": "integer" }, "percent": { "type": "number" }, "fps": { "type": "number" }, "eta": { "type": "number" } }, "additionalProperties": false },
+        { "type": "object", "required": ["event", "file", "output"], "properties": { "event": { "const": "done" }, "file": { "type": "string" }, "output": { "type": "string" } }, "additionalProperties": false },
+        { "type": "object", "required": ["event", "file", "message"], "properties": { "event": { "const": "error" }, "file": { "type": "string" }, "message": { "type": "string" } }, "additionalProperties": false },
+        { "type": "object", "required": ["event", "ok", "failed"], "properties": { "event": { "const": "end" }, "ok": { "type": "integer" }, "failed": { "type": "integer" } }, "additionalProperties": false }
+      ]
+    },
+    "renderReport": {
+      "description": "plasma.report.json written by --report=json next to a video",
+      "type": "object",
+      "required": ["version", "shader", "output", "status", "width", "height", "fps", "frames", "media_seconds", "wall_seconds", "render_fps", "realtime_factor", "bytes", "sha256", "codec", "container", "encoder", "gpu_ms", "warnings"],
+      "properties": {
+        "version": { "type": "string" },
+        "shader": { "type": "string" },
+        "output": { "type": "string" },
+        "status": { "enum": ["ok", "failed", "cancelled"] },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" },
+        "fps": { "type": "number" },
+        "frames": { "type": "integer" },
+        "media_seconds": { "type": "number" },
+        "wall_seconds": { "type": "number" },
+        "render_fps": { "type": "number" },
+        "realtime_factor": { "type": "number" },
+        "bottleneck": { "type": ["string", "null"] },
+        "encoder_wait_percent": { "type": "number" },
+        "bytes": { "type": "integer" },
+        "sha256": { "type": "string" },
+        "codec": { "type": "string" },
+        "container": { "type": "string" },
+        "encoder": { "type": "string" },
+        "gpu_ms": { "type": "object", "additionalProperties": { "type": "number" } },
+        "loop": {},
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
