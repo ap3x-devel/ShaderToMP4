@@ -614,6 +614,7 @@ Le programme dessine un **maillage 3D** devant le même fragment shader que le m
 |---|---|
 | `mesh` | `cube`, `plane`, `quad`, `sphere` ou un nom de fichier (`.obj .ply .gltf .glb`) ; sans lui il n'y a pas de scène |
 | `meshgroup` | seulement ce groupe d'un fichier OBJ |
+| `anim` | glTF animé : animation à jouer (nom, numéro ou `auto`), puis `camera` / `light` pour reprendre ceux du fichier, `loop`, `start=secondes` |
 | `meshfit` | `1` (défaut) : le modèle est centré et mis à l'échelle pour que sa plus grande demi-étendue vaille 1 |
 | `camerapos`, `cameratarget`, `camerafov` | position, cible et champ de vision vertical en degrés (défaut `0,0,4`, `0,0,0`, `45`) ; `camerarange=près,loin` (défaut `0.1,100`) |
 | `camera` | caméra animée : `orbit:radius=3,speed=0.25,height=1,start=0` (tours par seconde autour de la cible) ou `path:0:0,0,3;4:3,1,2` (positions à des temps en secondes, interpolées linéairement), `fixed` ou `off` pour une caméra fixe |

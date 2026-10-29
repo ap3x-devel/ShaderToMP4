@@ -616,6 +616,7 @@ The program draws a **3D mesh** in front of the same fragment shader as the imag
 |---|---|
 | `mesh` | `cube`, `plane`, `quad`, `sphere` or a file name (`.obj .ply .gltf .glb`); without it there is no scene |
 | `meshgroup` | only this group of an OBJ file |
+| `anim` | animated glTF: animation to play (name, number or `auto`), then `camera` / `light` to use those of the file, `loop`, `start=seconds` |
 | `meshfit` | `1` (default): the model is centred and scaled so that its largest half-extent is 1 |
 | `camerapos`, `cameratarget`, `camerafov` | position, target and vertical field of view in degrees (default `0,0,4`, `0,0,0`, `45`); `camerarange=near,far` (default `0.1,100`) |
 | `camera` | animated camera: `orbit:radius=3,speed=0.25,height=1,start=0` (turns per second around the target) or `path:0:0,0,3;4:3,1,2` (positions at times in seconds, linear between them), `fixed` or `off` for a static camera |
