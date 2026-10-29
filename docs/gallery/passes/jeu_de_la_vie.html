@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary - Copyright (C) 2026 Patrick JAILLET. Tous droits reserves. -->
 <!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
 <html lang="en" data-root="../../" data-title-en="Game of life - ShaderToMP4" data-title-fr="Jeu de la vie - ShaderToMP4">
 <head>
@@ -39,8 +39,8 @@
 <p><span lang="en" data-lang="en">This example uses several passes: the files below go together.</span><span lang="fr" data-lang="fr">Cet exemple utilise plusieurs passes : les fichiers ci-dessous vont ensemble.</span></p>
 <h2><span lang="en" data-lang="en">Code</span><span lang="fr" data-lang="fr">Code</span></h2>
 <h3><code>jeu_de_la_vie.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 // fr: Jeu de la vie — Automate de Conway sur une grille de 4 pixels par cellule ; le tampon A lit ses huit voisines et se met &#224; jour tous les 6 images.
 // en: Game of life — Conway&#39;s automaton on a grid of 4 pixels per cell; buffer A reads its eight neighbours and updates every 6 frames.
@@ -53,8 +53,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = vec4(col, 1.0);
 }</code></pre>
 <h3><code>jeu_de_la_vie.bufferA.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 // iChannel0=bufferA
 float h(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
@@ -78,7 +78,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 </main>
 <footer>
   <div class="wrap">
-    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
+    ShaderToMP4 4.0.0 - &copy; 2026 Patrick JAILLET - Shareware - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
   </div>
 </footer>
 <script src="../../assets/site.js"></script>

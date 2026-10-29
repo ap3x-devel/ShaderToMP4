@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary - Copyright (C) 2026 Patrick JAILLET. Tous droits reserves. -->
 <!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
 <html lang="en" data-root="../../" data-title-en="Water surface waves - ShaderToMP4" data-title-fr="Ondes &#224; la surface de l&#39;eau - ShaderToMP4">
 <head>
@@ -39,8 +39,8 @@
 <p><span lang="en" data-lang="en">This example uses several passes: the files below go together.</span><span lang="fr" data-lang="fr">Cet exemple utilise plusieurs passes : les fichiers ci-dessous vont ensemble.</span></p>
 <h2><span lang="en" data-lang="en">Code</span><span lang="fr" data-lang="fr">Code</span></h2>
 <h3><code>ondes_surface.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 // fr: Ondes &#224; la surface de l&#39;eau — Le tampon A garde la hauteur et la vitesse de chaque point (&#233;quation des ondes) ; des gouttes tombent &#224; intervalles r&#233;guliers.
 // en: Water surface waves — Buffer A keeps the height and speed of each point (wave equation); drops fall at regular intervals.
@@ -58,8 +58,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = vec4(col, 1.0);
 }</code></pre>
 <h3><code>ondes_surface.bufferA.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 // iChannel0=bufferA
 float hh(float n) { return fract(sin(n * 91.345) * 43758.5453); }
@@ -83,7 +83,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 </main>
 <footer>
   <div class="wrap">
-    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
+    ShaderToMP4 4.0.0 - &copy; 2026 Patrick JAILLET - Shareware - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
   </div>
 </footer>
 <script src="../../assets/site.js"></script>

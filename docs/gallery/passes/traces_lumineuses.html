@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary - Copyright (C) 2026 Patrick JAILLET. Tous droits reserves. -->
 <!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
 <html lang="en" data-root="../../" data-title-en="Light trails - ShaderToMP4" data-title-fr="Traces lumineuses - ShaderToMP4">
 <head>
@@ -39,8 +39,8 @@
 <p><span lang="en" data-lang="en">This example uses several passes: the files below go together.</span><span lang="fr" data-lang="fr">Cet exemple utilise plusieurs passes : les fichiers ci-dessous vont ensemble.</span></p>
 <h2><span lang="en" data-lang="en">Code</span><span lang="fr" data-lang="fr">Code</span></h2>
 <h3><code>traces_lumineuses.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 // fr: Traces lumineuses — Le tampon A garde l&#39;image pr&#233;c&#233;dente multipli&#233;e par 0,97 et y ajoute un point mobile : la m&#233;moire d&#39;une image &#224; l&#39;autre fait la tra&#238;n&#233;e.
 // en: Light trails — Buffer A keeps the previous frame multiplied by 0.97 and adds a moving dot: memory from one frame to the next makes the trail.
@@ -53,8 +53,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = vec4(col * smoothstep(0.0, 0.3, v), 1.0);
 }</code></pre>
 <h3><code>traces_lumineuses.bufferA.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 // iChannel0=bufferA
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
@@ -68,7 +68,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 </main>
 <footer>
   <div class="wrap">
-    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
+    ShaderToMP4 4.0.0 - &copy; 2026 Patrick JAILLET - Shareware - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
   </div>
 </footer>
 <script src="../../assets/site.js"></script>

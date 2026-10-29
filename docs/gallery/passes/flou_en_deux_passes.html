@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary - Copyright (C) 2026 Patrick JAILLET. Tous droits reserves. -->
 <!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
 <html lang="en" data-root="../../" data-title-en="Two-pass separable blur - ShaderToMP4" data-title-fr="Flou s&#233;parable en deux passes - ShaderToMP4">
 <head>
@@ -39,8 +39,8 @@
 <p><span lang="en" data-lang="en">This example uses several passes: the files below go together.</span><span lang="fr" data-lang="fr">Cet exemple utilise plusieurs passes : les fichiers ci-dessous vont ensemble.</span></p>
 <h2><span lang="en" data-lang="en">Code</span><span lang="fr" data-lang="fr">Code</span></h2>
 <h3><code>flou_en_deux_passes.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 // fr: Flou s&#233;parable en deux passes — Common d&#233;finit la sc&#232;ne ; A la dessine, B la floute horizontalement, l&#39;image finale floute verticalement et ajoute l&#39;original net.
 // en: Two-pass separable blur — Common defines the scene; A draws it, B blurs it horizontally, the final image blurs vertically and adds the sharp original.
@@ -63,15 +63,15 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = vec4(uv.x &lt; split ? sharp : blur + sharp * 0.3, 1.0);
 }</code></pre>
 <h3><code>flou_en_deux_passes.bufferA.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = vec4(scene((fragCoord - 0.5 * iResolution.xy) / iResolution.y), 1.0);
 }</code></pre>
 <h3><code>flou_en_deux_passes.bufferB.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 // iChannel0=bufferA
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
@@ -87,8 +87,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = vec4(acc / wsum, 1.0);
 }</code></pre>
 <h3><code>flou_en_deux_passes.common.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 vec3 scene(vec2 uv) {
     vec3 col = vec3(0.02, 0.03, 0.08);
@@ -104,7 +104,7 @@ vec3 scene(vec2 uv) {
 </main>
 <footer>
   <div class="wrap">
-    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
+    ShaderToMP4 4.0.0 - &copy; 2026 Patrick JAILLET - Shareware - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
   </div>
 </footer>
 <script src="../../assets/site.js"></script>

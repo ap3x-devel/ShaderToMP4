@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary - Copyright (C) 2026 Patrick JAILLET. Tous droits reserves. -->
 
 **English** · [Français](CHANGELOG.fr.md)
 
@@ -6,7 +6,12 @@
 
 Format: one section per version, newest first. The section of a tagged version is copied into the release notes.
 
-## 3.1.0 — 2026-10-24
+## 4.0.0 — 2026-10-29
+
+### Changed
+
+- **One shareware program.** ShaderToMP4 is no longer free software: there is a single program with a single proprietary license ([EULA.md](EULA.md)), no free edition and no published source code. Versions up to 3.0.0 stay under the GPL-3.0-or-later for those who received them. Every source file now carries `LicenseRef-ShaderToMP4-Proprietary`; `COPYING` is gone, `LICENSE` points to the agreement, the About window, the installer, the site, the README and the notices say so.
+- The functions that were Pro are now part of the program. Without a license every rendering function works with no time limit and every output carries the small trial watermark (data passes are never touched); the editing windows and the speed conveniences need a valid license. A valid `ShaderToMP4.license` removes the watermark.
 
 ### Added
 

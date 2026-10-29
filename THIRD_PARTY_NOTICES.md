@@ -1,10 +1,10 @@
-<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary - Copyright (C) 2026 Patrick JAILLET. Tous droits reserves. -->
 
 [Français](THIRD_PARTY_NOTICES.fr.md) · **English**
 
 # Third-party notices
 
-ShaderToMP4 is distributed under the **GNU General Public License v3.0 or later** (`GPL-3.0-or-later`, see [COPYING](COPYING)). This document lists every third-party component the program uses, with its license and why it is compatible with the GPL-3.0. **No component may be added to the project without an entry here.**
+ShaderToMP4 is **proprietary shareware** (see [LICENSE](LICENSE) and [EULA.md](EULA.md)). This document lists every third-party component the program uses, with its license and why it allows redistribution inside proprietary software. **No component may be added to the project without an entry here.**
 
 Last review: ShaderToMP4 2.1.0 (the Windows installer ships ffmpeg 9.0.2 and the NSIS run-time, see sections 2 and 3, and no other new component; Mesa is used by the continuous integration tests only and is not distributed).
 
@@ -16,7 +16,7 @@ Last review: ShaderToMP4 2.1.0 (the Windows installer ships ffmpeg 9.0.2 and the
 
 **Linux and macOS** (frozen since 2026-10-22: these components are only in the archives up to version 2.1.1, never in the Windows program, and are no longer updated; `scripts/check-repo.ps1` checks that the Windows build does not reference them): three libraries are downloaded at configuration time (pinned versions, see `CMakeLists.txt` and `src/ui_imgui/CMakeLists.txt`) and compiled into the executable, and one font is embedded. Their licenses are permissive and compatible with the GPL-3.0; their copyright notices are kept in their own source files.
 
-| Component | Role | License | GPL-3.0 compatibility |
+| Component | Role | License | Use in proprietary software |
 |---|---|---|---|
 | **GLFW 3.4** ([glfw.org](https://www.glfw.org)) | Window, input, drag and drop and OpenGL context (Linux, macOS) | zlib/libpng license | Compatible (permissive, listed as GPL-compatible by the FSF). |
 | **Dear ImGui 1.91.9** ([github.com/ocornut/imgui](https://github.com/ocornut/imgui)) | Interface widgets (Linux, macOS) | MIT | Compatible. |
@@ -25,7 +25,7 @@ Last review: ShaderToMP4 2.1.0 (the Windows installer ships ffmpeg 9.0.2 and the
 
 ## 2. Components used at run time
 
-| Component | Role | How it is used | License | GPL-3.0 compatibility |
+| Component | Role | How it is used | License | Use in proprietary software |
 |---|---|---|---|---|
 | **FFmpeg** ([ffmpeg.org](https://ffmpeg.org)), "release essentials" build by Gyan Doshi ([gyan.dev](https://www.gyan.dev/ffmpeg/builds/)), with libx264 and libx265 | Video / audio encoding | **Not included** in this repository nor in the portable archives: the program downloads it on request (SHA-256 checked) into its own folder. **Included in the Windows installer** (`ShaderToMP4-<version>-win64-setup.exe`): the same build, version 9.0.2, SHA-256 `60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba` for the downloaded archive, copied unchanged and built without `--enable-nonfree`; its licence is installed as `FFMPEG-LICENSE.txt` and its description of libraries as `FFMPEG-README.txt`. In both cases it runs as a **separate process** (pipes). No linking. | GPL v3 for this build (it enables the GPL libraries libx264 and libx265; FFmpeg itself is LGPL 2.1+ / GPL 2+). Full license text: `FFMPEG-LICENSE.txt`. Corresponding source of the version in the installer: https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz (the build scripts of the Windows binaries are at https://github.com/GyanD/codexffmpeg); the source is also available on request at the contact address of the project. | Compatible: GPL v3, no code combined. |
 | **FFmpeg** static build by BtbN ([github.com/BtbN/FFmpeg-Builds](https://github.com/BtbN/FFmpeg-Builds), `linux64-gpl` and `linuxarm64-gpl`) | Video / audio encoding on Linux | Same as above: **not included**, downloaded on request (SHA-256 checked against the file published with the build) and run as a separate process. On macOS nothing is downloaded: the user installs ffmpeg (Homebrew) or places it next to the application. | GPL v3 (libx264 and libx265 enabled). | Compatible: GPL v3, no code combined. |
@@ -51,21 +51,21 @@ Last review: ShaderToMP4 2.1.0 (the Windows installer ships ffmpeg 9.0.2 and the
 
 | Asset | Origin | License |
 |---|---|---|
-| Logo and application icon (`res/icons/logo.svg`, `res/app.ico`) | Original artwork created for ShaderToMP4 | GPL-3.0-or-later |
-| Interface icons (`res/icons/*.svg`), also used by the Linux / macOS interface | Original drawings made for the project in a geometric stroke style (24 × 24 grid, 2 px stroke). They are simple, generic pictograms (arrows, folders, eye, play...) and are not copied from an icon set. | GPL-3.0-or-later |
-| Example and test shaders (`examples/`, `tests/`) | Original code of the project | GPL-3.0-or-later |
-| Language files (`lang/*.json`: English, French, German, Spanish, Italian, Portuguese, Dutch, Japanese, Chinese) | Original texts of the project | GPL-3.0-or-later |
-| Screenshots and banner (`docs/`) | Produced from the program itself | GPL-3.0-or-later |
+| Logo and application icon (`res/icons/logo.svg`, `res/app.ico`) | Original artwork created for ShaderToMP4 | Proprietary (EULA) |
+| Interface icons (`res/icons/*.svg`), also used by the Linux / macOS interface | Original drawings made for the project in a geometric stroke style (24 × 24 grid, 2 px stroke). They are simple, generic pictograms (arrows, folders, eye, play...) and are not copied from an icon set. | Proprietary (EULA) |
+| Example and test shaders (`examples/`, `tests/`) | Original code of the project | Proprietary (EULA) |
+| Language files (`lang/*.json`: English, French, German, Spanish, Italian, Portuguese, Dutch, Japanese, Chinese) | Original texts of the project | Proprietary (EULA) |
+| Screenshots and banner (`docs/`) | Produced from the program itself | Proprietary (EULA) |
 
-## 5. Review for the Pro edition (shareware)
+## 5. Review for proprietary distribution
 
-The Pro edition is distributed under a proprietary license, so every component must allow redistribution in proprietary software. Review of the components above: **no component is GPL-only** among those compiled into the program (TweetNaCl: public domain; GLFW and NanoSVG: zlib; Dear ImGui: MIT; Inter: OFL). FFmpeg stays a **separate program** that the Pro edition does not link: the Windows installer carries its GPL v3 build with its license text and its corresponding source offer (section 2); the portable archive downloads it. The contributor list was checked: the repository has a single author (the owner of the copyright), so no external contribution needs a written assignment. Linux and macOS are frozen: their libraries are not part of the Pro edition.
+The program is distributed under a proprietary license, so every component must allow redistribution in proprietary software. Review of the components above: **no component is GPL-only** among those compiled into the program (TweetNaCl: public domain; GLFW and NanoSVG: zlib; Dear ImGui: MIT; Inter: OFL). FFmpeg stays a **separate program** that the program does not link: the Windows installer carries its GPL v3 build with its license text and its corresponding source offer (section 2); the portable archive downloads it. The contributor list was checked: the repository has a single author (the owner of the copyright), so no external contribution needs a written assignment, which is what allowed the move from the GPL to a proprietary license from version 4.0.0. Linux and macOS are frozen: their libraries are not part of the current program.
 
 ## 6. Rules for future components
 
 Before adding a dependency (library, font, icon set, tool downloaded at run time):
 
-1. Check that its license is compatible with the GPL-3.0-or-later (MIT, BSD, ISC, Zlib, Apache-2.0, LGPL, MPL-2.0, GPL-3.0, SIL OFL for fonts: yes; "non-commercial", "no derivatives", GPL-2.0-only, proprietary: **no**).
+1. Check that its license allows redistribution inside proprietary software (MIT, BSD, ISC, Zlib, Apache-2.0, MPL-2.0, public domain, SIL OFL for fonts: yes; GPL, AGPL, LGPL used by static linking, "non-commercial", "no derivatives", proprietary without permission: **no**; a GPL program may only be shipped as a separate program run as a separate process).
 2. Add a row to this file (English) and to [THIRD_PARTY_NOTICES.fr.md](THIRD_PARTY_NOTICES.fr.md) (French), with the license and the way it is used.
 3. Show it in the "About" window (button "Third-party notices").
 4. Keep the program portable: nothing is installed outside the application folder. Only the optional Windows installer, which is not the program, writes elsewhere (per-user registry keys and shortcuts, listed in the README).

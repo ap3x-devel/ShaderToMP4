@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary - Copyright (C) 2026 Patrick JAILLET. Tous droits reserves. -->
 <!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
 <html lang="en" data-root="../../" data-title-en="Video feedback loop - ShaderToMP4" data-title-fr="Boucle de r&#233;troaction vid&#233;o - ShaderToMP4">
 <head>
@@ -39,8 +39,8 @@
 <p><span lang="en" data-lang="en">This example uses several passes: the files below go together.</span><span lang="fr" data-lang="fr">Cet exemple utilise plusieurs passes : les fichiers ci-dessous vont ensemble.</span></p>
 <h2><span lang="en" data-lang="en">Code</span><span lang="fr" data-lang="fr">Code</span></h2>
 <h3><code>retour_video.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 // fr: Boucle de r&#233;troaction vid&#233;o — Le tampon A se relit lui-m&#234;me l&#233;g&#232;rement tourn&#233; et agrandi, comme une cam&#233;ra qui filme son propre &#233;cran.
 // en: Video feedback loop — Buffer A reads itself slightly rotated and enlarged, like a camera filming its own screen.
@@ -50,8 +50,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = vec4(texture(iChannel0, fragCoord / iResolution.xy).rgb, 1.0);
 }</code></pre>
 <h3><code>retour_video.bufferA.glsl</code></h3>
-<pre tabindex="0"><code>// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright (C) 2026 Patrick JAILLET
+<pre tabindex="0"><code>// SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary
+// Copyright (C) 2026 Patrick JAILLET. Tous droits reserves.
 
 // iChannel0=bufferA
 mat2 rot(float a) { return mat2(cos(a), -sin(a), sin(a), cos(a)); }
@@ -69,7 +69,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 </main>
 <footer>
   <div class="wrap">
-    ShaderToMP4 3.1.0 - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
+    ShaderToMP4 4.0.0 - &copy; 2026 Patrick JAILLET - Shareware - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
   </div>
 </footer>
 <script src="../../assets/site.js"></script>

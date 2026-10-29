@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: GPL-3.0-or-later - Copyright (C) 2026 Patrick JAILLET -->
+<!-- SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary - Copyright (C) 2026 Patrick JAILLET. Tous droits reserves. -->
 
 <p align="center">
   <img src="docs/banner.svg" alt="ShaderToMP4: turn a Shadertoy shader into video, frame by frame" width="100%">
@@ -13,12 +13,12 @@
 </p>
 
 <p align="center">
-  <img alt="Version" src="https://img.shields.io/badge/version-3.1.0-FF5A96?style=flat-square">
+  <img alt="Version" src="https://img.shields.io/badge/version-4.0.0-FF5A96?style=flat-square">
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%20(Linux%20and%20macOS%20frozen)-0078D4?style=flat-square">
   <img alt="Portable" src="https://img.shields.io/badge/portable-installer%20optional-3DDC97?style=flat-square">
   <img alt="Languages" src="https://img.shields.io/badge/languages-9-7C6CFF?style=flat-square">
   <img alt="C++" src="https://img.shields.io/badge/C%2B%2B-17-00599C?style=flat-square&logo=cplusplus&logoColor=white">
-  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-GPL--3.0--or--later-3DDC97?style=flat-square"></a>
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-shareware-3DDC97?style=flat-square"></a>
 </p>
 
 <p align="center">
@@ -493,7 +493,7 @@ Taken from [CHANGELOG.md](CHANGELOG.md), which has the details; the list is chec
 
 | Version | Main additions |
 |---|---|
-| 3.1.0 | Projects (`.s2mproj`: shaders, general and per-shader settings, batches, priorities, passes and media, relative paths, recent projects); live-reorderable job queue (drag or `Alt+Up/Down`, hold, priority, a log per job, estimated end of the whole queue); render history (`history.jsonl`, *Redo this render* with the same settings); preview zoom and pan, freeze with A/B comparison, histogram / waveform / vectorscope; configurable shortcuts (`keys.ini`) and command palette (`Ctrl+K`); Shadertoy compatibility: WebGL 1 / GLSL ES style shaders, import by identifier with your own API key, video / webcam / microphone / music inputs replaced by your files, portability report with a corrected copy (`--portability`), a corpus of 113 self-checking shaders rendered at every change; HLSL, WGSL and native GLSL 4.x shaders translated by separate programs (`tools/`, `dxc` downloaded on request) with Buffer A to D and Common in the three languages; Pro settings window (a field for every Pro setting, file pickers with preview, Pro presets); comparison table of the free and Pro editions; reference written by the program (settings with their defaults, project format, command line; English and French; checked by `check-repo`); new website: guide, gallery of the 69 examples with picture and code, reference, local search, checked for links, structure, contrast and in Edge; illustrated release notes made by the program; the README explains the Windows warning (no code signature) |
+| 4.0.0 | One shareware program under the user agreement (EULA), no free edition, no published source; every function included, every output carries the trial watermark without a license; Projects (`.s2mproj`: shaders, general and per-shader settings, batches, priorities, passes and media, relative paths, recent projects); live-reorderable job queue (drag or `Alt+Up/Down`, hold, priority, a log per job, estimated end of the whole queue); render history (`history.jsonl`, *Redo this render* with the same settings); preview zoom and pan, freeze with A/B comparison, histogram / waveform / vectorscope; configurable shortcuts (`keys.ini`) and command palette (`Ctrl+K`); Shadertoy compatibility: WebGL 1 / GLSL ES style shaders, import by identifier with your own API key, video / webcam / microphone / music inputs replaced by your files, portability report with a corrected copy (`--portability`), a corpus of 113 self-checking shaders rendered at every change; HLSL, WGSL and native GLSL 4.x shaders translated by separate programs (`tools/`, `dxc` downloaded on request) with Buffer A to D and Common in the three languages; Pro settings window (a field for every Pro setting, file pickers with preview, Pro presets); comparison table of the free and Pro editions; reference written by the program (settings with their defaults, project format, command line; English and French; checked by `check-repo`); new website: guide, gallery of the 69 examples with picture and code, reference, local search, checked for links, structure, contrast and in Edge; illustrated release notes made by the program; the README explains the Windows warning (no code signature) |
 | 3.0.0 | Pro edition: 3D scenes (OBJ / PLY / glTF meshes, camera, depth, instances, shadows, reflections, GPU compute, preview with mouse orbit); Linux and macOS frozen (2.1.1 is the last version with them), Windows only continuous integration; Pro edition infrastructure (nothing locked in the free edition): signed `ShaderToMP4.license` checked offline, trial watermark on Pro outputs without a license, “Buy Pro” (5, 10 or 15 € by PayPal) and license status in “About”, `--license-info` |
 | 2.1.1 | Sound normalization with a constant gain (the volume no longer rises and falls); Multilayer OpenEXR written by the program (HDR colour, depth, normal, id, alpha, estimated motion), straight or premultiplied alpha, floating-point TIFF, DPX, 16-bit depth map; effect mode: the shader applied to videos, images, sequences and folders (size, rate, duration, sound, subtitles and chapters follow the source), playing backwards, 25 transitions between two sources with `iProgress`, chroma / luma / difference keys |
 | 2.1.0 | Windows installer (NSIS, per user, ffmpeg included, optional) |
@@ -594,44 +594,16 @@ Besides Shadertoy's `mainImage`, the program renders **HLSL pixel shaders**, **W
 
 Examples: category **Other languages** of the examples gallery (nine shaders, three per language, one of them with a Buffer A). `tests/xlang` holds 60 programs that the self-test renders and compares to their Shadertoy reference (mean difference of 3/255 at most), plus Buffer A / Common cases and broken programs.
 
-## Free and Pro editions
+## License and purchase
 
-The program you have is the **free edition**: it is distributed under the GPL-3.0-or-later, every function works, and nothing is ever locked or timed. What is published under the GPL stays free for those who received it.
+ShaderToMP4 is **proprietary shareware**: one program, one license, no free edition and no published source code. It is sold under the user agreement [EULA.md](EULA.md) from version 4.0.0. Versions up to 3.0.0 were distributed under the GPL-3.0-or-later; a copy already received under the GPL stays under it for those who received it.
 
-**Comparison of the two editions** (✔ = included, — = not in this edition):
-
-| Function | Free edition | Pro edition |
-|---|:---:|:---:|
-| **Licence and price** | | |
-| License | GPL-3.0-or-later | Shareware, user agreement (EULA) |
-| Price | Free, for good | 5, 10 or 15 € once, by PayPal |
-| Source code | Published | Not published |
-| Time limit | None | None: without a license the Pro functions still work, their output carries a small watermark |
-| **Rendering and tools (both editions)** | | |
-| Shadertoy shaders to video, every format, buffers, sound, VR, textures, parts that resume | ✔ | ✔ |
-| Animated parameters, post-processing, HDR, transparency, montage, editor | ✔ | ✔ |
-| Projects, job queue, render history, shortcuts, command palette | ✔ | ✔ |
-| Shadertoy import, portability report, HLSL / WGSL / native GLSL shaders | ✔ | ✔ |
-| Example gallery, help, first-launch tour | ✔ | ✔ |
-| Command line, watch folder, benchmark, render reports | ✔ | ✔ |
-| **Pro functions** | | |
-| 3D scenes: OBJ / PLY / glTF meshes, camera, shadows, reflections, GPU compute | — | ✔ |
-| Editing tools: undo and redo, curve, time curve and montage editors, screen guides | — | ✔ |
-| MIDI and data signals driving the shader | — | ✔ |
-| Colour: tone mapping, colour spaces, LUT chains, ICC profile | — | ✔ |
-| Quality: denoising, GIF palette and dithering | — | ✔ |
-| Dressing and delivery: layers, subtitles, title cards, deliverables | — | ✔ |
-| Performance: shader cache, hardware video decoding, memory budget, progressive preview | — | ✔ |
-| Pro settings window: a field for every Pro setting, Pro presets | — | ✔ |
-
-The **Pro edition** (the versions that add the Pro features, after 2.2) is shareware under the user agreement [EULA.md](EULA.md):
-
-- **No time limit.** Without a license, the Pro features stay usable; an output that uses one carries a small watermark on its colour (the data passes — depth, identifiers, motion — are never touched). An output that uses no Pro feature never has one. The log and the file metadata say when a watermark was applied.
-- **Buy** with the “Buy Pro” button (main window or “About”): choose **5 €, 10 € or 15 €** (same license for all three), and the button opens the PayPal page in your browser. The program sends nothing and receives no payment data. Once the payment is received, the file `ShaderToMP4.license` is sent to you by e-mail.
-- **Activate** by putting `ShaderToMP4.license` in the program folder, next to the executable (no key to type, no button). The program reads it at start-up and checks its signature **offline**, with no network. With a valid file the watermark, the “Buy Pro” button and every trial notice disappear, and only the registered version remains: “About” shows the license holder. A file that is altered, expired or for another major version gives the trial version again. `ShaderToMP4 --license-info` shows the status.
+- **No time limit.** Without a license every rendering function works (formats, buffers, sound, VR, 3D scenes, colour, signals, layers and subtitles). Only the editing windows (undo and redo, curve, time curve and montage editors, screen guides, Pro settings window) and the speed conveniences (shader cache, hardware video decoding, read-ahead, progressive preview) need a valid license. Every output carries a small watermark on its colour (the data passes — depth, identifiers, motion — are never touched). The log and the file metadata say when a watermark was applied.
+- **Buy** with the “Buy” button (main window or “About”): choose **5 €, 10 € or 15 €** (same license for all three), and the button opens the PayPal page in your browser. The program sends nothing and receives no payment data. Once the payment is received, the file `ShaderToMP4.license` is sent to you by e-mail. One license covers a major version, with all its updates.
+- **Activate** by putting `ShaderToMP4.license` in the program folder, next to the executable (no key to type, no button). The program reads it at start-up and checks its signature **offline**, with no network. With a valid file the watermark, the “Buy” button and every trial notice disappear, and only the registered version remains: “About” shows the license holder. A file that is altered, expired or for another major version gives the unlicensed version again. `ShaderToMP4 --license-info` shows the status.
 - The watermark is a brake, not an absolute protection. Lost file: ask for it again by e-mail with the payment reference.
 
-## 3D scenes (Pro edition)
+## 3D scenes
 
 The Pro edition draws a **3D mesh** in front of the same fragment shader as the image mode: the shader still writes `mainImage`, the pixels it colours are those of a model seen by a camera, with a depth buffer, instances, shadows, reflections and a GPU compute pass. Everything is written as text (`// key=value` comments in the shader, `config.ini`, `--key=value`), nothing is hidden in a binary format. A scene is a **Pro feature**: without a valid license the colour of the output carries the trial watermark (see above).
 
@@ -662,7 +634,7 @@ The Pro edition draws a **3D mesh** in front of the same fragment shader as the 
 
 Examples (`examples/scenes/` of the Pro package): `cube`, `sphere_orbit`, `shadows`, `reflection`, `particles` (8192 particles simulated on the GPU).
 
-## Pro settings window (Pro edition)
+## Pro settings window
 
 Every Pro setting (3D scene, signals and data, colour and quality, dressing and delivery, performance) has a **field** in the *Pro settings* window, opened by the star button of the header (or `Ctrl+Shift+P`, or the command palette): five pages, each field named after its key. A field reads and writes exactly the value of the text form (`// key=value` in a shader, `config.ini`, `--key=value`), so nothing is lost when you go back to text. A value is checked as the engine checks it before a render, a refused value is shown in red with the engine's message and is not written, an empty field removes the key.
 
@@ -673,7 +645,7 @@ Every Pro setting (3D scene, signals and data, colour and quality, dressing and 
 
 <p><a href="docs/screenshots/en/pro-settings.png"><img src="docs/screenshots/en/pro-settings.png" alt="Pro settings window" width="640"></a></p>
 
-Without a valid license the button opens the *Buy* window, like the other Pro tools. Nothing is added to the free edition.
+Without a valid license the button tells you that the window is reserved to licensed users; the Pro settings stay editable as `key=value` text.
 
 ## FAQ
 
@@ -783,6 +755,6 @@ bin/        working folder: the executable (generated), ffmpeg, config.ini
 ## Project information
 
 - **Copyright** © 2026 Patrick JAILLET
-- **License**: distributed under the GPL-3.0-or-later license, see [LICENSE](LICENSE) and [COPYING](COPYING). Third-party components: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). `ffmpeg` is a separate program, not included in this repository: it is downloaded on request from [gyan.dev](https://www.gyan.dev/ffmpeg/builds/) (Windows) or [BtbN](https://github.com/BtbN/FFmpeg-Builds) (Linux) and remains under its own license.
+- **License**: proprietary shareware, see [LICENSE](LICENSE) and the user agreement [EULA.md](EULA.md). Third-party components: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). `ffmpeg` is a separate program, not included in this repository: it is downloaded on request from [gyan.dev](https://www.gyan.dev/ffmpeg/builds/) (Windows) or [BtbN](https://github.com/BtbN/FFmpeg-Builds) (Linux) and remains under its own license.
 - **Contact**: [ap3x.records@proton.me](mailto:ap3x.records@proton.me)
 - **Website**: <https://ap3x-devel.github.io/ShaderToMP4>
