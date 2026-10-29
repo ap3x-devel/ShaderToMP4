@@ -81,6 +81,7 @@
 | `depthrange` | *écrite seulement quand elle n'a plus sa valeur par défaut* | bornes de la profondeur proche:loin : le canal depth.Z est écrit normalisé entre elles et les bornes sont déclarées dans l'en-tête EXR (vide : valeurs brutes) |
 | `tifffloat` | *écrite seulement quand elle n'a plus sa valeur par défaut* | 1 = séquences TIFF écrites par le programme en virgule flottante 32 bits (RGB ou RGBA) |
 | `vectorblur` | *écrite seulement quand elle n'a plus sa valeur par défaut* | flou de mouvement vectoriel de la sortie EXR : part du déplacement entre deux images (0 = aucun, 1 = tout) ; demande une passe de mouvement |
+| `dof` | *écrite seulement quand elle n'a plus sa valeur par défaut* | profondeur de champ de la sortie EXR : mise_au_point:ouverture[:rayon maximal], la profondeur qui reste nette, les pixels de flou par unité d'écart avec elle, et le plus grand rayon de flou en pixels (16) ; demande une passe de profondeur (// aov depth) |
 | `tile` | *écrite seulement quand elle n'a plus sa valeur par défaut* | image fixe : côté des tuiles en pixels (0 = automatique) |
 | `printdpi` | *écrite seulement quand elle n'a plus sa valeur par défaut* | image fixe PNG : résolution écrite dans le fichier (points par pouce) |
 | `alpha` | *écrite seulement quand elle n'a plus sa valeur par défaut* | `1` garde le canal alpha du shader (ProRes 4444, VP9 WebM, WebP, PNG, TIFF, EXR) |

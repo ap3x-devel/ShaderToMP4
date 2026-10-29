@@ -10,6 +10,7 @@ Format : une section par version, la plus récente en premier. La section d'une 
 
 ### Ajouté
 
+- **Qualité de production** : l'EXR en demi-précision rend dans une cible RGBA16F de bout en bout (dégradé sans bandes, valeurs au-delà de 1,0 conservées, dégradé ProRes 4444 10 bits contrôlé), profondeur de champ à partir de la passe de profondeur (`dof=mise_au_point:ouverture[:max]`), plusieurs sons mixés en mono, stéréo ou 5.1 dans un `.montage` avec leur décalage et leur volume (`sound`, `layout`).
 - **API locale** (`--serve`) : HTTP / JSON sur 127.0.0.1 avec un jeton, file de travaux (ajouter, suivre, annuler, sorties), schéma JSON vérifié contre de vraies sorties, exemples PowerShell et Python lancés par l'auto-test, cible de fuzzing du lecteur de requêtes, codes de sortie documentés avec un essai pour chacun.
 - **Sortie en direct depuis la fenêtre** : menu Projet, Sortie en direct, sur un écran ou dans une fenêtre (`scripts/test-live-gui.ps1`).
 - **Partage de texture Spout** pour la sortie en direct (`--live-spout`), Spout2 (BSD) compilé avec ses écritures du registre désactivées ; script de bout en bout `scripts/test-live-portable.ps1` (registre, fichiers, réseau).

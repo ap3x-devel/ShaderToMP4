@@ -81,6 +81,7 @@ Written by the program itself (`ShaderToMP4 --dump-reference=settings`): every k
 | `depthrange` | *written only when it is no longer the default* | depth bounds near:far: the depth.Z channel is written normalised between them and the bounds are declared in the EXR header (empty: raw values) |
 | `tifffloat` | *written only when it is no longer the default* | 1 = TIFF sequences written by the program in 32-bit floating point (RGB or RGBA) |
 | `vectorblur` | *written only when it is no longer the default* | vector motion blur of the EXR output: fraction of the movement between two frames (0 = none, 1 = all of it); needs a motion pass |
+| `dof` | *written only when it is no longer the default* | depth of field of the EXR output: focus:aperture[:max radius], the depth that stays sharp, the pixels of blur per unit of distance from it, and the largest blur radius in pixels (16); needs a depth pass (// aov depth) |
 | `tile` | *written only when it is no longer the default* | still image: tile side in pixels (0 = automatic) |
 | `printdpi` | *written only when it is no longer the default* | PNG still image: resolution written in the file (dots per inch) |
 | `alpha` | *written only when it is no longer the default* | `1` keeps the alpha channel of the shader (ProRes 4444, VP9 WebM, WebP, PNG, TIFF, EXR) |

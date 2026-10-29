@@ -10,6 +10,7 @@ Format: one section per version, newest first. The section of a tagged version i
 
 ### Added
 
+- **Production quality**: the EXR in half precision renders in an RGBA16F target from end to end (ramp without banding, values beyond 1.0 kept, ProRes 4444 10-bit ramp checked), depth of field from the depth pass (`dof=focus:aperture[:max]`), several sounds mixed into mono, stereo or 5.1 in a `.montage` with their offset and volume (`sound`, `layout`).
 - **Local API** (`--serve`): HTTP / JSON on 127.0.0.1 with a token, jobs queue (add, follow, cancel, outputs), JSON schema checked against real outputs, examples in PowerShell and Python run by the self-test, request reader fuzzing target, exit codes documented with a test for each.
 - **Live output from the window**: Project menu, Live output, on a screen or in a window (`scripts/test-live-gui.ps1`).
 - **Spout texture sharing** for the live output (`--live-spout`), Spout2 (BSD) compiled in with its registry writes disabled; end-to-end script `scripts/test-live-portable.ps1` (registry, files, network).
