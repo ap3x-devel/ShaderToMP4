@@ -46,7 +46,7 @@ The options of `ShaderToMP4`, written by the program itself (`ShaderToMP4 --dump
 | `a .json file` | An export of a Shadertoy shader (Export button of the page): imported into the "shadertoy" folder, then rendered. No account or key needed |
 | `--diagnostic` | Print system, graphics card, OpenGL, ffmpeg and encoders (no path, no personal data) for a bug report |
 | `--benchmark` | Measure frames per second by resolution and encoder (--seconds=N, --quick, --full, --json, --compare=file, --max-drop=N) |
-| `--live` | Live output in a borderless window on a screen (--live-monitor=N, --live-monitors, --live-window[=WxH], --live-seconds=N, --live-fps=N, --live-record=file.mkv, --live-stream=srt://... or rtmp://..., --live-bitrate=kb/s, --live-osc=host:port, --live-midi=N, --live-midi-devices, --live-json) |
+| `--live` | Live output in a borderless window on a screen (--live-monitor=N, --live-monitors, --live-window[=WxH], --live-seconds=N, --live-fps=N, --live-record=file.mkv, --live-stream=srt://... or rtmp://..., --live-bitrate=kb/s, --live-spout=name, --live-osc=host:port, --live-midi=N, --live-midi-devices, --live-json) |
 | `--license-info` | Show the license status and the file expected next to the program |
 | `--check-update[=url] [--download]` | Ask GitHub for the latest version (only when you run this); exit code 8 when a newer one exists; --download saves the installer in updates/ after checking its SHA-256, installs nothing |
 
