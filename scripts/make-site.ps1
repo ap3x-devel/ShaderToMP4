@@ -18,8 +18,8 @@ $ErrorActionPreference = "Stop"
 Set-Location (Split-Path $PSScriptRoot -Parent)
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 $OutFull = if ([System.IO.Path]::IsPathRooted($Out)) { $Out } else { Join-Path (Get-Location) $Out }
-$siteUrl = "https://ap3demak-rgb.github.io/ShaderToMP4/"
-$repoUrl = "https://github.com/ap3demak-rgb/ShaderToMP4"
+$siteUrl = "https://ap3x-devel.github.io/ShaderToMP4/"
+$repoUrl = "https://github.com/ap3x-devel/ShaderToMP4"
 
 function Esc([string]$s) { [System.Net.WebUtility]::HtmlEncode($s) }
 function Read-Text([string]$p) { ([System.IO.File]::ReadAllText((Resolve-Path $p).Path, $utf8) -replace "`r`n", "`n") }
@@ -111,7 +111,7 @@ $body
 </main>
 <footer>
   <div class="wrap">
-    ShaderToMP4 $version - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="$repoUrl">GitHub</a> - <a href="mailto:sandefjord.development@proton.me">sandefjord.development@proton.me</a>
+    ShaderToMP4 $version - &copy; 2026 Patrick JAILLET - GPL-3.0-or-later - <a href="$repoUrl">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
   </div>
 </footer>
 <script src="${root}assets/site.js"></script>

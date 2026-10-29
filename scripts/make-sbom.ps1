@@ -24,9 +24,9 @@ $packages = New-Object System.Collections.Generic.List[object]
 $rels = New-Object System.Collections.Generic.List[object]
 $self = [ordered]@{
   SPDXID = "SPDXRef-ShaderToMP4"; name = "ShaderToMP4"; versionInfo = $version
-  supplier = "Person: Patrick JAILLET"; downloadLocation = "https://github.com/ap3demak-rgb/ShaderToMP4/releases/tag/v$version"
+  supplier = "Person: Patrick JAILLET"; downloadLocation = "https://github.com/ap3x-devel/ShaderToMP4/releases/tag/v$version"
   filesAnalyzed = $false; licenseConcluded = "GPL-3.0-or-later"; licenseDeclared = "GPL-3.0-or-later"
-  copyrightText = "Copyright (C) 2026 Patrick JAILLET"; homepage = "https://ap3demak-rgb.github.io/ShaderToMP4"
+  copyrightText = "Copyright (C) 2026 Patrick JAILLET"; homepage = "https://ap3x-devel.github.io/ShaderToMP4"
 }
 if (Test-Path bin\ShaderToMP4.exe) { $self.checksums = @(@{ algorithm = "SHA256"; checksumValue = (Get-FileHash bin\ShaderToMP4.exe -Algorithm SHA256).Hash.ToLower() }) }
 $packages.Add($self)
@@ -49,7 +49,7 @@ $fixed = foreach ($r in $rels) {
 }
 $doc = [ordered]@{
   spdxVersion = "SPDX-2.3"; dataLicense = "CC0-1.0"; SPDXID = "SPDXRef-DOCUMENT"; name = "ShaderToMP4-$version"
-  documentNamespace = "https://ap3demak-rgb.github.io/ShaderToMP4/sbom/$version-" + [guid]::NewGuid().ToString()
+  documentNamespace = "https://ap3x-devel.github.io/ShaderToMP4/sbom/$version-" + [guid]::NewGuid().ToString()
   creationInfo = [ordered]@{ created = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"); creators = @("Tool: ShaderToMP4-make-sbom.ps1", "Person: Patrick JAILLET") }
   packages = $packages.ToArray(); relationships = @($fixed)
 }

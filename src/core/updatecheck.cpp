@@ -9,7 +9,7 @@
 #include "util.h"
 #include <cctype>
 
-const wchar_t* defaultUpdateUrl() { return L"https://api.github.com/repos/ap3demak-rgb/ShaderToMP4/releases/latest"; }
+const wchar_t* defaultUpdateUrl() { return L"https://api.github.com/repos/ap3x-devel/ShaderToMP4/releases/latest"; }
 
 namespace {
 

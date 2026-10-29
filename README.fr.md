@@ -7,9 +7,9 @@
 <p align="center"><a href="README.md">English</a> · <b>Français</b></p>
 
 <p align="center">
-  <a href="https://github.com/ap3demak-rgb/ShaderToMP4/releases/latest"><img alt="Télécharger" src="https://img.shields.io/badge/T%C3%A9l%C3%A9charger-Windows-465AFF?style=for-the-badge"></a>
+  <a href="https://github.com/ap3x-devel/ShaderToMP4/releases/latest"><img alt="Télécharger" src="https://img.shields.io/badge/T%C3%A9l%C3%A9charger-Windows-465AFF?style=for-the-badge"></a>
   &nbsp;
-  <a href="https://ap3demak-rgb.github.io/ShaderToMP4"><img alt="Site web" src="https://img.shields.io/badge/Site%20web-ShaderToMP4-FF5A96?style=for-the-badge"></a>
+  <a href="https://ap3x-devel.github.io/ShaderToMP4"><img alt="Site web" src="https://img.shields.io/badge/Site%20web-ShaderToMP4-FF5A96?style=for-the-badge"></a>
 </p>
 
 <p align="center">
@@ -29,7 +29,7 @@
 
 Un seul programme portable pour **Windows** (rien à installer ; un **installeur** facultatif), avec une interface sombre moderne en neuf langues, une aide intégrée (F1), une visite guidée au premier lancement et une galerie de soixante shaders d'exemple prêts à l'emploi.
 
-> **Linux et macOS sont gelés** (décision du 2026-10-22). La version **2.1.1** est la dernière publiée avec des archives Linux (x86-64, ARM64) et macOS ; elles restent disponibles sur la page des [Releases](https://github.com/ap3demak-rgb/ShaderToMP4/releases) et **restent sous GPL-3.0-or-later**. Leur code reste dans ce dépôt (`src/ui_imgui/`, `src/platform/posix/`, `scripts/*.sh`, `CMakeLists.txt`), marqué *figé* : pas de correctif, pas de nouveau test, pas d'intégration continue pour eux, et les nouvelles fonctions visent Windows seulement.
+> **Linux et macOS sont gelés** (décision du 2026-10-22). La version **2.1.1** est la dernière publiée avec des archives Linux (x86-64, ARM64) et macOS ; elles restent disponibles sur la page des [Releases](https://github.com/ap3x-devel/ShaderToMP4/releases) et **restent sous GPL-3.0-or-later**. Leur code reste dans ce dépôt (`src/ui_imgui/`, `src/platform/posix/`, `scripts/*.sh`, `CMakeLists.txt`), marqué *figé* : pas de correctif, pas de nouveau test, pas d'intégration continue pour eux, et les nouvelles fonctions visent Windows seulement.
 
 ---
 
@@ -139,7 +139,7 @@ Le dossier [`examples/gallery`](examples/gallery) contient **soixante shaders or
 
 ## Démarrage rapide
 
-1. **Télécharge** l'archive portable de ton système depuis la page [Releases](https://github.com/ap3demak-rgb/ShaderToMP4/releases/latest) et décompresse-la où tu veux (ou [compile le projet](#compiler)).
+1. **Télécharge** l'archive portable de ton système depuis la page [Releases](https://github.com/ap3x-devel/ShaderToMP4/releases/latest) et décompresse-la où tu veux (ou [compile le projet](#compiler)).
 
    | Système | Archive | Lancer |
    |---|---|---|
@@ -263,7 +263,7 @@ Les réglages sont enregistrés dans `config.ini` à côté du `.exe`, et peuven
 void mainImage(out vec4 fragColor, in vec2 fragCoord) { ... }
 ```
 
-La liste complète des clés avec leurs valeurs par défaut, le format du fichier projet et les options de la ligne de commande sont écrits par le programme lui-même (`ShaderToMP4 --dump-reference=settings|project|cli`) dans [docs/reference/](docs/reference/settings.fr.md) et sur le [site](https://ap3demak-rgb.github.io/ShaderToMP4/reference/index.html) ; `scripts/check-repo.ps1` refuse un fichier différent de ce que le programme écrit et un réglage que ce README ne mentionne pas.
+La liste complète des clés avec leurs valeurs par défaut, le format du fichier projet et les options de la ligne de commande sont écrits par le programme lui-même (`ShaderToMP4 --dump-reference=settings|project|cli`) dans [docs/reference/](docs/reference/settings.fr.md) et sur le [site](https://ap3x-devel.github.io/ShaderToMP4/reference/index.html) ; `scripts/check-repo.ps1` refuse un fichier différent de ce que le programme écrit et un réglage que ce README ne mentionne pas.
 
 | Réglage (fenêtre) | Clé | Valeurs |
 |---|---|---|
@@ -572,7 +572,7 @@ Tous les textes de l'interface viennent de `lang/en.json` et `lang/fr.json`, emb
 - **Construction reproductible.** Le programme est lié avec `/Brepro` (pas d'horodatage dans l'en-tête) : deux fabrications du même commit dans le même dossier donnent les mêmes octets, ce que contrôle `scripts/verify-reproducible.ps1` (et l'intégration continue). Un autre dossier ou une autre version de Visual Studio donne d'autres octets ; le zip et l'installeur portent des dates et ne sont pas identiques octet pour octet d'une fabrication à l'autre. `SHA256SUMS.txt` est publié avec chaque version.
 - **Nomenclature logicielle.** `ShaderToMP4-<version>-sbom.spdx.json` (SPDX 2.3) liste le programme et ce qui l'accompagne : ffmpeg (installeur), l'exécutable d'exécution de NSIS, le code TweetNaCl adapté et le runtime Visual C++ lié statiquement. `scripts/check-vulnerabilities.ps1` interroge la base NVD (par nom CPE et version) sur les vulnérabilités connues de ces composants et le résultat est publié sous `ShaderToMP4-<version>-vulnerabilities.txt` ; un résultat vide n'est pas une garantie, et le code propre du programme n'est pas couvert. Au moment de l'écriture, le contrôle signale sept entrées moyennes ou faibles pour le ffmpeg 9.0.2 figé.
 - **Pourquoi Windows avertit.** Ni `ShaderToMP4.exe` ni l'installeur ne portent de signature Authenticode : un certificat de signature de code s'achète auprès d'une autorité de certification et se renouvelle chaque année, et l'auteur n'en a pas obtenu. Windows SmartScreen peut donc afficher « Windows a protégé votre ordinateur / éditeur inconnu » au premier lancement. L'avertissement porte sur la signature absente, pas sur ce que fait le fichier : comparez la somme SHA-256 de ce que vous avez téléchargé avec `SHA256SUMS.txt` de la version (et avec l'inventaire des composants), puis choisissez *Informations complémentaires*, *Exécuter quand même*. Si un certificat est obtenu plus tard, la construction signera le programme et l'installeur et ce paragraphe changera.
-- **winget et Scoop.** `scripts/package-manifests.ps1` fabrique un manifeste winget (`ap3demak-rgb.ShaderToMP4`, installeur NSIS silencieux, par utilisateur) et un manifeste Scoop (archive portable, réglages conservés par `persist`) à partir des fichiers de la version ; ils sont joints à la version sous `ShaderToMP4-<version>-manifests.zip`. Le manifeste winget passe `winget validate` ; aucun des deux n'a encore été installé par winget ou Scoop, et rien n'a été proposé à `winget-pkgs` ni à un « bucket » Scoop. Il n'y a pas de paquet pour Linux ni macOS (gelés).
+- **winget et Scoop.** `scripts/package-manifests.ps1` fabrique un manifeste winget (`ap3x-devel.ShaderToMP4`, installeur NSIS silencieux, par utilisateur) et un manifeste Scoop (archive portable, réglages conservés par `persist`) à partir des fichiers de la version ; ils sont joints à la version sous `ShaderToMP4-<version>-manifests.zip`. Le manifeste winget passe `winget validate` ; aucun des deux n'a encore été installé par winget ou Scoop, et rien n'a été proposé à `winget-pkgs` ni à un « bucket » Scoop. Il n'y a pas de paquet pour Linux ni macOS (gelés).
 
 ## Autres langages de shader (HLSL, WGSL, GLSL natif)
 
@@ -786,5 +786,5 @@ bin/        dossier de travail : l'exécutable (généré), ffmpeg, config.ini
 
 - **Copyright** © 2026 Patrick JAILLET
 - **Licence** : distribué sous licence GPL-3.0-or-later, voir [LICENSE](LICENSE) et [COPYING](COPYING). Composants tiers : [THIRD_PARTY_NOTICES.fr.md](THIRD_PARTY_NOTICES.fr.md). `ffmpeg` est un programme séparé, non inclus dans ce dépôt : il est téléchargé à la demande depuis [gyan.dev](https://www.gyan.dev/ffmpeg/builds/) (Windows) ou [BtbN](https://github.com/BtbN/FFmpeg-Builds) (Linux) et reste soumis à sa propre licence.
-- **Contact** : [sandefjord.development@proton.me](mailto:sandefjord.development@proton.me)
-- **Site web** : <https://ap3demak-rgb.github.io/ShaderToMP4>
+- **Contact** : [ap3x.records@proton.me](mailto:ap3x.records@proton.me)
+- **Site web** : <https://ap3x-devel.github.io/ShaderToMP4>

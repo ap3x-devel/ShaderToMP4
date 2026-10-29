@@ -88,7 +88,7 @@ for ($i = 0; $i -lt 2; $i++) {
 }
 
 # 4. textes des notes
-$base = "https://ap3demak-rgb.github.io/ShaderToMP4/releases/$Version"
+$base = "https://ap3x-devel.github.io/ShaderToMP4/releases/$Version"
 $files = $Examples | ForEach-Object { Find-Shader $_ }
 $namesEn = ($files | ForEach-Object { Title-Of $_ "en" }) -join ", "
 $namesFr = ($files | ForEach-Object { Title-Of $_ "fr" }) -join ", "

@@ -13,8 +13,8 @@
 #define APP_COPYRIGHT_YEAR "2026"
 #define APP_COPYRIGHT_OWNER "Patrick JAILLET"
 #define APP_LICENSE_ID "GPL-3.0-or-later"
-#define APP_CONTACT_EMAIL "sandefjord.development@proton.me"
-#define APP_WEBSITE_URL "https://ap3demak-rgb.github.io/ShaderToMP4"
+#define APP_CONTACT_EMAIL "ap3x.records@proton.me"
+#define APP_WEBSITE_URL "https://ap3x-devel.github.io/ShaderToMP4"
 // Achat de l'edition Pro : page PayPal.me de l'auteur ; le montant choisi (5, 10 ou 15 euros) est ajoute sous la forme /5EUR (voir core/prolicense.h)
 #define APP_PURCHASE_URL "https://www.paypal.me/sandefjorddevel"
 

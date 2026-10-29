@@ -9,7 +9,7 @@ Windows build: unzip anywhere and run. `ffmpeg` is not included in the archive (
 | Windows 10/11 (64-bit) | `ShaderToMP4-<version>-win64.zip` |
 | Windows 10/11 (64-bit), installer, ffmpeg included, not code-signed | `ShaderToMP4-<version>-win64-setup.exe` |
 
-SHA-256 sums: `SHA256SUMS.txt`. Documentation: [README](https://github.com/ap3demak-rgb/ShaderToMP4#readme) · Website: https://ap3demak-rgb.github.io/ShaderToMP4
+SHA-256 sums: `SHA256SUMS.txt`. Documentation: [README](https://github.com/ap3x-devel/ShaderToMP4#readme) · Website: https://ap3x-devel.github.io/ShaderToMP4
 
 ---
 

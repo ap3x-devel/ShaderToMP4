@@ -4,7 +4,7 @@
 
 # ShaderToMP4 Pro : contrat d'utilisation
 
-Copyright © 2026 Patrick JAILLET. Contact : sandefjord.development@proton.me. Site : https://ap3demak-rgb.github.io/ShaderToMP4
+Copyright © 2026 Patrick JAILLET. Contact : ap3x.records@proton.me. Site : https://ap3x-devel.github.io/ShaderToMP4
 
 ## 1. Ce que couvre ce contrat
 

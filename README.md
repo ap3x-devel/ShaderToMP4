@@ -7,9 +7,9 @@
 <p align="center"><b>English</b> · <a href="README.fr.md">Français</a></p>
 
 <p align="center">
-  <a href="https://github.com/ap3demak-rgb/ShaderToMP4/releases/latest"><img alt="Download" src="https://img.shields.io/badge/Download-Windows-465AFF?style=for-the-badge"></a>
+  <a href="https://github.com/ap3x-devel/ShaderToMP4/releases/latest"><img alt="Download" src="https://img.shields.io/badge/Download-Windows-465AFF?style=for-the-badge"></a>
   &nbsp;
-  <a href="https://ap3demak-rgb.github.io/ShaderToMP4"><img alt="Website" src="https://img.shields.io/badge/Website-ShaderToMP4-FF5A96?style=for-the-badge"></a>
+  <a href="https://ap3x-devel.github.io/ShaderToMP4"><img alt="Website" src="https://img.shields.io/badge/Website-ShaderToMP4-FF5A96?style=for-the-badge"></a>
 </p>
 
 <p align="center">
@@ -29,7 +29,7 @@
 
 One portable program for **Windows** (nothing to install; an optional **installer**), with a modern dark interface in nine languages, a built-in help (F1), a guided tour for the first launch and a gallery of sixty ready-to-use example shaders.
 
-> **Linux and macOS are frozen** (decision of 2026-10-22). Version **2.1.1** is the last one published with Linux (x86-64, ARM64) and macOS archives; they stay available on the [Releases](https://github.com/ap3demak-rgb/ShaderToMP4/releases) page and **remain under the GPL-3.0-or-later**. Their code stays in this repository (`src/ui_imgui/`, `src/platform/posix/`, `scripts/*.sh`, `CMakeLists.txt`), marked *frozen*: no fixes, no new tests, no continuous integration for them, and new features target Windows only.
+> **Linux and macOS are frozen** (decision of 2026-10-22). Version **2.1.1** is the last one published with Linux (x86-64, ARM64) and macOS archives; they stay available on the [Releases](https://github.com/ap3x-devel/ShaderToMP4/releases) page and **remain under the GPL-3.0-or-later**. Their code stays in this repository (`src/ui_imgui/`, `src/platform/posix/`, `scripts/*.sh`, `CMakeLists.txt`), marked *frozen*: no fixes, no new tests, no continuous integration for them, and new features target Windows only.
 
 ---
 
@@ -139,7 +139,7 @@ The [`examples/gallery`](examples/gallery) folder holds **sixty original shaders
 
 ## Quick start
 
-1. **Download** the portable archive for your system from the [Releases](https://github.com/ap3demak-rgb/ShaderToMP4/releases/latest) page and unpack it anywhere (or [build the project](#building)).
+1. **Download** the portable archive for your system from the [Releases](https://github.com/ap3x-devel/ShaderToMP4/releases/latest) page and unpack it anywhere (or [build the project](#building)).
 
    | System | Archive | Run |
    |---|---|---|
@@ -263,7 +263,7 @@ Settings are saved in `config.ini` next to the `.exe`, and can be forced **per s
 void mainImage(out vec4 fragColor, in vec2 fragCoord) { ... }
 ```
 
-The complete list of keys with their default values, the project file format and the command-line options are written by the program itself (`ShaderToMP4 --dump-reference=settings|project|cli`) in [docs/reference/](docs/reference/settings.md) and on the [website](https://ap3demak-rgb.github.io/ShaderToMP4/reference/index.html); `scripts/check-repo.ps1` refuses a file that differs from what the program writes and a setting that this README does not mention.
+The complete list of keys with their default values, the project file format and the command-line options are written by the program itself (`ShaderToMP4 --dump-reference=settings|project|cli`) in [docs/reference/](docs/reference/settings.md) and on the [website](https://ap3x-devel.github.io/ShaderToMP4/reference/index.html); `scripts/check-repo.ps1` refuses a file that differs from what the program writes and a setting that this README does not mention.
 
 | Setting (window) | Key | Values |
 |---|---|---|
@@ -572,7 +572,7 @@ All interface texts come from `lang/en.json` and `lang/fr.json`, embedded in the
 - **Reproducible build.** The program is linked with `/Brepro` (no time stamp in the header): two builds of the same commit in the same folder give the same bytes, checked by `scripts/verify-reproducible.ps1` (and by the continuous integration). Another folder or another Visual Studio version gives other bytes; the zip and the installer carry dates and are not byte-identical between runs. `SHA256SUMS.txt` is published with every version.
 - **Software bill of materials.** `ShaderToMP4-<version>-sbom.spdx.json` (SPDX 2.3) lists the program and what ships with it: ffmpeg (installer), the NSIS run-time, the adapted TweetNaCl code and the statically linked Visual C++ run-time. `scripts/check-vulnerabilities.ps1` asks the NVD (by CPE name and version) for known vulnerabilities of those components and the result is published as `ShaderToMP4-<version>-vulnerabilities.txt`; an empty result is not a guarantee, and the program's own code is not covered. At the time of writing the check reports seven medium or low entries for the pinned ffmpeg 9.0.2.
 - **Why Windows warns.** Neither `ShaderToMP4.exe` nor the installer carries an Authenticode signature: a code-signing certificate is bought from a certification authority and renewed every year, and the author has not obtained one. Windows SmartScreen therefore may show “Windows protected your PC / unknown publisher” on first launch. The warning is about the missing signature, not about what the file does: compare the SHA-256 of what you downloaded with `SHA256SUMS.txt` of the release (and with the software bill of materials), then choose *More info*, *Run anyway*. If a certificate is obtained later, the build will sign the program and the installer and this paragraph will change.
-- **winget and Scoop.** `scripts/package-manifests.ps1` builds a winget manifest (`ap3demak-rgb.ShaderToMP4`, silent NSIS installer, per-user) and a Scoop manifest (portable archive, settings kept with `persist`) from the files of the version; they are attached to the release as `ShaderToMP4-<version>-manifests.zip`. The winget manifest passes `winget validate`; neither manifest has been installed through winget or Scoop yet, and nothing has been submitted to `winget-pkgs` or a Scoop bucket. There is no package for Linux or macOS (frozen).
+- **winget and Scoop.** `scripts/package-manifests.ps1` builds a winget manifest (`ap3x-devel.ShaderToMP4`, silent NSIS installer, per-user) and a Scoop manifest (portable archive, settings kept with `persist`) from the files of the version; they are attached to the release as `ShaderToMP4-<version>-manifests.zip`. The winget manifest passes `winget validate`; neither manifest has been installed through winget or Scoop yet, and nothing has been submitted to `winget-pkgs` or a Scoop bucket. There is no package for Linux or macOS (frozen).
 
 ## Other shader languages (HLSL, WGSL, native GLSL)
 
@@ -784,5 +784,5 @@ bin/        working folder: the executable (generated), ffmpeg, config.ini
 
 - **Copyright** © 2026 Patrick JAILLET
 - **License**: distributed under the GPL-3.0-or-later license, see [LICENSE](LICENSE) and [COPYING](COPYING). Third-party components: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). `ffmpeg` is a separate program, not included in this repository: it is downloaded on request from [gyan.dev](https://www.gyan.dev/ffmpeg/builds/) (Windows) or [BtbN](https://github.com/BtbN/FFmpeg-Builds) (Linux) and remains under its own license.
-- **Contact**: [sandefjord.development@proton.me](mailto:sandefjord.development@proton.me)
-- **Website**: <https://ap3demak-rgb.github.io/ShaderToMP4>
+- **Contact**: [ap3x.records@proton.me](mailto:ap3x.records@proton.me)
+- **Website**: <https://ap3x-devel.github.io/ShaderToMP4>

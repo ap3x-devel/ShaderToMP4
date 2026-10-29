@@ -4,7 +4,7 @@
 
 # ShaderToMP4 Pro: end-user license agreement
 
-Copyright © 2026 Patrick JAILLET. Contact: sandefjord.development@proton.me. Website: https://ap3demak-rgb.github.io/ShaderToMP4
+Copyright © 2026 Patrick JAILLET. Contact: ap3x.records@proton.me. Website: https://ap3x-devel.github.io/ShaderToMP4
 
 ## 1. What this agreement covers
 
