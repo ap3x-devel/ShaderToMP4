@@ -647,6 +647,16 @@ Every Pro setting (3D scene, signals and data, colour and quality, dressing and 
 
 Without a valid license the button tells you that the window is reserved to licensed users; the Pro settings stay editable as `key=value` text.
 
+## Live output
+
+`ShaderToMP4 --live shader.glsl` renders the shader **in real time** in a borderless window that covers a screen, with the same engine as the preview (passes, channels, parameters, 3D scenes, layers). The picture is drawn at the size of the screen, the cursor is hidden, `Esc` (or closing the window) stops it. Without a license the colour carries the watermark, like any other output.
+
+- **Screens.** `--live-monitors` lists them (the main one is 0), `--live-monitor=N` picks one, `--live-window[=WxH]` opens a normal window instead of covering the screen. With the vertical sync of the screen the target rate is its refresh rate; `--live-fps=N` asks for another rate, `--live-vsync=0` turns the sync off.
+- **Measure.** `--live-seconds=N` stops after N seconds and `--live-json` prints the average rate, the images lost (intervals longer than one and a half times the target) and the longest interval. Measured here over ten seconds with `examples/plasma.glsl`: 60.1 images per second on a 59 Hz screen, 0 to 9 images lost out of 602, `Esc` stops in about 0.3 s (`scripts/test-live.ps1` does it on every screen).
+- **Lossless recording.** `--live-record=file.mkv` writes every image (FFV1, no loss) with the clock of the render, image by image: the recording is complete even when the window drops frames. Verified: 2 seconds at 30 images per second give exactly 60 images and 2.00 s, and images 0 and 30 equal the render at 0 s and 1 s to the pixel.
+- **Network stream.** `--live-stream=srt://host:port` or `rtmp://host/app/key` sends the picture (H.264 through ffmpeg, `--live-bitrate=kb/s`) **only to the address you give**: nothing is ever sent by default. A network that is slower than the render loses stream images (counted), never the recording. Verified against a local ffmpeg receiver started by the self-test, for SRT and for RTMP.
+- Not done yet: texture sharing with Spout, live control by MIDI and OSC, NDI (see the roadmap).
+
 ## FAQ
 
 **Which Shadertoy shaders are supported?**

@@ -10,6 +10,7 @@ Format: one section per version, newest first. The section of a tagged version i
 
 ### Added
 
+- **Live output** (`--live`): real-time rendering in a borderless window on the chosen screen, measured rate and lost images, lossless recording image by image (`--live-record`), SRT and RTMP stream to an address given by the user (`--live-stream`). Self-test cases `live_*`, real-screen script `scripts/test-live.ps1`.
 - **License file by drag and drop**: drop `ShaderToMP4.license` on the About window; it is checked (signature, version, expiry) before being copied next to the program, a refused file changes nothing, the result is shown in the window and the Buy button disappears. New self-test case `lic_install`, end-to-end script `scripts/test-license-drop.ps1`.
 
 ### Changed

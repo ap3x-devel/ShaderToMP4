@@ -647,6 +647,16 @@ Chaque réglage Pro (scène 3D, signaux et données, couleur et qualité, habill
 
 Sans licence valide le bouton indique que la fenêtre est réservée aux utilisateurs licenciés ; les réglages Pro restent modifiables en texte `clé=valeur`.
 
+## Sortie en direct
+
+`ShaderToMP4 --live shader.glsl` rend le shader **en temps réel** dans une fenêtre sans bordure qui couvre un écran, avec le même moteur que l'aperçu (passes, canaux, paramètres, scènes 3D, calques). L'image est dessinée à la taille de l'écran, le curseur est masqué, `Échap` (ou la fermeture de la fenêtre) l'arrête. Sans licence la couleur porte le filigrane, comme toute autre sortie.
+
+- **Écrans.** `--live-monitors` les liste (le principal est le 0), `--live-monitor=N` en choisit un, `--live-window[=LxH]` ouvre une fenêtre normale au lieu de couvrir l'écran. Avec la synchronisation verticale de l'écran, la cadence visée est sa fréquence ; `--live-fps=N` demande une autre cadence, `--live-vsync=0` coupe la synchronisation.
+- **Mesure.** `--live-seconds=N` arrête après N secondes et `--live-json` affiche la cadence moyenne, les images perdues (intervalles de plus d'une fois et demie la cadence visée) et le plus long intervalle. Mesuré ici sur dix secondes avec `examples/plasma.glsl` : 60,1 images par seconde sur un écran de 59 Hz, 0 à 9 images perdues sur 602, `Échap` arrête en 0,3 s environ (`scripts/test-live.ps1` le fait sur chaque écran).
+- **Enregistrement sans perte.** `--live-record=fichier.mkv` écrit chaque image (FFV1, sans perte) avec l'horloge du rendu, image par image : l'enregistrement est complet même quand la fenêtre perd des images. Vérifié : 2 secondes à 30 images par seconde donnent exactement 60 images et 2,00 s, et les images 0 et 30 sont le rendu à 0 s et à 1 s au pixel près.
+- **Flux réseau.** `--live-stream=srt://hôte:port` ou `rtmp://hôte/application/clé` envoie l'image (H.264 par ffmpeg, `--live-bitrate=kb/s`) **seulement à l'adresse que vous donnez** : rien n'est jamais envoyé par défaut. Un réseau plus lent que le rendu fait perdre des images du flux (comptées), jamais de l'enregistrement. Vérifié contre un récepteur ffmpeg local lancé par l'auto-test, en SRT et en RTMP.
+- Pas encore fait : partage de texture avec Spout, pilotage en direct par MIDI et OSC, NDI (voir la feuille de route).
+
 ## Questions fréquentes
 
 **Quels shaders Shadertoy sont supportés ?**
