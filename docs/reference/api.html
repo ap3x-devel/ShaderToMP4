@@ -1,0 +1,140 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: LicenseRef-ShaderToMP4-Proprietary - Copyright (C) 2026 Patrick JAILLET. Tous droits reserves. -->
+<!-- Page produite par scripts\make-site.ps1, ne pas modifier a la main. -->
+<html lang="en" data-root="../" data-title-en="Local API - ShaderToMP4" data-title-fr="API locale - ShaderToMP4">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local API - ShaderToMP4</title>
+<meta name="description" content="The local HTTP / JSON API (--serve): access, endpoints, exit codes.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF5A96'/%3E%3Cstop offset='1' stop-color='%23465AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='58' height='58' rx='15' fill='url(%23g)'/%3E%3Cpath d='M25 19l21 13-21 13z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#content"><span lang="en" data-lang="en">Skip to content</span><span lang="fr" data-lang="fr">Aller au contenu</span></a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5A96"/><stop offset="1" stop-color="#465AFF"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#g)"/><path d="M25 19l21 13-21 13z" fill="#fff"/></svg>
+      ShaderToMP4
+    </a>
+    <nav aria-label="Main / Principal">
+      <a href="../guide/index.html"><span lang="en" data-lang="en">Guide</span><span lang="fr" data-lang="fr">Guide</span></a>
+      <a href="../gallery/index.html"><span lang="en" data-lang="en">Examples</span><span lang="fr" data-lang="fr">Exemples</span></a>
+      <a href="../reference/index.html" aria-current="page"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a>
+      <a href="../search.html"><span lang="en" data-lang="en">Search</span><span lang="fr" data-lang="fr">Rechercher</span></a>
+      <a href="../index.html#download"><span lang="en" data-lang="en">Download</span><span lang="fr" data-lang="fr">T&#233;l&#233;charger</span></a>
+      <button class="lang" id="langBtn" type="button" aria-label="Language / Langue">EN | FR</button>
+    </nav>
+  </div>
+</header>
+<main id="content" tabindex="-1">
+<div class="wrap page">
+<p class="crumbs"><a href="../index.html"><span lang="en" data-lang="en">Home</span><span lang="fr" data-lang="fr">Accueil</span></a> / <a href="../reference/index.html"><span lang="en" data-lang="en">Reference</span><span lang="fr" data-lang="fr">R&#233;f&#233;rence</span></a></p>
+<div class="layout">
+<nav class="side" aria-label="Reference / R&#233;f&#233;rence"><ul>
+<li><a href="settings.html"><span lang="en" data-lang="en">Settings</span><span lang="fr" data-lang="fr">R&#233;glages</span></a></li>
+<li><a href="project.html"><span lang="en" data-lang="en">Project file</span><span lang="fr" data-lang="fr">Fichier projet</span></a></li>
+<li><a href="cli.html"><span lang="en" data-lang="en">Command line</span><span lang="fr" data-lang="fr">Ligne de commande</span></a></li>
+<li><a href="api.html" aria-current="page"><span lang="en" data-lang="en">Local API</span><span lang="fr" data-lang="fr">API locale</span></a></li>
+</ul></nav>
+<article class="prose">
+<h1><span lang="en" data-lang="en">ShaderToMP4 local API</span><span lang="fr" data-lang="fr">API locale de ShaderToMP4</span></h1>
+<div lang="en" data-lang="en">
+<p><code>ShaderToMP4 --serve[=port]</code> starts an HTTP / JSON API on <code>127.0.0.1</code> (default port 8765). It is <strong>off unless asked</strong> and stops with <code>POST /api/v1/shutdown</code>. The shape of every answer is described in <a href="../api/schema.json">schema.json</a>.</p>
+<h2>Access</h2>
+<p>The program writes a 64-character token in <code>serve.token</code> next to the program (and the port in <code>serve.json</code>); both files are removed when the server stops. Every request needs:</p>
+<pre tabindex="0"><code>Authorization: Bearer &lt;token&gt;
+Host: 127.0.0.1:8765        (or localhost)</code></pre>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Case, Answer"><table class="ref"><thead><tr><th scope="col">Case</th><th scope="col">Answer</th></tr></thead><tbody>
+<tr id="a-no-token-wrong-token"><th scope="row">No token, wrong token</th><td><code>401</code></td></tr>
+<tr id="a-host-other-than-127-0-0-1-localhost-or-an-origin-header-a-web-page"><th scope="row"><code>Host</code> other than <code>127.0.0.1</code> / <code>localhost</code>, or an <code>Origin</code> header (a web page)</th><td><code>403</code></td></tr>
+<tr id="a-unknown-address-unknown-job"><th scope="row">Unknown address, unknown job</th><td><code>404</code></td></tr>
+<tr id="a-method-not-allowed-on-that-address"><th scope="row">Method not allowed on that address</th><td><code>405</code></td></tr>
+<tr id="a-body-not-json-unknown-setting-bad-path"><th scope="row">Body not JSON, unknown setting, bad path</th><td><code>400</code> (<code>{&quot;error&quot;: &quot;...&quot;}</code>)</td></tr>
+<tr id="a-body-over-1-mb"><th scope="row">Body over 1 MB</th><td><code>413</code></td></tr>
+<tr id="a-too-many-jobs-waiting-deleting-a-running-job"><th scope="row">Too many jobs waiting, deleting a running job</th><td><code>409</code></td></tr>
+</tbody></table></div>
+<p>The server never listens on another address of the machine and closes a connection whose remote address is not <code>127.0.0.1</code>.</p>
+<h2>Endpoints</h2>
+<p>All under <code>/api/v1</code>. Bodies and answers are JSON (UTF-8).</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Request, What it does"><table class="ref"><thead><tr><th scope="col">Request</th><th scope="col">What it does</th></tr></thead><tbody>
+<tr id="a-get-status"><th scope="row"><code>GET /status</code></th><td>`{&quot;program&quot;,&quot;version&quot;,&quot;api&quot;:1,&quot;state&quot;:&quot;idle&quot;</td><td>&quot;busy&quot;,&quot;queued&quot;,&quot;running&quot;,&quot;jobs&quot;}`</td></tr>
+<tr id="a-get-settings"><th scope="row"><code>GET /settings</code></th><td>every setting of the settings table, as text</td></tr>
+<tr id="a-put-settings"><th scope="row"><code>PUT /settings</code></th><td><code>{&quot;width&quot;: 1280, &quot;fps&quot;: 30}</code>: changes the general settings (strings, numbers or booleans); an unknown key gives <code>400</code> and changes nothing</td></tr>
+<tr id="a-post-jobs"><th scope="row"><code>POST /jobs</code></th><td><code>{&quot;path&quot;: &quot;C:/shaders/plasma.glsl&quot;, &quot;settings&quot;: {&quot;duration&quot;: 5, &quot;outdir&quot;: &quot;C:/videos&quot;}}</code>: adds a shader (<code>.glsl</code>, <code>.txt</code>, <code>.frag</code>, <code>.hlsl</code>, <code>.wgsl</code>) to the queue and starts it; the job takes the general settings then its own; answer <code>201</code> with the job</td></tr>
+<tr id="a-get-jobs"><th scope="row"><code>GET /jobs</code></th><td><code>{&quot;jobs&quot;: [...]}</code></td></tr>
+<tr id="a-get-jobs-id"><th scope="row"><code>GET /jobs/{id}</code></th><td>the job: <code>id</code>, <code>path</code>, <code>state</code> (<code>queued</code>, <code>running</code>, <code>done</code>, <code>failed</code>, <code>cancelled</code>), <code>progress</code> (<code>frame</code>, <code>total</code>, <code>fps</code>, <code>remaining_s</code>), <code>error</code>, <code>outputs</code>, <code>log</code> (the last 60 lines)</td></tr>
+<tr id="a-get-jobs-id-outputs"><th scope="row"><code>GET /jobs/{id}/outputs</code></th><td><code>{&quot;outputs&quot;: [&quot;C:/videos/plasma.mp4&quot;]}</code></td></tr>
+<tr id="a-post-jobs-id-cancel"><th scope="row"><code>POST /jobs/{id}/cancel</code></th><td>stops the job (or removes it from the queue)</td></tr>
+<tr id="a-delete-jobs-id"><th scope="row"><code>DELETE /jobs/{id}</code></th><td>forgets a finished job</td></tr>
+<tr id="a-post-shutdown"><th scope="row"><code>POST /shutdown</code></th><td>stops the server</td></tr>
+</tbody></table></div>
+<p>Jobs run one after the other, in order.</p>
+<h2>Example</h2>
+<pre tabindex="0"><code>$token = (Get-Content serve.token).Trim()
+$h = @{ Authorization = &quot;Bearer $token&quot; }
+$job = Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8765/api/v1/jobs -Headers $h -ContentType application/json `
+  -Body &#39;{&quot;path&quot;:&quot;C:/shaders/plasma.glsl&quot;,&quot;settings&quot;:{&quot;duration&quot;:5,&quot;outdir&quot;:&quot;C:/videos&quot;}}&#39;
+Invoke-RestMethod -Uri &quot;http://127.0.0.1:8765/api/v1/jobs/$($job.id)&quot; -Headers $h</code></pre>
+<p>Complete clients that follow the progress: <code>examples/automation/render.ps1</code> (PowerShell) and <code>examples/automation/render.py</code> (Python, standard library only). The self-test runs both against a real server.</p>
+<h2>Other machine-readable outputs</h2>
+<p><code>--progress=json</code> prints one JSON object per line (<code>start</code>, <code>log</code>, <code>progress</code>, <code>done</code>, <code>error</code>, <code>end</code>), <code>--report=json</code> writes <code>name.report.json</code> next to each video, and <code>--diagnostic</code> prints <code>key: value</code> text lines. Their shapes are in <a href="../api/schema.json">schema.json</a> (definitions <code>progressEvent</code> and <code>renderReport</code>).</p>
+<h2>Exit codes</h2>
+<p><code>0</code> everything rendered; <code>1</code> a render failed (also <code>--serve</code> on a port in use); <code>2</code> invalid command line; <code>3</code> no OpenGL 3.3; <code>4</code> ffmpeg not found; <code>5</code> benchmark slower than before; <code>6</code> <code>--check</code> warning; <code>7</code> <code>--compare</code> / <code>--golden=verify</code> / <code>--verify</code> difference; <code>8</code> newer version available; <code>9</code> <code>--portability</code> corrections exist.</p>
+</div>
+<div lang="fr" data-lang="fr">
+<p><code>ShaderToMP4 --serve[=port]</code> d&#233;marre une API HTTP / JSON sur <code>127.0.0.1</code> (port 8765 par d&#233;faut). Elle est <strong>inactive tant qu&#39;on ne la demande pas</strong> et s&#39;arr&#234;te par <code>POST /api/v1/shutdown</code>. La forme de chaque r&#233;ponse est d&#233;crite dans <a href="../api/schema.json">schema.json</a>.</p>
+<h2>Acc&#232;s</h2>
+<p>Le programme &#233;crit un jeton de 64 caract&#232;res dans <code>serve.token</code> &#224; c&#244;t&#233; du programme (et le port dans <code>serve.json</code>) ; les deux fichiers sont retir&#233;s &#224; l&#39;arr&#234;t du serveur. Chaque requ&#234;te doit porter :</p>
+<pre tabindex="0"><code>Authorization: Bearer &lt;jeton&gt;
+Host: 127.0.0.1:8765        (ou localhost)</code></pre>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Cas, R&#233;ponse"><table class="ref"><thead><tr><th scope="col">Cas</th><th scope="col">R&#233;ponse</th></tr></thead><tbody>
+<tr id="fr-a-pas-de-jeton-mauvais-jeton"><th scope="row">Pas de jeton, mauvais jeton</th><td><code>401</code></td></tr>
+<tr id="fr-a-host-autre-que-127-0-0-1-localhost-ou-en-t-te-origin-une-page-web"><th scope="row"><code>Host</code> autre que <code>127.0.0.1</code> / <code>localhost</code>, ou en-t&#234;te <code>Origin</code> (une page web)</th><td><code>403</code></td></tr>
+<tr id="fr-a-adresse-inconnue-travail-inconnu"><th scope="row">Adresse inconnue, travail inconnu</th><td><code>404</code></td></tr>
+<tr id="fr-a-m-thode-non-permise-sur-cette-adresse"><th scope="row">M&#233;thode non permise sur cette adresse</th><td><code>405</code></td></tr>
+<tr id="fr-a-corps-qui-n-est-pas-du-json-r-glage-inconnu-mauvais-chemin"><th scope="row">Corps qui n&#39;est pas du JSON, r&#233;glage inconnu, mauvais chemin</th><td><code>400</code> (<code>{&quot;error&quot;: &quot;...&quot;}</code>)</td></tr>
+<tr id="fr-a-corps-de-plus-de-1-mo"><th scope="row">Corps de plus de 1 Mo</th><td><code>413</code></td></tr>
+<tr id="fr-a-trop-de-travaux-en-attente-suppression-d-un-travail-en-cours"><th scope="row">Trop de travaux en attente, suppression d&#39;un travail en cours</th><td><code>409</code></td></tr>
+</tbody></table></div>
+<p>Le serveur n&#39;&#233;coute jamais sur une autre adresse de la machine et ferme toute connexion dont l&#39;adresse distante n&#39;est pas <code>127.0.0.1</code>.</p>
+<h2>Adresses</h2>
+<p>Toutes sous <code>/api/v1</code>. Les corps et les r&#233;ponses sont du JSON (UTF-8).</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="Requ&#234;te, Effet"><table class="ref"><thead><tr><th scope="col">Requ&#234;te</th><th scope="col">Effet</th></tr></thead><tbody>
+<tr id="fr-a-get-status"><th scope="row"><code>GET /status</code></th><td>`{&quot;program&quot;,&quot;version&quot;,&quot;api&quot;:1,&quot;state&quot;:&quot;idle&quot;</td><td>&quot;busy&quot;,&quot;queued&quot;,&quot;running&quot;,&quot;jobs&quot;}`</td></tr>
+<tr id="fr-a-get-settings"><th scope="row"><code>GET /settings</code></th><td>tous les r&#233;glages du tableau des r&#233;glages, en texte</td></tr>
+<tr id="fr-a-put-settings"><th scope="row"><code>PUT /settings</code></th><td><code>{&quot;width&quot;: 1280, &quot;fps&quot;: 30}</code> : change les r&#233;glages g&#233;n&#233;raux (cha&#238;nes, nombres ou bool&#233;ens) ; une cl&#233; inconnue donne <code>400</code> et ne change rien</td></tr>
+<tr id="fr-a-post-jobs"><th scope="row"><code>POST /jobs</code></th><td><code>{&quot;path&quot;: &quot;C:/shaders/plasma.glsl&quot;, &quot;settings&quot;: {&quot;duration&quot;: 5, &quot;outdir&quot;: &quot;C:/videos&quot;}}</code> : ajoute un shader (<code>.glsl</code>, <code>.txt</code>, <code>.frag</code>, <code>.hlsl</code>, <code>.wgsl</code>) &#224; la file et la lance ; le travail prend les r&#233;glages g&#233;n&#233;raux puis les siens ; r&#233;ponse <code>201</code> avec le travail</td></tr>
+<tr id="fr-a-get-jobs"><th scope="row"><code>GET /jobs</code></th><td><code>{&quot;jobs&quot;: [...]}</code></td></tr>
+<tr id="fr-a-get-jobs-id"><th scope="row"><code>GET /jobs/{id}</code></th><td>le travail : <code>id</code>, <code>path</code>, <code>state</code> (<code>queued</code>, <code>running</code>, <code>done</code>, <code>failed</code>, <code>cancelled</code>), <code>progress</code> (<code>frame</code>, <code>total</code>, <code>fps</code>, <code>remaining_s</code>), <code>error</code>, <code>outputs</code>, <code>log</code> (les 60 derni&#232;res lignes)</td></tr>
+<tr id="fr-a-get-jobs-id-outputs"><th scope="row"><code>GET /jobs/{id}/outputs</code></th><td><code>{&quot;outputs&quot;: [&quot;C:/videos/plasma.mp4&quot;]}</code></td></tr>
+<tr id="fr-a-post-jobs-id-cancel"><th scope="row"><code>POST /jobs/{id}/cancel</code></th><td>arr&#234;te le travail (ou le retire de la file)</td></tr>
+<tr id="fr-a-delete-jobs-id"><th scope="row"><code>DELETE /jobs/{id}</code></th><td>oublie un travail termin&#233;</td></tr>
+<tr id="fr-a-post-shutdown"><th scope="row"><code>POST /shutdown</code></th><td>arr&#234;te le serveur</td></tr>
+</tbody></table></div>
+<p>Les travaux s&#39;ex&#233;cutent l&#39;un apr&#232;s l&#39;autre, dans l&#39;ordre.</p>
+<h2>Exemple</h2>
+<pre tabindex="0"><code>$token = (Get-Content serve.token).Trim()
+$h = @{ Authorization = &quot;Bearer $token&quot; }
+$job = Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8765/api/v1/jobs -Headers $h -ContentType application/json `
+  -Body &#39;{&quot;path&quot;:&quot;C:/shaders/plasma.glsl&quot;,&quot;settings&quot;:{&quot;duration&quot;:5,&quot;outdir&quot;:&quot;C:/videos&quot;}}&#39;
+Invoke-RestMethod -Uri &quot;http://127.0.0.1:8765/api/v1/jobs/$($job.id)&quot; -Headers $h</code></pre>
+<p>Clients complets qui suivent la progression : <code>examples/automation/render.ps1</code> (PowerShell) et <code>examples/automation/render.py</code> (Python, biblioth&#232;que standard seulement). L&#39;auto-test lance les deux contre un vrai serveur.</p>
+<h2>Autres sorties lisibles par un programme</h2>
+<p><code>--progress=json</code> &#233;crit un objet JSON par ligne (<code>start</code>, <code>log</code>, <code>progress</code>, <code>done</code>, <code>error</code>, <code>end</code>), <code>--report=json</code> &#233;crit <code>nom.report.json</code> &#224; c&#244;t&#233; de chaque vid&#233;o, et <code>--diagnostic</code> &#233;crit des lignes de texte <code>cl&#233; : valeur</code>. Leurs formes sont dans <a href="../api/schema.json">schema.json</a> (d&#233;finitions <code>progressEvent</code> et <code>renderReport</code>).</p>
+<h2>Codes de sortie</h2>
+<p><code>0</code> tout est rendu ; <code>1</code> un rendu a &#233;chou&#233; (aussi <code>--serve</code> sur un port pris) ; <code>2</code> ligne de commande invalide ; <code>3</code> pas d&#39;OpenGL 3.3 ; <code>4</code> ffmpeg introuvable ; <code>5</code> banc d&#39;essai plus lent qu&#39;avant ; <code>6</code> avertissement de <code>--check</code> ; <code>7</code> diff&#233;rence de <code>--compare</code> / <code>--golden=verify</code> / <code>--verify</code> ; <code>8</code> version plus r&#233;cente disponible ; <code>9</code> corrections possibles de <code>--portability</code>.</p>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    ShaderToMP4 4.0.0 - &copy; 2026 Patrick JAILLET - Shareware - <a href="https://github.com/ap3x-devel/ShaderToMP4">GitHub</a> - <a href="mailto:ap3x.records@proton.me">ap3x.records@proton.me</a>
+  </div>
+</footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>
