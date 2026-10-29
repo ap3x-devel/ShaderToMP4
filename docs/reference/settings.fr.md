@@ -98,4 +98,4 @@
 | `post` | *écrite seulement quand elle n'a plus sa valeur par défaut* | effets de post-traitement, par ex. bloom:0.4,grain,vignette (sharpen chroma bloom contrast saturation hue vignette grain ; quantité après les deux-points) |
 | `lut` | *écrite seulement quand elle n'a plus sa valeur par défaut* | LUT couleur au format .cube appliquée après les effets (1D ou 3D, chemin relatif au shader) |
 
-L'édition Pro ajoute ses propres clés (scène 3D, signaux et données, couleur et qualité, habillage et diffusion, performance) : elles sont listées dans la fenêtre des réglages Pro, un champ par clé.
+Le programme ajoute ses propres clés (scène 3D, signaux et données, couleur et qualité, habillage et diffusion, performance) : elles sont listées dans la fenêtre des réglages Pro, un champ par clé.

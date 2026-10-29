@@ -98,4 +98,4 @@ Written by the program itself (`ShaderToMP4 --dump-reference=settings`): every k
 | `post` | *written only when it is no longer the default* | post-processing effects, e.g. bloom:0.4,grain,vignette (sharpen chroma bloom contrast saturation hue vignette grain; amount after the colon) |
 | `lut` | *written only when it is no longer the default* | color LUT in .cube format applied after the effects (1D or 3D, path relative to the shader) |
 
-The Pro edition adds its own keys (3D scene, signals and data, colour and quality, dressing and delivery, performance): they are listed in the Pro settings window, one field per key.
+The program adds its own keys (3D scene, signals and data, colour and quality, dressing and delivery, performance): they are listed in the Pro settings window, one field per key.
