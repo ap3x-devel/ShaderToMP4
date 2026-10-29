@@ -8,6 +8,10 @@ Format: one section per version, newest first. The section of a tagged version i
 
 ## 4.0.0 — 2026-10-29
 
+### Added
+
+- **License file by drag and drop**: drop `ShaderToMP4.license` on the About window; it is checked (signature, version, expiry) before being copied next to the program, a refused file changes nothing, the result is shown in the window and the Buy button disappears. New self-test case `lic_install`, end-to-end script `scripts/test-license-drop.ps1`.
+
 ### Changed
 
 - **One shareware program.** ShaderToMP4 is no longer free software: there is a single program with a single proprietary license ([EULA.md](EULA.md)), no free edition and no published source code. Versions up to 3.0.0 stay under the GPL-3.0-or-later for those who received them. Every source file now carries `LicenseRef-ShaderToMP4-Proprietary`; `COPYING` is gone, `LICENSE` points to the agreement, the About window, the installer, the site, the README and the notices say so.
