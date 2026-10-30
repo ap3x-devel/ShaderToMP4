@@ -6,10 +6,11 @@
 
 Format : une section par version, la plus récente en premier. La section d'une version étiquetée est reprise dans les notes de version.
 
-## 4.0.0 — 2026-10-29
+## 4.1.0 — 2026-10-29
 
 ### Ajouté
 
+- **Revue de sécurité et comparaison avec la 3.0.0** (`docs/security.fr.md`, `docs/compare-4.1.0.fr.md`) : modèle de menace, inventaire de 42 lecteurs de fichiers et de textes ayant chacun une cible de fuzzing (le cas d'auto-test `fuzz_inventory` refuse un lecteur sans cible, et une cible hors inventaire), huit nouvelles cibles (licence, mise à jour, sous-titres, livrables, ICC, calques, scène, couleur et OpenColorIO), contrôle des vulnérabilités connues des composants livrés ; corpus Shadertoy 104 sur 104 contre 91 sur 104 pour la 3.0.0, pire écart du banc d'essai -9,9 %. Les fichiers écrits par la 3.0.0 (config.ini écrit par sa fenêtre, window.ini, file, présélection, shader) sont lus par cette version (cas `migration_300`) ; les fichiers de licence de la 3.x ne le sont pas (à rééditer).
 - **Qualité de production** : l'EXR en demi-précision rend dans une cible RGBA16F de bout en bout (dégradé sans bandes, valeurs au-delà de 1,0 conservées, dégradé ProRes 4444 10 bits contrôlé), profondeur de champ à partir de la passe de profondeur (`dof=mise_au_point:ouverture[:max]`), plusieurs sons mixés en mono, stéréo ou 5.1 dans un `.montage` avec leur décalage et leur volume (`sound`, `layout`). **Matrice des licences** : courbe tonale, exposition, espace colorimétrique d'un canal, chaîne de LUT, OpenColorIO, scène 3D, glTF animé, profondeur de champ et demi-précision sont rendus avec et sans licence (seul le filigrane d'essai du coin bas droit diffère ; une image écrite le porte aussi) ; deux nouvelles images de référence (`tonemap`, `scene3d`) dans le jeu commun et le jeu llvmpipe. **Gestion de la couleur avec OpenColorIO** (`ocio=config.ocio ; entrée -> sortie`, ou `-> @affichage:vue` pour voir l'image comme un affichage la montre, `; looks=` pour des looks) : la transformation est cuite par l'outil OpenColorIO livré dans `tools/ocio` (BSD-3-Clause, programme séparé) en une LUT que lisent tous les rendus, aperçus, parties et livrables ; vérifié sur une mire contre des transformations par exposant, matrice, mélange de canaux et vue d'affichage. **glTF animé** (`anim=`) : les clés de translation, rotation et échelle (linéaire, palier, spline cubique) d'un fichier `.gltf` / `.glb` animent le maillage, et au choix la caméra et la lumière du fichier (`anim=slide camera light loop start=0.5`).
 - **API locale** (`--serve`) : HTTP / JSON sur 127.0.0.1 avec un jeton, file de travaux (ajouter, suivre, annuler, sorties), schéma JSON vérifié contre de vraies sorties, exemples PowerShell et Python lancés par l'auto-test, cible de fuzzing du lecteur de requêtes, codes de sortie documentés avec un essai pour chacun.
 - **Sortie en direct depuis la fenêtre** : menu Projet, Sortie en direct, sur un écran ou dans une fenêtre (`scripts/test-live-gui.ps1`).
@@ -17,6 +18,16 @@ Format : une section par version, la plus récente en premier. La section d'une 
 - **Pilotage en direct** pendant la sortie en direct : OSC en UDP (`--live-osc`) et entrée MIDI (`--live-midi`) pilotent les paramètres `// uniform` (`osc.nom`, `midi.cc7`, `midi.note(60)`, `iNote`...), délai mesuré, cible de fuzzing OSC.
 - **Sortie en direct** (`--live`) : rendu en temps réel dans une fenêtre sans bordure sur l'écran choisi, cadence et images perdues mesurées, enregistrement sans perte image par image (`--live-record`), flux SRT et RTMP vers une adresse donnée par l'utilisateur (`--live-stream`). Cas d'auto-test `live_*`, script d'essai sur écrans réels `scripts/test-live.ps1`.
 - **Fichier de licence par glisser-déposer** : glissez `ShaderToMP4.license` sur la fenêtre « À propos » ; il est vérifié (signature, version, expiration) avant d'être copié à côté du programme, un fichier refusé ne change rien, le résultat s'affiche dans la fenêtre et le bouton d'achat disparaît. Nouveau cas d'auto-test `lic_install`, script de bout en bout `scripts/test-license-drop.ps1`.
+
+### Modifié
+
+- Le décodage vidéo matériel est **désactivé par défaut** (`videohw=software` ; `auto` ou une méthode sur demande) : 6,8 dB d'écart ont été mesurés avec le décodage logiciel sur un poste.
+
+### Corrigé
+
+- Un fichier de sous-titres ASS dont la ligne `Format:` n'a pas de colonne `Text` lisait hors de sa liste de champs (trouvé par la nouvelle cible de fuzzing) ; le manifeste Scoop indique la licence propriétaire et garde `ShaderToMP4.license` entre les mises à jour.
+
+## 4.0.0 — 2026-10-29
 
 ### Modifié
 

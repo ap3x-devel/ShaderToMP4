@@ -6,10 +6,11 @@
 
 Format: one section per version, newest first. The section of a tagged version is copied into the release notes.
 
-## 4.0.0 — 2026-10-29
+## 4.1.0 — 2026-10-29
 
 ### Added
 
+- **Security review and comparison with 3.0.0** (`docs/security.md`, `docs/compare-4.1.0.md`): threat model, an inventory of 42 file and text readers each with a fuzzing target (the self-test case `fuzz_inventory` refuses a reader without one, and a target outside the inventory), eight new targets (license, update, subtitles, deliveries, ICC, layers, scene, colour and OpenColorIO), known-vulnerability check of the shipped components; Shadertoy corpus 104 / 104 against 91 / 104 for 3.0.0, benchmark worst difference -9.9 %. Files written by the 3.0.0 (config.ini written by its window, window.ini, queue, preset, shader) are read by this version (case `migration_300`); 3.x license files are not (re-issue them).
 - **Production quality**: the EXR in half precision renders in an RGBA16F target from end to end (ramp without banding, values beyond 1.0 kept, ProRes 4444 10-bit ramp checked), depth of field from the depth pass (`dof=focus:aperture[:max]`), several sounds mixed into mono, stereo or 5.1 in a `.montage` with their offset and volume (`sound`, `layout`). **License matrix test**: tone curve, exposure, channel colour space, LUT chain, OpenColorIO, 3D scene, animated glTF, depth of field and half precision are rendered with and without a license (only the trial watermark in the bottom right corner differs; a written image carries it too); two new reference images (`tonemap`, `scene3d`) in the common set and in the llvmpipe set. **Colour management with OpenColorIO** (`ocio=config.ocio ; input -> output`, or `-> @display:view` to see the image as a display shows it, `; looks=` for looks): the transformation is baked by the OpenColorIO tool shipped in `tools/ocio` (BSD-3-Clause, separate program) into a LUT that every render, preview, part and deliverable reads; checked on a chart against exponent, matrix, channel-mixing and display-view transformations. **Animated glTF** (`anim=`): translation, rotation, scale and keys (linear, step, cubic spline) of a `.gltf` / `.glb` file drive the mesh, and optionally the camera and the light of the file (`anim=slide camera light loop start=0.5`).
 - **Local API** (`--serve`): HTTP / JSON on 127.0.0.1 with a token, jobs queue (add, follow, cancel, outputs), JSON schema checked against real outputs, examples in PowerShell and Python run by the self-test, request reader fuzzing target, exit codes documented with a test for each.
 - **Live output from the window**: Project menu, Live output, on a screen or in a window (`scripts/test-live-gui.ps1`).
@@ -17,6 +18,16 @@ Format: one section per version, newest first. The section of a tagged version i
 - **Live control** during the live output: OSC over UDP (`--live-osc`) and MIDI input (`--live-midi`) drive the `// uniform` parameters (`osc.name`, `midi.cc7`, `midi.note(60)`, `iNote`...), delay measured, OSC fuzzing target.
 - **Live output** (`--live`): real-time rendering in a borderless window on the chosen screen, measured rate and lost images, lossless recording image by image (`--live-record`), SRT and RTMP stream to an address given by the user (`--live-stream`). Self-test cases `live_*`, real-screen script `scripts/test-live.ps1`.
 - **License file by drag and drop**: drop `ShaderToMP4.license` on the About window; it is checked (signature, version, expiry) before being copied next to the program, a refused file changes nothing, the result is shown in the window and the Buy button disappears. New self-test case `lic_install`, end-to-end script `scripts/test-license-drop.ps1`.
+
+### Changed
+
+- Hardware video decoding is **off by default** (`videohw=software`; `auto` or a method on request): a 6.8 dB difference was measured against the software decoding on one machine.
+
+### Fixed
+
+- An ASS subtitle file whose `Format:` line has no `Text` column read outside its field list (found by the new fuzzing target); the Scoop manifest now states the proprietary license and keeps `ShaderToMP4.license` across updates.
+
+## 4.0.0 — 2026-10-29
 
 ### Changed
 
